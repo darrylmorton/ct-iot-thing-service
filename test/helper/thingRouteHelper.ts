@@ -2,7 +2,38 @@ import request from 'supertest'
 
 import env from '../../src/env'
 import { Express } from 'express'
-import { SimpleThing } from '../../src/types'
+import { SimpleThing, ThingType } from '../../src/types'
+
+export async function getThingTypesRoute(app: Express): Promise<any> {
+  return request(app)
+    .get(`/${env.API_MAJOR_VERSION}/thingType`)
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json')
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(`getThingRouteErr ${err}`)
+      return err
+    })
+}
+
+export async function postThingTypeRoute(app: Express, thingType: ThingType): Promise<any> {
+  return request(app)
+    .post(`/${env.API_MAJOR_VERSION}/thingType`)
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json')
+    .send(thingType)
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(`postThingTypeRouteErr ${err}`)
+      return err
+    })
+}
 
 export async function getThingsRoute(app: Express): Promise<any> {
   return request(app)

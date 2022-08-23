@@ -2,15 +2,15 @@ import { Request, Response, NextFunction } from 'express'
 import { Operation } from 'express-openapi'
 
 import { ServiceResponse } from '../../types'
-import { getThingsValidator, postThingValidator } from '../validators/thingResponseValidators'
+import { getThingTypesValidator, postThingTypeValidator } from '../validators/thingTypeResponseValidators'
 
 export default function (thingService: any) {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const { statusCode, result }: ServiceResponse = await thingService.getThings()
+        const { statusCode, result }: ServiceResponse = await thingService.getThingTypes()
 
-        const validationErrors = getThingsValidator.validateResponse(200, result)
+        const validationErrors = getThingTypesValidator.validateResponse(200, result)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -26,9 +26,9 @@ export default function (thingService: any) {
   const POST: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const { statusCode, result }: ServiceResponse = await thingService.postThing(req.body)
+        const { statusCode, result }: ServiceResponse = await thingService.postThingType(req.body)
 
-        const validationErrors = postThingValidator.validateResponse(201, result)
+        const validationErrors = postThingTypeValidator.validateResponse(201, result)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -42,29 +42,23 @@ export default function (thingService: any) {
   ]
 
   GET.apiDoc = {
-    summary: 'Get things',
+    summary: 'Get thing types',
     responses: {
       200: {
-        description: 'Return things',
+        description: 'Return thing types',
         content: {
           'application/json': {
             schema: {
               type: 'array',
               items: {
                 properties: {
-                  id: {
-                    description: 'id of the thing',
-                    type: 'string',
-                    format: 'uuid',
-                    nullable: false,
-                  },
                   name: {
-                    description: 'name of the thing',
+                    description: 'name of the thing type',
                     type: 'string',
                     nullable: false,
                   },
                 },
-                required: ['id', 'name'],
+                required: ['name'],
                 additionalProperties: false,
               },
             },
@@ -92,11 +86,11 @@ export default function (thingService: any) {
         },
       },
     },
-    tags: ['thing'],
+    tags: ['thing types'],
   }
 
   POST.apiDoc = {
-    summary: 'Post thing',
+    summary: 'Post thing type',
     requestBody: {
       content: {
         'application/json': {
@@ -117,35 +111,19 @@ export default function (thingService: any) {
     },
     responses: {
       201: {
-        description: 'Create thing',
+        description: 'Create thing type',
         content: {
           'application/json': {
             schema: {
               type: 'object',
               properties: {
-                id: {
-                  description: 'id of the thing',
-                  type: 'string',
-                  format: 'uuid',
-                  nullable: false,
-                },
                 name: {
-                  description: 'name of the thing',
+                  description: 'name of the thing type',
                   type: 'string',
                   nullable: false,
-                },
-                thingType: {
-                  type: 'object',
-                  properties: {
-                    name: {
-                      description: 'thing type of the thing',
-                      type: 'string',
-                      nullable: false,
-                    },
-                  },
                 },
               },
-              required: ['id', 'name', 'thingType'],
+              required: ['name'],
             },
           },
         },
@@ -181,7 +159,7 @@ export default function (thingService: any) {
         },
       },
     },
-    tags: ['thing'],
+    tags: ['thing types'],
   }
 
   const doc = {

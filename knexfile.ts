@@ -18,6 +18,7 @@ const config: { [key: string]: Knex.Config } = {
     },
     migrations: {
       tableName: 'migrations',
+      extension: 'ts',
     },
   },
 
@@ -36,6 +37,7 @@ const config: { [key: string]: Knex.Config } = {
     },
     migrations: {
       tableName: 'migrations',
+      extension: 'ts',
     },
   },
 
@@ -55,6 +57,7 @@ const config: { [key: string]: Knex.Config } = {
     },
     migrations: {
       tableName: 'migrations',
+      extension: 'ts',
     },
   },
 
@@ -74,6 +77,7 @@ const config: { [key: string]: Knex.Config } = {
     },
     migrations: {
       tableName: 'migrations',
+      extension: 'ts',
     },
   },
 }
