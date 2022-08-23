@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { validate as isValidUuid } from 'uuid'
 
-import { Payload, SimpleThing, ThingType } from '../../src/types'
+import { SimpleThing, ThingPayload, ThingType } from '../../src/types'
 
 export const createThingType = (thingTypeName: string): ThingType => {
   const thingType: ThingType = {
@@ -20,10 +20,10 @@ export const createThing = (thingName: string, thingTypeName: string): SimpleThi
   return thing
 }
 
-export const createPayload = (thingId: string): Payload => {
-  const payload: Payload = {
+export const createThingPayload = (thingId: string): ThingPayload => {
+  const payload: ThingPayload = {
     thing: thingId,
-    timestamp: Date.now(),
+    timestamp: Math.floor(Date.now() / 1000),
     payload: {
       cadence: {
         value: 20,
@@ -54,4 +54,11 @@ export const assertThing = (actualResult: any, expectedResult: SimpleThing): voi
   expect(isValidUuid(actualResult.id)).to.be.true
   expect(actualResult.name).to.equal(expectedResult.name)
   expect(actualResult.thingType).to.deep.equal(expectedResult.thingType.name)
+}
+
+export const assertThingPayload = (actualResult: any, expectedResult: ThingPayload): void => {
+  expect(isValidUuid(actualResult.id)).to.be.true
+  expect(isValidUuid(actualResult.thing)).to.be.true
+  expect(actualResult.timestamp).to.equal(expectedResult.timestamp)
+  expect(actualResult.payload).to.deep.equal(expectedResult.payload)
 }

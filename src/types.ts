@@ -20,7 +20,7 @@ export interface ServiceResponse {
   result: any
 }
 
-export interface Payload {
+export interface ThingPayload {
   thing: string
   timestamp: number
   payload: {
@@ -45,3 +45,5 @@ export interface Payload {
     }
   }
 }
+
+export interface ThingPayloads extends Array<ThingPayload> {}

@@ -35,7 +35,7 @@ export async function up(knex: Knex): Promise<void> {
     def.index(['thing_type'])
   })
 
-  await knex.schema.createTable('payloads', (def) => {
+  await knex.schema.createTable('thing_payloads', (def) => {
     def.uuid('id').defaultTo(uuidGenerateV4())
     def.uuid('thing').notNullable()
     def.integer('timestamp').notNullable()
@@ -52,7 +52,7 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTable('payloads')
+  await knex.schema.dropTable('thing_payloads')
   await knex.schema.dropTable('things')
   await knex.schema.dropTable('thing_types')
 

@@ -8,7 +8,7 @@ import { ThingType } from '../../src/types'
 import { cleanup } from '../../seeds/things'
 import { createThingType } from '../helper/thingHelper'
 
-describe('Thing routes', function () {
+describe('Thing Type routes', function () {
   let app: Express
   let thingTypeOneName: string
 

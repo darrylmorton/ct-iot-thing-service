@@ -1,5 +1,23 @@
-import { addThing, addThingType, findThingByName, findThings, findThingTypeByName, findThingTypes } from '../../db'
-import { Thing, Things, ServiceResponse, SimpleThing, ThingTypes } from '../../types'
+import {
+  addThing,
+  addThingPayload,
+  addThingType,
+  findThingByName,
+  findThingPayloadsByThingId,
+  findThings,
+  findThingTypeByName,
+  findThingTypes,
+} from '../../db'
+import {
+  Thing,
+  Things,
+  ServiceResponse,
+  SimpleThing,
+  ThingTypes,
+  ThingPayloads,
+  ThingPayload,
+  ThingType,
+} from '../../types'
 
 const thingService = {
   async getThingTypes(): Promise<ServiceResponse> {
@@ -13,7 +31,7 @@ const thingService = {
 
     if (getThingByNameResult.length === 0) {
       const addThingTypeResult: ThingTypes = await addThingType(requestBody)
-      const result: Thing | {} = addThingTypeResult.length === 1 ? addThingTypeResult[0] : {}
+      const result: ThingType | {} = addThingTypeResult.length === 1 ? addThingTypeResult[0] : {}
 
       if (result) {
         return { statusCode: 201, result }
@@ -52,6 +70,24 @@ const thingService = {
     }
 
     return { statusCode: 409, result: {} }
+  },
+
+  async postThingPayload(requestBody: ThingPayload): Promise<ServiceResponse> {
+    const addThingPayloadResult: ThingPayloads = await addThingPayload(requestBody)
+
+    const result: ThingPayload | {} = addThingPayloadResult.length === 1 ? addThingPayloadResult[0] : {}
+
+    if (result) {
+      return { statusCode: 201, result }
+    } else {
+      return { statusCode: 400, result }
+    }
+  },
+
+  async getThingPayloadsByThingId(thingId: string): Promise<ServiceResponse> {
+    const result: ThingPayloads = await findThingPayloadsByThingId(thingId)
+
+    return { statusCode: 200, result }
   },
 }
 

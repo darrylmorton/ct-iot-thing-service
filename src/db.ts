@@ -1,7 +1,7 @@
 import knex from 'knex'
 
 import env from './env'
-import { SimpleThing, Things, ThingType, ThingTypes } from './types'
+import { SimpleThing, ThingPayload, ThingPayloads, Things, ThingType, ThingTypes } from './types'
 
 export const client = knex({
   client: 'pg',
@@ -43,6 +43,17 @@ export const findThings = async (): Promise<Things> => {
   return client('things').select(['id', 'name', 'thing_type AS thingType']).orderBy('id').orderBy('name')
 }
 
+export const addThingPayload = async (requestBody: ThingPayload): Promise<ThingPayloads> => {
+  return client('thing_payloads').insert(requestBody).returning(['id', 'thing', 'timestamp', 'payload'])
+}
+
+export const findThingPayloadsByThingId = async (thingId: string): Promise<ThingPayloads> => {
+  return client('thing_payloads')
+    .select(['id', 'thing', 'timestamp', 'payload'])
+    .where({ thing: thingId })
+    .orderBy('timestamp')
+}
+
 module.exports = {
   client,
   addThingType,
@@ -51,4 +62,6 @@ module.exports = {
   addThing,
   findThingByName,
   findThings,
+  addThingPayload,
+  findThingPayloadsByThingId,
 }

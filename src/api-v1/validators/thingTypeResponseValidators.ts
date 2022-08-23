@@ -2,7 +2,7 @@ import OpenAPIResponseValidator from 'openapi-response-validator'
 
 const definitions: any = {
   definitions: {
-    ThingTypesResponse: {
+    ThingTypeResponse: {
       type: 'object',
       properties: {
         name: {
@@ -19,7 +19,7 @@ export const postThingTypeValidator = new OpenAPIResponseValidator({
     201: {
       schema: {
         type: 'object',
-        $ref: definitions.ThingTypesResponse,
+        $ref: definitions.ThingTypeResponse,
       },
     },
   },
@@ -32,7 +32,7 @@ export const getThingTypesValidator = new OpenAPIResponseValidator({
       schema: {
         type: 'array',
         items: {
-          $ref: definitions.ThingTypesResponse,
+          $ref: definitions.ThingTypeResponse,
         },
       },
     },
