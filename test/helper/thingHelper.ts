@@ -26,20 +26,20 @@ export const createPayload = (thingId: string): Payload => {
     timestamp: Date.now(),
     payload: {
       cadence: {
-        value: '20',
+        value: 20,
         unit: 'seconds',
       },
       battery: {
-        value: '40',
+        value: 40,
         unit: '%',
       },
       temperature: {
-        value: '50',
+        value: 50,
         unit: 'C',
         connection: 'pin:4',
       },
       humidity: {
-        value: '60',
+        value: 60,
         unit: '%',
         connection: 'pin:6',
         precipitation: false,

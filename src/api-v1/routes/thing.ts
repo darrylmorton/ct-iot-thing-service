@@ -146,6 +146,7 @@ export default function (thingService: any) {
                 },
               },
               required: ['id', 'name', 'thingType'],
+              additionalProperties: false,
             },
           },
         },

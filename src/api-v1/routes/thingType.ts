@@ -124,6 +124,7 @@ export default function (thingService: any) {
                 },
               },
               required: ['name'],
+              additionalProperties: false,
             },
           },
         },

@@ -25,20 +25,20 @@ export interface Payload {
   timestamp: number
   payload: {
     cadence: {
-      value: string
+      value: number
       unit: string
     }
     battery: {
-      value: string
+      value: number
       unit: string
     }
     temperature: {
-      value: string
+      value: number
       unit: string
       connection: string
     }
     humidity: {
-      value: string
+      value: number
       unit: string
       connection: string
       precipitation: boolean
