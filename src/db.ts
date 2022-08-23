@@ -47,6 +47,7 @@ module.exports = {
   client,
   addThingType,
   findThingTypeByName,
+  findThingTypes,
   addThing,
   findThingByName,
   findThings,

@@ -14,30 +14,15 @@ describe('Thing routes', function () {
   let thingOneName: string
 
   before(async function () {
+    await cleanup()
+
     app = await createHttpServer()
 
     thingTypeOneName = 'thingTypeOne'
     thingOneName = 'thingOne'
 
-    await cleanup()
-  })
-
-  it('POST Thing Type that is invalid', async function () {
-    const thingType: ThingType = createThingType('')
-
-    const actualResult = await postThingTypeRoute(app, thingType)
-
-    expect(actualResult.status).to.equal(400)
-    expect(actualResult.body).to.deep.equal({})
-  })
-
-  it('POST Thing Type', async function () {
     const thingType: ThingType = createThingType(thingTypeOneName)
-
-    const actualResult = await postThingTypeRoute(app, thingType)
-
-    expect(actualResult.status).to.equal(201)
-    expect(actualResult.body).to.deep.equal(thingType)
+    await postThingTypeRoute(app, thingType)
   })
 
   it('POST Thing that is invalid', async function () {
