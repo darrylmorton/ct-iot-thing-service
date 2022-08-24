@@ -59,9 +59,3 @@ export const getThingsValidator = new OpenAPIResponseValidator({
     },
   },
 })
-
-module.exports = {
-  thingDefinitions,
-  getThingsValidator,
-  postThingValidator,
-}

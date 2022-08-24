@@ -53,15 +53,3 @@ export const findThingPayloadsByThingId = async (thingId: string): Promise<Thing
     .where({ thing: thingId })
     .orderBy('timestamp')
 }
-
-module.exports = {
-  client,
-  addThingType,
-  findThingTypeByName,
-  findThingTypes,
-  addThing,
-  findThingByName,
-  findThings,
-  addThingPayload,
-  findThingPayloadsByThingId,
-}
