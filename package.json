@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "CT IoT Thing Service",
   "main": "dist/src/index.js",
-  "author": "",
-  "license": "ISC",
+  "author": "Darryl Morton",
+  "license": "GNU",
   "scripts": {
     "clean": "rm -rf ./dist",
     "build": "npx tsc --build",
