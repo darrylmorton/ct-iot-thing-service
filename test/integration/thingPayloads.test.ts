@@ -19,15 +19,13 @@ describe('Thing Payload routes', function () {
   let thingOneName: string
   let thingZeroId: string
   let thingOneId: string
-  let thingTwoId: string
 
   before(async function () {
     await cleanup()
 
     app = await createHttpServer()
 
-    thingZeroId = '00000000-0000-0000-0000-0000000'
-    thingTwoId = '00000000-0000-0000-0000-00000001'
+    thingZeroId = '00000000-0000-0000-0000-00000000000'
     thingTypeOneName = 'thingTypeOne'
     thingOneName = 'thingOne'
 
@@ -67,8 +65,9 @@ describe('Thing Payload routes', function () {
     assertThingPayload(actualResult.body[1], thingPayloadRequestBody)
   })
 
-  it.skip('GET Thing Payloads', async function () {
-    const actualResult = await getThingPayloadsRoute(app, thingTwoId)
+  it('GET Thing Payloads', async function () {
+    const thingId = '00000000-0000-0000-0000-000000000000'
+    const actualResult = await getThingPayloadsRoute(app, thingId)
 
     expect(actualResult.status).to.equal(200)
     expect(actualResult.body).to.deep.equal([])

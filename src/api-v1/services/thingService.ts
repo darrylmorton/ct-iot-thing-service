@@ -85,9 +85,7 @@ const thingService = {
   },
 
   async getThingPayloadsByThingId(thingId: string): Promise<ServiceResponse> {
-    console.log('getThingPayloadsByThingId thingId', thingId)
-    const result: ThingPayloads | [] = await findThingPayloadsByThingId(thingId)
-    console.log('getThingPayloadsByThingId result', result)
+    const result: ThingPayloads = await findThingPayloadsByThingId(thingId)
 
     return { statusCode: 200, result }
   },
