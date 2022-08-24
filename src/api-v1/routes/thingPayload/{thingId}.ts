@@ -8,7 +8,10 @@ export default function (thingService: any) {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
+        console.log('GET thingPayloads req.params.thingId', req.params.thingId)
+
         const { statusCode, result }: ServiceResponse = await thingService.getThingPayloadsByThingId(req.params.thingId)
+        console.log('GET thingPayloads statusCode, result', statusCode, result)
 
         const validationErrors = getThingPayloadsValidator.validateResponse(200, result)
 

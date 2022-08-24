@@ -1,8 +1,8 @@
 import OpenAPIResponseValidator from 'openapi-response-validator'
 
-export const definitions: any = {
+export const thingPayloadDefinitions: any = {
   definitions: {
-    ThingPayloadResponse: {
+    ThingPayload: {
       type: 'object',
       properties: {
         id: {
@@ -101,6 +101,7 @@ export const definitions: any = {
         },
       },
       required: ['id', 'thing', 'timestamp', 'payload'],
+      additionalProperties: false,
     },
   },
 }
@@ -110,11 +111,10 @@ export const postThingPayloadValidator = new OpenAPIResponseValidator({
     201: {
       schema: {
         type: 'object',
-        $ref: definitions.ThingPayloadResponse,
+        $ref: thingPayloadDefinitions.ThingPayload,
       },
     },
   },
-  definitions,
 })
 
 export const getThingPayloadsValidator = new OpenAPIResponseValidator({
@@ -123,15 +123,15 @@ export const getThingPayloadsValidator = new OpenAPIResponseValidator({
       schema: {
         type: 'array',
         items: {
-          $ref: definitions.ThingPayloadResponse,
+          $ref: thingPayloadDefinitions.ThingPayload,
         },
       },
     },
   },
-  definitions,
 })
 
 module.exports = {
+  thingPayloadDefinitions,
   getThingPayloadsValidator,
   postThingPayloadValidator,
 }

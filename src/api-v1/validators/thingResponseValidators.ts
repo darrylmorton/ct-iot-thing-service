@@ -1,18 +1,37 @@
 import OpenAPIResponseValidator from 'openapi-response-validator'
 
-const definitions: any = {
+export const thingDefinitions: any = {
   definitions: {
-    ThingResponse: {
+    Thing: {
       type: 'object',
       properties: {
         id: {
+          description: 'id of the thing',
           type: 'string',
+          format: 'uuid',
+          nullable: false,
         },
         name: {
+          description: 'name of the thing',
           type: 'string',
+          nullable: false,
         },
+        thingType: {
+          description: 'type of the thing',
+          type: 'object',
+          nullable: false,
+          properties: {
+            name: {
+              type: 'string',
+              nullable: false,
+            },
+          },
+          required: ['name'],
+          additionalProperties: false,
+        },
+        required: ['id', 'name', 'thingType'],
+        additionalProperties: false,
       },
-      required: ['id', 'name'],
     },
   },
 }
@@ -22,11 +41,10 @@ export const postThingValidator = new OpenAPIResponseValidator({
     201: {
       schema: {
         type: 'object',
-        $ref: definitions.ThingResponse,
+        $ref: thingDefinitions.Thing,
       },
     },
   },
-  definitions,
 })
 
 export const getThingsValidator = new OpenAPIResponseValidator({
@@ -35,15 +53,15 @@ export const getThingsValidator = new OpenAPIResponseValidator({
       schema: {
         type: 'array',
         items: {
-          $ref: definitions.ThingResponse,
+          $ref: thingDefinitions.Thing,
         },
       },
     },
   },
-  definitions,
 })
 
 module.exports = {
+  thingDefinitions,
   getThingsValidator,
   postThingValidator,
 }

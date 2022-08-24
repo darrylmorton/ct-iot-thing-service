@@ -51,15 +51,7 @@ export default function (thingService: any) {
             schema: {
               type: 'array',
               items: {
-                properties: {
-                  name: {
-                    description: 'name of the thing type',
-                    type: 'string',
-                    nullable: false,
-                  },
-                },
-                required: ['name'],
-                additionalProperties: false,
+                $ref: '#/components/schemas/ThingType',
               },
             },
           },
@@ -105,6 +97,7 @@ export default function (thingService: any) {
               },
             },
             required: ['name'],
+            additionalProperties: false,
           },
         },
       },
@@ -115,16 +108,7 @@ export default function (thingService: any) {
         content: {
           'application/json': {
             schema: {
-              type: 'object',
-              properties: {
-                name: {
-                  description: 'name of the thing type',
-                  type: 'string',
-                  nullable: false,
-                },
-              },
-              required: ['name'],
-              additionalProperties: false,
+              $ref: '#/components/schemas/ThingType',
             },
           },
         },

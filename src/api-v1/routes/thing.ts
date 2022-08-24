@@ -51,21 +51,7 @@ export default function (thingService: any) {
             schema: {
               type: 'array',
               items: {
-                properties: {
-                  id: {
-                    description: 'id of the thing',
-                    type: 'string',
-                    format: 'uuid',
-                    nullable: false,
-                  },
-                  name: {
-                    description: 'name of the thing',
-                    type: 'string',
-                    nullable: false,
-                  },
-                },
-                required: ['id', 'name'],
-                additionalProperties: false,
+                $ref: '#/components/schemas/Thing',
               },
             },
           },
@@ -104,13 +90,28 @@ export default function (thingService: any) {
             type: 'object',
             properties: {
               name: {
+                description: 'name of the thing',
                 type: 'string',
                 nullable: false,
                 minLength: 2,
                 maxLength: 25,
               },
+              thingType: {
+                description: 'type of the thing',
+                type: 'object',
+                nullable: false,
+                properties: {
+                  name: {
+                    type: 'string',
+                    nullable: false,
+                  },
+                },
+                required: ['name'],
+                additionalProperties: false,
+              },
             },
-            required: ['name'],
+            required: ['name', 'thingType'],
+            additionalProperties: false,
           },
         },
       },
@@ -121,32 +122,7 @@ export default function (thingService: any) {
         content: {
           'application/json': {
             schema: {
-              type: 'object',
-              properties: {
-                id: {
-                  description: 'id of the thing',
-                  type: 'string',
-                  format: 'uuid',
-                  nullable: false,
-                },
-                name: {
-                  description: 'name of the thing',
-                  type: 'string',
-                  nullable: false,
-                },
-                thingType: {
-                  type: 'object',
-                  properties: {
-                    name: {
-                      description: 'thing type of the thing',
-                      type: 'string',
-                      nullable: false,
-                    },
-                  },
-                },
-              },
-              required: ['id', 'name', 'thingType'],
-              additionalProperties: false,
+              $ref: '#/components/schemas/Thing',
             },
           },
         },

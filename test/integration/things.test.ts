@@ -51,6 +51,7 @@ describe('Thing routes', function () {
 
   it('POST Thing', async function () {
     const thing: SimpleThing = createThing(thingOneName, thingTypeOneName)
+
     const actualResult = await postThingRoute(app, thing)
 
     expect(actualResult.status).to.equal(201)
@@ -59,6 +60,7 @@ describe('Thing routes', function () {
 
   it('POST Thing that already exists', async function () {
     const thing: SimpleThing = createThing(thingOneName, thingTypeOneName)
+
     const actualResult = await postThingRoute(app, thing)
 
     expect(actualResult.status).to.equal(409)
