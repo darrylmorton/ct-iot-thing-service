@@ -1,6 +1,6 @@
 {
   "name": "ct-iot-thing-service",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CT IoT Thing Service",
   "main": "dist/src/index.js",
   "author": "Darryl Morton",
@@ -14,6 +14,9 @@
     "start": "node dist/src/index.js",
     "dev": "concurrently 'npx tsc --watch' 'NODE_ENV=development nodemon -q dist/src/index.js'",
     "test": "NODE_ENV=test mocha -r ts-node/register --config ./test/mocharc.json ./test/**/*.test.ts"
+  },
+  "engines": {
+    "node": ">=16.15"
   },
   "dependencies": {
     "body-parser": "^1.20.0",
