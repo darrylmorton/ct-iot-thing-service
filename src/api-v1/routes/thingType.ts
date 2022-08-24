@@ -78,7 +78,7 @@ export default function (thingService: any) {
         },
       },
     },
-    tags: ['thing types'],
+    tags: ['thing type'],
   }
 
   POST.apiDoc = {
@@ -144,7 +144,7 @@ export default function (thingService: any) {
         },
       },
     },
-    tags: ['thing types'],
+    tags: ['thing type'],
   }
 
   const doc = {
