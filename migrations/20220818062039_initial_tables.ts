@@ -17,8 +17,6 @@ export async function up(knex: Knex): Promise<void> {
     def.datetime('updated_at').notNullable().defaultTo(now())
 
     def.primary(['name'])
-
-    def.index(['name'])
   })
 
   await knex.schema.createTable('things', (def) => {
