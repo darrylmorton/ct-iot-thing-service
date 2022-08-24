@@ -50,38 +50,16 @@ export async function createHttpServer() {
 
   app.use(`/${env.API_MAJOR_VERSION}/swagger`, swaggerUi.serve, swaggerUi.setup(undefined, options))
 
-  // Sorry - app.use checks arity
-  // eslint-disable-next-line no-unused-vars
-  // app.use((err: Errback, req: Request, res:Response, next: NextFunction) => {
-  //   if (err.status) {
-  //     res.status(err.status).send({ error: err.status === 401 ? 'Unauthorised' : err.message })
-  //   } else {
-  //     logger.error('Fallback Error %j', err.stack)
-  //     res.status(500).send('Fatal error!')
-  //   }
-  // })
-
   return app
 }
 
 export async function startServer(): Promise<void> {
   const app = await createHttpServer()
 
-  // const setupGracefulExit = (sigName: string, server: any, exitCode: number) => {
-  //   process.on(sigName, async () => {
-  //     server.close(() => {
-  //       process.exit(exitCode)
-  //     })
-  //   })
-  // }
-
   try {
     app.listen(env.PORT, () => {
       logger.info(`Listening on port ${env.PORT} `)
     })
-
-    // setupGracefulExit('SIGINT', server, 0)
-    // setupGracefulExit('SIGTERM', server, 143)
   } catch (err) {
     logger.error(`Binding failed: ${err}`)
   }
