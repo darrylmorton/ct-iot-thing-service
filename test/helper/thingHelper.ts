@@ -3,6 +3,18 @@ import { validate as isValidUuid } from 'uuid'
 
 import { SimpleThing, ThingPayload, ThingType } from '../../src/types'
 
+export const createTimestamp = (incrementValue?: number): number => {
+  // 24 hours in seconds subtracted for more realistic seed data
+  const currentTimeYesterdayInSeconds: number = Date.now() / 1000 - 86400
+  const increment = incrementValue ? incrementValue * 300 : 0
+
+  return Math.floor(currentTimeYesterdayInSeconds + increment)
+}
+
+const generateReadingValue = (max: number, min: number): number => {
+  return Math.random() * (max - min) + min
+}
+
 export const createThingType = (thingTypeName: string): ThingType => {
   const thingType: ThingType = {
     name: thingTypeName,
@@ -20,26 +32,26 @@ export const createThing = (thingName: string, thingTypeName: string): SimpleThi
   return thing
 }
 
-export const createThingPayload = (thingId: string): ThingPayload => {
+export const createThingPayload = (thingId: string, increment?: number): ThingPayload => {
   const payload: ThingPayload = {
     thing: thingId,
-    timestamp: Math.floor(Date.now() / 1000),
+    timestamp: createTimestamp(increment),
     payload: {
       cadence: {
-        value: 20,
+        value: 300,
         unit: 'seconds',
       },
       battery: {
-        value: 40,
+        value: 50,
         unit: '%',
       },
       temperature: {
-        value: 50,
+        value: generateReadingValue(16, 38),
         unit: 'C',
         connection: 'pin:4',
       },
       humidity: {
-        value: 60,
+        value: generateReadingValue(32, 81),
         unit: '%',
         connection: 'pin:6',
         precipitation: false,

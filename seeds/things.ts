@@ -1,17 +1,22 @@
 import { client } from '../src/db'
+import { ThingPayload } from '../src/types'
+import { createThingPayload } from '../test/helper/thingHelper'
 
-const READINGS_TOTAL = 1000
-
-const generateReadingValue = (max: number, min: number): number => {
-  return Math.random() * (max - min) + min
-}
+const PAYLOADS_TOTAL = 1000
 
 export const seed = async (): Promise<void> => {
-  const [{ id: thingId }] = await client('things').insert({ name: 'thingOne' }).returning(['id'])
+  await cleanup()
 
-  for (let readingsCounter = 0; readingsCounter < READINGS_TOTAL; readingsCounter++) {
-    const readingValue: number = generateReadingValue(20, 28)
-    await client('thing_payloads').insert({ thingId, readingValue })
+  const [{ name: thingTypeName }] = await client('thing_types').insert({ name: 'thingTypeOne' }).returning(['name'])
+
+  const [{ id: thingId }] = await client('things')
+    .insert({ name: 'thingOne', thing_type: thingTypeName })
+    .returning(['id'])
+
+  for (let payloadsCounter = 0; payloadsCounter < PAYLOADS_TOTAL; payloadsCounter++) {
+    const thingPayload: ThingPayload = createThingPayload(thingId, payloadsCounter)
+
+    await client('thing_payloads').insert(thingPayload)
   }
 }
 
@@ -23,4 +28,5 @@ export const cleanup = async (): Promise<void> => {
 
 module.exports = {
   cleanup,
+  seed,
 }
