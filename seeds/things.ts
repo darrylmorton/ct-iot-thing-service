@@ -53,8 +53,3 @@ export const cleanup = async (): Promise<void> => {
   await client('things').del()
   await client('thing_payloads').del()
 }
-
-module.exports = {
-  cleanup,
-  seed,
-}
