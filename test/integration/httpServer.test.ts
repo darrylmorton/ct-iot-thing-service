@@ -5,6 +5,7 @@ import { Express } from 'express'
 import env from '../../src/env'
 import { createHttpServer } from '../../src/server'
 import { healthCheckRoute } from '../helper/healthCheckHelper'
+import { HealthCheckResponse } from '../../src/serviceTypes'
 
 describe('Health route', function () {
   let app: Express
@@ -14,7 +15,7 @@ describe('Health route', function () {
   })
 
   it('GET health check', async function () {
-    const expectedResult = { status: 'ok', version: env.API_VERSION }
+    const expectedResult: HealthCheckResponse = { status: 'ok', version: env.API_VERSION }
     const actualResult = await healthCheckRoute(app)
 
     expect(actualResult.status).to.equal(200)

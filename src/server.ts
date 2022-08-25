@@ -9,6 +9,7 @@ import env from './env'
 import logger from './logger'
 import v1ApiDoc from './api-v1/api-doc'
 import v1ThingService from './api-v1/services/thingService'
+import { HealthCheckResponse } from './serviceTypes'
 
 export async function createHttpServer() {
   const app: Express = express()
@@ -20,7 +21,9 @@ export async function createHttpServer() {
   })
 
   app.get('/health', async (req: Request, res: Response) => {
-    res.status(200).send({ status: 'ok', version: env.API_VERSION })
+    const result: HealthCheckResponse = { status: 'ok', version: env.API_VERSION }
+
+    return res.status(200).json(result)
   })
 
   app.use(cors())

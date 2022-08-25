@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { Operation } from 'express-openapi'
 
-import { ServiceResponse } from '../../types'
+import { ServiceResponse } from '../../serviceTypes'
 import { postThingPayloadValidator } from '../validators/thingPayloadResponseValidators'
 
 export default function (thingService: any) {

@@ -1,36 +1,19 @@
-import {
-  addThing,
-  addThingPayload,
-  addThingType,
-  findThingByName,
-  findThingPayloadsByThingId,
-  findThings,
-  findThingTypeByName,
-  findThingTypes,
-} from '../../db'
-import {
-  Thing,
-  Things,
-  ServiceResponse,
-  SimpleThing,
-  ThingTypes,
-  ThingPayloads,
-  ThingPayload,
-  ThingType,
-} from '../../types'
+import db from '../../db'
+import { Thing, Things, SimpleThing, ThingTypes, ThingPayloads, ThingPayload, ThingType } from '../../types'
+import { ThingServiceInterface, ServiceResponse } from '../../serviceTypes'
 
-const thingService = {
+const thingService: ThingServiceInterface = {
   async getThingTypes(): Promise<ServiceResponse> {
-    const result: ThingTypes = await findThingTypes()
+    const result: ThingTypes = await db.findThingTypes()
 
     return { statusCode: 200, result }
   },
 
   async postThingType(requestBody: SimpleThing): Promise<ServiceResponse> {
-    const getThingByNameResult: ThingTypes = await findThingTypeByName(requestBody)
+    const getThingByNameResult: ThingTypes = await db.findThingTypeByName(requestBody)
 
     if (getThingByNameResult.length === 0) {
-      const addThingTypeResult: ThingTypes = await addThingType(requestBody)
+      const addThingTypeResult: ThingTypes = await db.addThingType(requestBody)
       const result: ThingType | {} = addThingTypeResult.length === 1 ? addThingTypeResult[0] : {}
 
       if (result) {
@@ -44,22 +27,22 @@ const thingService = {
   },
 
   async getThings(): Promise<ServiceResponse> {
-    const result: Things = await findThings()
+    const result: Things = await db.findThings()
 
     return { statusCode: 200, result }
   },
 
   async postThing(requestBody: SimpleThing): Promise<ServiceResponse> {
-    const getThingTypeByNameResult: ThingTypes = await findThingTypeByName(requestBody.thingType)
+    const getThingTypeByNameResult: ThingTypes = await db.findThingTypeByName(requestBody.thingType)
 
     if (getThingTypeByNameResult.length === 0) {
       return { statusCode: 404, result: {} }
     }
 
-    const getThingByNameResult: Things = await findThingByName(requestBody)
+    const getThingByNameResult: Things = await db.findThingByName(requestBody)
 
     if (getThingByNameResult.length === 0) {
-      const addThingResult: Things = await addThing(requestBody)
+      const addThingResult: Things = await db.addThing(requestBody)
       const result: Thing | {} = addThingResult.length === 1 ? addThingResult[0] : {}
 
       if (result) {
@@ -73,7 +56,7 @@ const thingService = {
   },
 
   async postThingPayload(requestBody: ThingPayload): Promise<ServiceResponse> {
-    const addThingPayloadResult: ThingPayloads = await addThingPayload(requestBody)
+    const addThingPayloadResult: ThingPayloads = await db.addThingPayload(requestBody)
 
     const result: ThingPayload | {} = addThingPayloadResult.length === 1 ? addThingPayloadResult[0] : {}
 
@@ -85,7 +68,7 @@ const thingService = {
   },
 
   async getThingPayloadsByThingId(thingId: string): Promise<ServiceResponse> {
-    const result: ThingPayloads = await findThingPayloadsByThingId(thingId)
+    const result: ThingPayloads = await db.findThingPayloadsByThingId(thingId)
 
     return { statusCode: 200, result }
   },
