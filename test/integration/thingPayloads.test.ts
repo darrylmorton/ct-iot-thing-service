@@ -58,7 +58,7 @@ describe('Thing Payload routes', function () {
     const thingPayload: ThingPayload = createThingPayload(thingOneId)
     const { body: thingPayloadRequestBody }: any = await postThingPayloadRoute(app, thingPayload)
 
-    const actualResult: any = await getThingPayloadsRoute(app, thingOneId)
+    const actualResult = await getThingPayloadsRoute(app, thingOneId)
 
     expect(actualResult.status).to.equal(200)
     expect(actualResult.body).to.have.length(2)
@@ -67,6 +67,7 @@ describe('Thing Payload routes', function () {
 
   it('GET Thing Payloads', async function () {
     const thingId: string = '00000000-0000-0000-0000-000000000000'
+
     const actualResult = await getThingPayloadsRoute(app, thingId)
 
     expect(actualResult.status).to.equal(200)

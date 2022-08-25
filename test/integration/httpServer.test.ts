@@ -16,6 +16,7 @@ describe('Health route', function () {
 
   it('GET health check', async function () {
     const expectedResult: HealthCheckResponse = { status: 'ok', version: env.API_VERSION }
+
     const actualResult = await healthCheckRoute(app)
 
     expect(actualResult.status).to.equal(200)

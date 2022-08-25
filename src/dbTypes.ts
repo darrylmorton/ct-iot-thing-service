@@ -1,6 +1,4 @@
 /* eslint-disable no-unused-vars */
-// import knex from 'knex'
-
 import { SimpleThing, ThingPayload, ThingPayloads, Things, ThingType, ThingTypes } from './types'
 import { Knex } from 'knex'
 
