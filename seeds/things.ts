@@ -1,5 +1,5 @@
 // eslint-disable no-unused-var
-import { client } from '../src/db'
+import db from '../src/db'
 import { ThingPayload } from '../src/types'
 import { createThingPayload } from '../test/helper/thingHelper'
 
@@ -10,13 +10,14 @@ const thingTypeNames: Array<string> = ['thingTypeOne', 'thingTypeTwo', 'thingTyp
 const insertThingPayload = async (thingId: string, index: number): Promise<void> => {
   const thingOnePayload: ThingPayload = createThingPayload(thingId, index)
 
-  await client('thing_payloads').insert(thingOnePayload)
+  await db.client('thing_payloads').insert(thingOnePayload)
 }
 
 export const seed = async (): Promise<void> => {
   await cleanup()
 
-  await client('thing_types')
+  await db
+    .client('thing_types')
     .insert([{ name: thingTypeNames[0] }, { name: thingTypeNames[1] }, { name: thingTypeNames[2] }])
     .returning(['name'])
 
@@ -27,7 +28,8 @@ export const seed = async (): Promise<void> => {
     { id: thingFourId },
     { id: thingFiveId },
     { id: thingSixId },
-  ] = await client('things')
+  ] = await db
+    .client('things')
     .insert([
       { name: thingNames[0], thing_type: thingTypeNames[0] },
       { name: thingNames[1], thing_type: thingTypeNames[0] },
@@ -49,7 +51,7 @@ export const seed = async (): Promise<void> => {
 }
 
 export const cleanup = async (): Promise<void> => {
-  await client('thing_types').del()
-  await client('things').del()
-  await client('thing_payloads').del()
+  await db.client('thing_types').del()
+  await db.client('things').del()
+  await db.client('thing_payloads').del()
 }

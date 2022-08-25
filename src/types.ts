@@ -15,11 +15,6 @@ export interface Thing extends SimpleThing {
 
 export interface Things extends Array<Thing> {}
 
-export interface ServiceResponse {
-  statusCode: number
-  result: any
-}
-
 export interface ThingPayload {
   thing: string
   timestamp: number

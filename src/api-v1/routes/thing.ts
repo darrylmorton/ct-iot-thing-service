@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
 import { Operation } from 'express-openapi'
 
-import { ServiceResponse } from '../../types'
+import { ServiceResponse } from '../../serviceTypes'
 import { getThingsValidator, postThingValidator } from '../validators/thingResponseValidators'
+import { ThingServiceInterface } from '../../serviceTypes'
 
-export default function (thingService: any) {
+export default function (thingService: ThingServiceInterface) {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {

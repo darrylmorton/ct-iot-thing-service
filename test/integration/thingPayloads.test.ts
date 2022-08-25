@@ -9,7 +9,7 @@ import {
   postThingTypeRoute,
 } from '../helper/thingRouteHelper'
 import { createHttpServer } from '../../src/server'
-import { SimpleThing, ThingType } from '../../src/types'
+import { SimpleThing, ThingPayload, ThingType } from '../../src/types'
 import { cleanup } from '../../seeds/things'
 import { assertThingPayload, createThing, createThingPayload, createThingType } from '../helper/thingHelper'
 
@@ -38,7 +38,7 @@ describe('Thing Payload routes', function () {
   })
 
   it('POST Thing Payload that is invalid', async function () {
-    const thingPayload = createThingPayload(thingZeroId)
+    const thingPayload: ThingPayload = createThingPayload(thingZeroId)
 
     const actualResult = await postThingPayloadRoute(app, thingPayload)
 
@@ -46,7 +46,7 @@ describe('Thing Payload routes', function () {
   })
 
   it('POST Thing Payload', async function () {
-    const thingPayload = createThingPayload(thingOneId)
+    const thingPayload: ThingPayload = createThingPayload(thingOneId)
 
     const actualResult = await postThingPayloadRoute(app, thingPayload)
 
@@ -55,8 +55,8 @@ describe('Thing Payload routes', function () {
   })
 
   it('GET Thing Payloads', async function () {
-    const thingPayload = createThingPayload(thingOneId)
-    const { body: thingPayloadRequestBody } = await postThingPayloadRoute(app, thingPayload)
+    const thingPayload: ThingPayload = createThingPayload(thingOneId)
+    const { body: thingPayloadRequestBody }: any = await postThingPayloadRoute(app, thingPayload)
 
     const actualResult = await getThingPayloadsRoute(app, thingOneId)
 
@@ -66,7 +66,8 @@ describe('Thing Payload routes', function () {
   })
 
   it('GET Thing Payloads', async function () {
-    const thingId = '00000000-0000-0000-0000-000000000000'
+    const thingId: string = '00000000-0000-0000-0000-000000000000'
+
     const actualResult = await getThingPayloadsRoute(app, thingId)
 
     expect(actualResult.status).to.equal(200)
