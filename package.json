@@ -1,13 +1,13 @@
 {
   "name": "ct-iot-thing-service",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "CT IoT Thing Service",
   "main": "dist/src/index.js",
   "author": "Darryl Morton",
   "license": "GNU",
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "npx tsc --build",
+    "build": "./node_modules/typescript/bin/tsc --build",
     "lint": "eslint . --ext .ts",
     "depcheck": "depcheck",
     "migrate:latest": "NODE_ENV=test npx knex migrate:latest",
