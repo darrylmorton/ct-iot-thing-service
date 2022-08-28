@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'test') {
 
 const env = cleanEnv(process.env, {
   LOG_LEVEL: str({ default: 'info', devDefault: 'debug' }),
-  PORT: port({ default: 3002 }),
+  PORT: port({ devDefault: 3002 }),
   API_VERSION: str({ default: version }),
   API_MAJOR_VERSION: str({ default: 'v1' }),
   JWT_SECRET: str({ devDefault: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321' }),

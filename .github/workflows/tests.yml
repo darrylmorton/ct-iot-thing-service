@@ -1,4 +1,4 @@
-name: Lint and Test
+name: Build and Test
 
 on:
   push:
@@ -26,6 +26,7 @@ jobs:
   lint:
     name: Run lint
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
@@ -47,6 +48,7 @@ jobs:
   dependency-check:
     name: Run dependency check
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
