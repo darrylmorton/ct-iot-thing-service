@@ -5,7 +5,7 @@ services:
     container_name: thing-service-postgres-testing
     image: postgres:13.8-alpine
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

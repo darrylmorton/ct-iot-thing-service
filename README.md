@@ -6,7 +6,7 @@ A Nodejs Typescript Express microservice that serves an OpenAPI/Swagger UI API
 ## Setup
 ```
 npm install
-NODE_ENV=development npx knex migrate:latest
+npm run migrate:latest
 
 npm run lint
 npm run build
@@ -25,7 +25,7 @@ npm run test
 ```
 docker-compose up
 
-NODE_ENV=development npx knex seed:run
+npm run seed:run
 npm run dev
 ```
 
