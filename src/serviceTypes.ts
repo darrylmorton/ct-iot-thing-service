@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { SimpleThing, ThingPayload } from './types'
+import { SimpleThing, ThingPayload, ThingType } from './types'
 
 export interface HealthCheckResponse {
   status: string
@@ -13,9 +13,9 @@ export interface ServiceResponse {
 
 export interface ThingServiceInterface {
   getThingTypes(): Promise<ServiceResponse>
-  postThingType(requestBody: SimpleThing): Promise<ServiceResponse>
+  postThingType(thingType: ThingType): Promise<ServiceResponse>
   getThings(): Promise<ServiceResponse>
-  postThing(requestBody: SimpleThing): Promise<ServiceResponse>
-  postThingPayload(requestBody: ThingPayload): Promise<ServiceResponse>
+  postThing(thingType: SimpleThing): Promise<ServiceResponse>
+  postThingPayload(thingType: ThingPayload): Promise<ServiceResponse>
   getThingPayloadsByThingId(thingId: string): Promise<ServiceResponse>
 }

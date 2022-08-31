@@ -4,14 +4,17 @@ import { Operation } from 'express-openapi'
 import { ServiceResponse } from '../../serviceTypes'
 import { getThingsValidator, postThingValidator } from '../validators/thingResponseValidators'
 import { ThingServiceInterface } from '../../serviceTypes'
+import logger from '../../logger'
 
 export default function (thingService: ThingServiceInterface) {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { statusCode, result }: ServiceResponse = await thingService.getThings()
+        logger.trace(`GET thing: statusCode, result: ${statusCode}, ${result}`)
 
         const validationErrors = getThingsValidator.validateResponse(200, result)
+        logger.trace(`GET thing: validationErrors: ${validationErrors}`)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -19,6 +22,8 @@ export default function (thingService: ThingServiceInterface) {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
+        logger.error(`getThingError ${error}`)
+
         return next(error)
       }
     },
@@ -28,8 +33,10 @@ export default function (thingService: ThingServiceInterface) {
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { statusCode, result }: ServiceResponse = await thingService.postThing(req.body)
+        logger.trace(`POST thing: statusCode, result: ${statusCode}, ${result}`)
 
         const validationErrors = postThingValidator.validateResponse(201, result)
+        logger.trace(`POST thing: validationErrors: ${validationErrors}`)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -37,6 +44,8 @@ export default function (thingService: ThingServiceInterface) {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
+        logger.error(`postThingError ${error}`)
+
         return next(error)
       }
     },

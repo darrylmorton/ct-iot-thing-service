@@ -7,8 +7,7 @@ import { SimpleThing, ThingPayload, ThingType } from '../../src/types'
 export async function getThingTypesRoute(app: Express): Promise<any> {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingType`)
-    .set('Accept', 'application/json')
-    .set('Content-Type', 'application/json')
+    .set('content-type', 'application/json')
     .then((response) => {
       return response
     })
@@ -22,8 +21,7 @@ export async function getThingTypesRoute(app: Express): Promise<any> {
 export async function postThingTypeRoute(app: Express, thingType: ThingType): Promise<any> {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingType`)
-    .set('Accept', 'application/json')
-    .set('Content-Type', 'application/json')
+    .set('content-type', 'application/json')
     .send(thingType)
     .then((response) => {
       return response
@@ -38,8 +36,7 @@ export async function postThingTypeRoute(app: Express, thingType: ThingType): Pr
 export async function getThingsRoute(app: Express): Promise<any> {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thing`)
-    .set('Accept', 'application/json')
-    .set('Content-Type', 'application/json')
+    .set('content-type', 'application/json')
     .then((response) => {
       return response
     })
@@ -53,8 +50,7 @@ export async function getThingsRoute(app: Express): Promise<any> {
 export async function postThingRoute(app: Express, thing: SimpleThing): Promise<any> {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thing`)
-    .set('Accept', 'application/json')
-    .set('Content-Type', 'application/json')
+    .set('content-type', 'application/json')
     .send(thing)
     .then((response) => {
       return response
@@ -69,8 +65,7 @@ export async function postThingRoute(app: Express, thing: SimpleThing): Promise<
 export async function getThingPayloadsRoute(app: Express, thingId: string): Promise<any> {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingPayload/${thingId}`)
-    .set('Accept', 'application/json')
-    .set('Content-Type', 'application/json')
+    .set('content-type', 'application/json')
     .then((response) => {
       return response
     })
@@ -84,8 +79,7 @@ export async function getThingPayloadsRoute(app: Express, thingId: string): Prom
 export async function postThingPayloadRoute(app: Express, thingPayload: ThingPayload): Promise<any> {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingPayload`)
-    .set('Accept', 'application/json')
-    .set('Content-Type', 'application/json')
+    .set('content-type', 'application/json')
     .send(thingPayload)
     .then((response) => {
       return response

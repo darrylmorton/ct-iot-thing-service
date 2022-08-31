@@ -3,14 +3,17 @@ import { Operation } from 'express-openapi'
 
 import { ServiceResponse } from '../../../serviceTypes'
 import { getThingPayloadsValidator } from '../../validators/thingPayloadResponseValidators'
+import logger from '../../../logger'
 
 export default function (thingService: any) {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { statusCode, result }: ServiceResponse = await thingService.getThingPayloadsByThingId(req.params.thingId)
+        logger.trace(`GET thingPayloadByThingId: statusCode, result: ${statusCode}, ${result}`)
 
         const validationErrors = getThingPayloadsValidator.validateResponse(200, result)
+        logger.trace(`GET thingPayloadByThingId: validationErrors: ${validationErrors}`)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -18,6 +21,8 @@ export default function (thingService: any) {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
+        logger.error(`getThingPayloadByThingIdError ${error}`)
+
         return next(error)
       }
     },
