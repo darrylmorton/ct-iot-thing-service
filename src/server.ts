@@ -29,7 +29,7 @@ export async function createHttpServer() {
   app.use(cors())
   app.use(bodyParser.json())
 
-  initialize({
+  await initialize({
     app,
     apiDoc: v1ApiDoc,
     dependencies: {
