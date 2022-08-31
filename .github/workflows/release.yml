@@ -180,7 +180,6 @@ jobs:
             org.opencontainers.image.version=${{ needs.check-version.outputs.version }}
             org.opencontainers.image.created=${{ needs.check-version.outputs.build_date }}
 
-      # Build github release
       - name: Build release version
         uses: softprops/action-gh-release@v1
         with:

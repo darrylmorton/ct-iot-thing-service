@@ -101,7 +101,7 @@ jobs:
         run: npm run test
 
   check-version:
-    name: "Check version"
+    name: Check version
     runs-on: ubuntu-latest
 
     steps:
