@@ -5,8 +5,7 @@ import { Express } from 'express'
 export async function healthCheckRoute(app: Express) {
   return request(app)
     .get('/health')
-    .set('Accept', 'application/json')
-    .set('Content-Type', 'application/json')
+    .set('content-type', 'application/json')
     .then((response) => {
       return response
     })

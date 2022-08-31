@@ -29,7 +29,7 @@ export async function createHttpServer() {
   app.use(cors())
   app.use(bodyParser.json())
 
-  initialize({
+  await initialize({
     app,
     apiDoc: v1ApiDoc,
     dependencies: {
@@ -57,7 +57,7 @@ export async function createHttpServer() {
 }
 
 export async function startServer(): Promise<void> {
-  const app = await createHttpServer()
+  const app: Express = await createHttpServer()
 
   try {
     app.listen(env.PORT, () => {

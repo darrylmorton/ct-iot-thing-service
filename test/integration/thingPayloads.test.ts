@@ -33,8 +33,8 @@ describe('Thing Payload routes', function () {
     await postThingTypeRoute(app, thingType)
 
     const thing: SimpleThing = createThing(thingOneName, thingTypeOneName)
-    const { body: thingRequestBody } = await postThingRoute(app, thing)
-    thingOneId = thingRequestBody.id
+    const { body: responseBody } = await postThingRoute(app, thing)
+    thingOneId = responseBody.id
   })
 
   it('POST Thing Payload that is invalid', async function () {
@@ -56,13 +56,13 @@ describe('Thing Payload routes', function () {
 
   it('GET Thing Payloads', async function () {
     const thingPayload: ThingPayload = createThingPayload(thingOneId)
-    const { body: thingPayloadRequestBody }: any = await postThingPayloadRoute(app, thingPayload)
+    const { body: responseBody }: any = await postThingPayloadRoute(app, thingPayload)
 
     const actualResult = await getThingPayloadsRoute(app, thingOneId)
 
     expect(actualResult.status).to.equal(200)
     expect(actualResult.body).to.have.length(2)
-    assertThingPayload(actualResult.body[1], thingPayloadRequestBody)
+    assertThingPayload(actualResult.body[1], responseBody)
   })
 
   it('GET Thing Payloads', async function () {

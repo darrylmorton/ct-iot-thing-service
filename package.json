@@ -1,6 +1,6 @@
 {
   "name": "ct-iot-thing-service",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "CT IoT Thing Service",
   "main": "dist/src/index.js",
   "author": "Darryl Morton",
@@ -13,7 +13,7 @@
     "migrate:latest": "NODE_ENV=test npx knex migrate:latest",
     "seed:run": "NODE_ENV=test npx knex seed:run",
     "start": "node dist/src/index.js",
-    "dev": "concurrently 'npx tsc --watch' 'NODE_ENV=development nodemon -q dist/src/index.js'",
+    "dev": "concurrently './node_modules/typescript/bin/tsc --watch' 'NODE_ENV=development nodemon -q dist/src/index.js'",
     "test": "NODE_ENV=test mocha -r ts-node/register --config ./test/mocharc.json ./test/**/*.test.ts"
   },
   "engines": {
@@ -56,7 +56,7 @@
     "prettier": "^2.7.1",
     "supertest": "^6.2.4",
     "ts-node": "^10.9.1",
-    "typescript": "^4.7.4",
+    "typescript": "^4.8.2",
     "uuid": "^8.3.2"
   }
 }

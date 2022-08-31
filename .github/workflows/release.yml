@@ -142,7 +142,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      # Docker build
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v1
         with:
@@ -153,10 +152,10 @@ jobs:
         with:
           buildkitd-flags: "--debug"
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: $GITHUB_ACTOR
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish image
@@ -181,7 +180,6 @@ jobs:
             org.opencontainers.image.version=${{ needs.check-version.outputs.version }}
             org.opencontainers.image.created=${{ needs.check-version.outputs.build_date }}
 
-      # Build github release
       - name: Build release version
         uses: softprops/action-gh-release@v1
         with:

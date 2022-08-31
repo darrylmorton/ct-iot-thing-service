@@ -40,14 +40,19 @@ export const seed = async (): Promise<void> => {
     ])
     .returning(['id'])
 
+  const thingPayloadInserts = []
+
   for (let payloadsCounter = 0; payloadsCounter < PAYLOADS_TOTAL; payloadsCounter++) {
-    await insertThingPayload(thingOneId, payloadsCounter)
-    await insertThingPayload(thingTwoId, payloadsCounter)
-    await insertThingPayload(thingThreeId, payloadsCounter)
-    await insertThingPayload(thingFourId, payloadsCounter)
-    await insertThingPayload(thingFiveId, payloadsCounter)
-    await insertThingPayload(thingSixId, payloadsCounter)
+    thingPayloadInserts.push(await insertThingPayload(thingOneId, payloadsCounter))
+    thingPayloadInserts.push(await insertThingPayload(thingTwoId, payloadsCounter))
+    thingPayloadInserts.push(await insertThingPayload(thingThreeId, payloadsCounter))
+    thingPayloadInserts.push(await insertThingPayload(thingFourId, payloadsCounter))
+    thingPayloadInserts.push(await insertThingPayload(thingFiveId, payloadsCounter))
+    thingPayloadInserts.push(await insertThingPayload(thingSixId, payloadsCounter))
   }
+
+  const thingPayloadPromises = Promise.all(thingPayloadInserts)
+  await thingPayloadPromises
 }
 
 export const cleanup = async (): Promise<void> => {
