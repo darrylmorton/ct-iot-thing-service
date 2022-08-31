@@ -36,6 +36,10 @@ export default function (thingService: any) {
         in: 'path',
         required: true,
         name: 'thingId',
+        schema: {
+          type: 'string',
+          format: 'uuid',
+        },
       },
     ],
     responses: {
