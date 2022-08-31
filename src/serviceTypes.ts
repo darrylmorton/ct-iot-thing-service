@@ -15,7 +15,7 @@ export interface ThingServiceInterface {
   getThingTypes(): Promise<ServiceResponse>
   postThingType(thingType: ThingType): Promise<ServiceResponse>
   getThings(): Promise<ServiceResponse>
-  postThing(thingType: SimpleThing): Promise<ServiceResponse>
+  postThing(thing: SimpleThing): Promise<ServiceResponse>
   postThingPayload(thingType: ThingPayload): Promise<ServiceResponse>
   getThingPayloadsByThingId(thingId: string): Promise<ServiceResponse>
 }
