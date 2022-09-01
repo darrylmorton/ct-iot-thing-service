@@ -136,7 +136,7 @@ jobs:
 
   publish-package:
     name: Publish package
-    needs: [preconditions, build, dependency-check, check-version]
+    needs: [preconditions, build, tests, dependency-check, check-version]
     runs-on: ubuntu-latest
     if: ${{ needs.check-version.outputs.is_new_version == 'true' }}
 
