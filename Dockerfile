@@ -6,6 +6,7 @@ COPY . .
 
 RUN npm install -g npm@8.x.x
 RUN npm ci --production
+RUN npm run build
 
 EXPOSE 3002
 
