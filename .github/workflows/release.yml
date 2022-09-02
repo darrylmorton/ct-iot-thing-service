@@ -49,7 +49,7 @@ jobs:
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
       - name: Install Packages
-        run: npm ci --production
+        run: npm ci
       - name: Lint
         run: npm run lint
 
