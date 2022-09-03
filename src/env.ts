@@ -1,4 +1,4 @@
-import { cleanEnv, str, port } from 'envalid'
+import { cleanEnv, str, port, host } from 'envalid'
 import dotenv from 'dotenv'
 
 import { version } from '../package.json'
@@ -12,7 +12,7 @@ const env = cleanEnv(process.env, {
   API_VERSION: str({ default: version }),
   API_MAJOR_VERSION: str({ default: 'v1' }),
   PORT: port({ default: 3002 }),
-  DB_HOST: str({ devDefault: 'localhost' }),
+  DB_HOST: host({ devDefault: 'localhost' }),
   DB_PORT: port({ default: 5432 }),
   DB_NAME: str({ default: 'things' }),
   DB_USERNAME: str({ devDefault: 'postgres' }),
