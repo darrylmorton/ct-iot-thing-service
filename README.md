@@ -6,38 +6,33 @@ A Nodejs Typescript Express microservice that serves an OpenAPI/Swagger UI API
 ## Setup
 ```
 npm install
-npm run migrate:latest
-
 npm run lint
 npm run build
+
+docker-compose up
+npm run dev:migrate
 ```
 
-## Start
+## Run
 
 ### Test
 ```
-docker-compose up
-
 npm run test
 ```
 
-### Test with seed data
+### With seed data
 ```
-docker-compose up
-
-npm run seed:run
+npm run test:seed
 npm run dev
 ```
 
 ### Development
 ```
-docker-compose up
-
 npm run dev
 ```
 
 ### Production
 ```
-npm run start
+npm run prod:start
 ```
 
