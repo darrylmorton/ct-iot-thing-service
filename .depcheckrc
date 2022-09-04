@@ -1,1 +1,5 @@
-ignores: []
+ignores: [
+  '@aws-sdk/client-secrets-manager',
+  'dotenv',
+  'envalid'
+]
