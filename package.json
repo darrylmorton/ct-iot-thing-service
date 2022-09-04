@@ -14,7 +14,7 @@
     "dev:migrate": "NODE_ENV=development npx knex migrate:latest",
     "test": "NODE_ENV=test mocha -r ts-node/register --config ./test/mocharc.json ./test/**/*.test.ts",
     "test:seed": "NODE_ENV=test npx knex seed:run",
-    "prod:start": "NODE_ENV=production npx knex migrate:latest && node dist/src/index.js"
+    "prod:start": "NODE_ENV=production npx knex migrate:latest && NODE_ENV=production node dist/src/index.js"
   },
   "engines": {
     "node": ">=16.15"
