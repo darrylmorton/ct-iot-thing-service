@@ -10,10 +10,14 @@ import logger from './logger'
 import v1ApiDoc from './api-v1/api-doc'
 import v1ThingService from './api-v1/services/thingService'
 import { HealthCheckResponse } from './serviceTypes'
+import { API_URI_PREFIX } from './util/AppUtil'
 
 export async function createHttpServer() {
   const app: Express = express()
   const requestLogger = pinoHttp({ logger })
+
+  app.use(cors())
+  app.use(bodyParser.json())
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     if (req.path !== '/health') requestLogger(req, res)
@@ -25,9 +29,6 @@ export async function createHttpServer() {
 
     return res.status(200).json(result)
   })
-
-  app.use(cors())
-  app.use(bodyParser.json())
 
   await initialize({
     app,
@@ -44,7 +45,7 @@ export async function createHttpServer() {
     swaggerOptions: {
       urls: [
         {
-          url: `http://localhost:${env.PORT}/${env.API_MAJOR_VERSION}/api-docs`,
+          url: `http://${API_URI_PREFIX}/${env.API_MAJOR_VERSION}/api-docs`,
           name: 'ThingService',
         },
       ],

@@ -2,6 +2,7 @@ import env from '../env'
 import { thingDefinitions } from './validators/thingResponseValidators'
 import { thingTypeDefinitions } from './validators/thingTypeResponseValidators'
 import { thingPayloadDefinitions } from './validators/thingPayloadResponseValidators'
+import { API_URI_PREFIX } from '../util/AppUtil'
 
 const apiDoc: any = {
   openapi: '3.0.3',
@@ -11,7 +12,7 @@ const apiDoc: any = {
   },
   servers: [
     {
-      url: `http://localhost:${env.PORT}/${env.API_MAJOR_VERSION}`,
+      url: `http://${API_URI_PREFIX}/${env.API_MAJOR_VERSION}`,
     },
   ],
   components: {

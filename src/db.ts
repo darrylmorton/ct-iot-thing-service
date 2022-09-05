@@ -7,15 +7,12 @@ import { DatabaseInterface } from './dbTypes'
 const db: DatabaseInterface = {
   client: knex({
     client: 'pg',
-    migrations: {
-      tableName: 'migrations',
-    },
     connection: {
       host: env.DB_HOST,
-      port: env.DB_PORT,
       user: env.DB_USERNAME,
       password: env.DB_PASSWORD,
       database: env.DB_NAME,
+      port: env.DB_PORT,
     },
   }),
 
