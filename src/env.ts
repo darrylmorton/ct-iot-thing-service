@@ -11,6 +11,7 @@ const env = cleanEnv(process.env, {
   LOG_LEVEL: str({ default: 'info', devDefault: 'debug' }),
   API_VERSION: str({ default: version }),
   API_MAJOR_VERSION: str({ default: 'v1' }),
+  HOST: host({ devDefault: 'localhost' }),
   PORT: port({ default: 3002 }),
   DB_HOST: host({ devDefault: 'localhost' }),
   DB_PORT: port({ default: 5432 }),
