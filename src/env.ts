@@ -2,15 +2,20 @@ import { cleanEnv, str, port, host } from 'envalid'
 import dotenv from 'dotenv'
 
 import { version } from '../package.json'
+import logger from './logger'
 
 if (process.env.NODE_ENV === 'test') {
   dotenv.config({ path: './test/test.env' })
 } else if (process.env.NODE_ENV === 'production') {
-  // @ts-ignore
-  const dbSecrets: any = JSON.parse(process.env.DB_SECRETS)
+  try {
+    // @ts-ignore
+    const dbSecrets: any = JSON.parse(process.env.DB_SECRETS)
 
-  process.env.DB_USERNAME = dbSecrets.username
-  process.env.DB_PASSWORD = dbSecrets.password
+    process.env.DB_USERNAME = dbSecrets.username
+    process.env.DB_PASSWORD = dbSecrets.password
+  } catch (err) {
+    logger.error(`productionEnvError: ${err}`)
+  }
 }
 
 const env = cleanEnv(process.env, {
