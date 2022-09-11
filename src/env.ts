@@ -5,6 +5,12 @@ import { version } from '../package.json'
 
 if (process.env.NODE_ENV === 'test') {
   dotenv.config({ path: './test/test.env' })
+} else if (process.env.NODE_ENV === 'production') {
+  // @ts-ignore
+  const dbSecrets: any = JSON.parse(process.env.DB_SECRETS)
+
+  process.env.DB_USERNAME = dbSecrets.username
+  process.env.DB_PASSWORD = dbSecrets.password
 }
 
 const env = cleanEnv(process.env, {
