@@ -1,6 +1,6 @@
 {
-  "extends": ["eslint:recommended", "prettier"],
-  "plugins": ["prettier"],
+  "extends": ["eslint:recommended", "prettier", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["prettier", "@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "env": {
     "es6": true,
@@ -12,7 +12,8 @@
   },
   "rules": {
     "prettier/prettier": "error",
-    "no-console": 2
+    "no-console": 2,
+    "@typescript-eslint/ban-ts-comment": "warn"
   },
   "overrides": [
     {
