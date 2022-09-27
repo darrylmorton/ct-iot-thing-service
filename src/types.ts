@@ -2,8 +2,6 @@ export interface ThingType {
   name: string
 }
 
-export interface ThingTypes extends Array<ThingType> {}
-
 export interface SimpleThing {
   name: string
   thingType: ThingType
@@ -12,8 +10,6 @@ export interface SimpleThing {
 export interface Thing extends SimpleThing {
   id: string
 }
-
-export interface Things extends Array<Thing> {}
 
 export interface ThingPayload {
   thing: string
@@ -40,5 +36,3 @@ export interface ThingPayload {
     }
   }
 }
-
-export interface ThingPayloads extends Array<ThingPayload> {}

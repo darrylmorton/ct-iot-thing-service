@@ -66,7 +66,7 @@ describe('Thing Payload routes', function () {
   })
 
   it('GET Thing Payloads', async function () {
-    const thingId: string = '00000000-0000-0000-0000-000000000000'
+    const thingId = '00000000-0000-0000-0000-000000000000'
 
     const actualResult = await getThingPayloadsRoute(app, thingId)
 

@@ -1,6 +1,6 @@
 {
   "name": "ct-iot-thing-service",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "CT IoT Thing Service",
   "main": "dist/src/index.js",
   "author": "Darryl Morton",
@@ -33,8 +33,7 @@
     "openapi-response-validator": "^12.0.0",
     "pino": "^8.3.1",
     "pino-http": "^8.1.1",
-    "swagger-ui-express": "^4.5.0",
-    "ts-node": "^10.9.1"
+    "swagger-ui-express": "^4.5.0"
   },
   "peerDependencies": {
     "pg": "^8.7.3"
@@ -45,6 +44,7 @@
     "@types/mocha": "^9.1.1",
     "@types/supertest": "^2.0.12",
     "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.33.1",
     "chai": "^4.3.6",
     "concurrently": "^7.3.0",
@@ -56,6 +56,7 @@
     "nodemon": "^2.0.19",
     "prettier": "^2.7.1",
     "supertest": "^6.2.4",
+    "ts-node": "^10.9.1",
     "typescript": "^4.8.2",
     "uuid": "^8.3.2"
   }
