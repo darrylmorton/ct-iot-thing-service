@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { SimpleThing, ThingPayload, ThingType } from './types'
+import { SimpleThing, Thing, ThingPayload, ThingType } from './types'
 
 export interface HealthCheckResponse {
   status: string
@@ -8,14 +8,37 @@ export interface HealthCheckResponse {
 
 export interface ServiceResponse {
   statusCode: number
-  result: any
+}
+
+export interface ServiceThingResponse extends ServiceResponse {
+  result: Thing | unknown
+}
+
+export interface ServiceThingsResponse extends ServiceResponse {
+  result: Array<Thing> | []
+}
+
+export interface ServiceThingTypeResponse extends ServiceResponse {
+  result: ThingType | unknown
+}
+
+export interface ServiceThingTypesResponse extends ServiceResponse {
+  result: Array<ThingType> | []
+}
+
+export interface ServiceThingPayloadResponse extends ServiceResponse {
+  result: ThingPayload | unknown
+}
+
+export interface ServiceThingPayloadsResponse extends ServiceResponse {
+  result: Array<ThingPayload> | []
 }
 
 export interface ThingServiceInterface {
-  getThingTypes(): Promise<ServiceResponse>
-  postThingType(thingType: ThingType): Promise<ServiceResponse>
-  getThings(): Promise<ServiceResponse>
-  postThing(thing: SimpleThing): Promise<ServiceResponse>
-  postThingPayload(thingPayload: ThingPayload): Promise<ServiceResponse>
-  getThingPayloadsByThingId(thingId: string): Promise<ServiceResponse>
+  getThingTypes(): Promise<ServiceThingTypesResponse>
+  postThingType(thingType: ThingType): Promise<ServiceThingTypeResponse>
+  getThings(): Promise<ServiceThingsResponse>
+  postThing(thing: SimpleThing): Promise<ServiceThingResponse>
+  postThingPayload(thingPayload: ThingPayload): Promise<ServiceThingPayloadResponse>
+  getThingPayloadsByThingId(thingId: string): Promise<ServiceThingPayloadsResponse>
 }

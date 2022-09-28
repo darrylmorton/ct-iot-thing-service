@@ -1,17 +1,25 @@
 import db from '../../db'
 import { Thing, SimpleThing, ThingPayload, ThingType } from '../../types'
-import { ThingServiceInterface, ServiceResponse } from '../../serviceTypes'
+import {
+  ThingServiceInterface,
+  ServiceThingsResponse,
+  ServiceThingResponse,
+  ServiceThingPayloadsResponse,
+  ServiceThingPayloadResponse,
+  ServiceThingTypesResponse,
+  ServiceThingTypeResponse,
+} from '../../serviceTypes'
 import logger from '../../logger'
 
 const thingService: ThingServiceInterface = {
-  async getThingTypes(): Promise<ServiceResponse> {
+  async getThingTypes(): Promise<ServiceThingTypesResponse> {
     const result: Array<ThingType> = await db.findThingTypes()
     logger.trace(`ThingService getThingTypes: result: ${result}`)
 
     return { statusCode: 200, result }
   },
 
-  async postThingType(thingType: ThingType): Promise<ServiceResponse> {
+  async postThingType(thingType: ThingType): Promise<ServiceThingTypeResponse> {
     const getThingByNameResult: Array<ThingType> = await db.findThingTypeByName(thingType)
     logger.trace(`ThingService postThingType: getThingByNameResult: ${getThingByNameResult}`)
 
@@ -19,7 +27,7 @@ const thingService: ThingServiceInterface = {
       const addThingTypeResult: Array<ThingType> = await db.addThingType(thingType)
       logger.trace(`ThingService postThingType: addThingTypeResult: ${addThingTypeResult}`)
 
-      const result: ThingType | null = addThingTypeResult.length === 1 ? addThingTypeResult[0] : null
+      const result: ThingType | Record<string, unknown> = addThingTypeResult.length === 1 ? addThingTypeResult[0] : {}
       logger.trace(`ThingService postThingType result: ${result}`)
 
       if (result) {
@@ -32,14 +40,14 @@ const thingService: ThingServiceInterface = {
     return { statusCode: 409, result: {} }
   },
 
-  async getThings(): Promise<ServiceResponse> {
+  async getThings(): Promise<ServiceThingsResponse> {
     const result: Array<Thing> = await db.findThings()
     logger.trace(`ThingService getThings: result: ${result}`)
 
     return { statusCode: 200, result }
   },
 
-  async postThing(thing: SimpleThing): Promise<ServiceResponse> {
+  async postThing(thing: SimpleThing): Promise<ServiceThingResponse> {
     const getThingTypeByNameResult: Array<ThingType> = await db.findThingTypeByName(thing.thingType)
     logger.trace(`ThingService postThing: getThingTypeByNameResult: ${getThingTypeByNameResult}`)
 
@@ -54,7 +62,7 @@ const thingService: ThingServiceInterface = {
       const addThingResult: Array<Thing> = await db.addThing(thing)
       logger.trace(`ThingService postThing: addThingResult: ${addThingResult}`)
 
-      const result: Thing | null = addThingResult.length === 1 ? addThingResult[0] : null
+      const result: Thing | Record<string, unknown> = addThingResult.length === 1 ? addThingResult[0] : {}
       logger.trace(`ThingService postThing: result: ${result}`)
 
       if (result) {
@@ -67,11 +75,12 @@ const thingService: ThingServiceInterface = {
     return { statusCode: 409, result: {} }
   },
 
-  async postThingPayload(thingPayload: ThingPayload): Promise<ServiceResponse> {
+  async postThingPayload(thingPayload: ThingPayload): Promise<ServiceThingPayloadResponse> {
     const addThingPayloadResult: Array<ThingPayload> = await db.addThingPayload(thingPayload)
     logger.trace(`ThingService postThingPayload: addThingPayloadResult: ${addThingPayloadResult}`)
 
-    const result: ThingPayload | null = addThingPayloadResult.length === 1 ? addThingPayloadResult[0] : null
+    const result: ThingPayload | Record<string, unknown> =
+      addThingPayloadResult.length === 1 ? addThingPayloadResult[0] : {}
     logger.trace(`ThingService postThingPayload: result: ${result}`)
 
     if (result) {
@@ -81,7 +90,7 @@ const thingService: ThingServiceInterface = {
     }
   },
 
-  async getThingPayloadsByThingId(thingId: string): Promise<ServiceResponse> {
+  async getThingPayloadsByThingId(thingId: string): Promise<ServiceThingPayloadsResponse> {
     const result: Array<ThingPayload> = await db.findThingPayloadsByThingId(thingId)
     logger.trace(`ThingService getThingPayloadsByThingId: result: ${result}`)
 

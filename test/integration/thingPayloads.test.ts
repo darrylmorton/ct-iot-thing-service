@@ -56,7 +56,7 @@ describe('Thing Payload routes', function () {
 
   it('GET Thing Payloads', async function () {
     const thingPayload: ThingPayload = createThingPayload(thingOneId)
-    const { body: responseBody }: any = await postThingPayloadRoute(app, thingPayload)
+    const { body: responseBody } = await postThingPayloadRoute(app, thingPayload)
 
     const actualResult = await getThingPayloadsRoute(app, thingOneId)
 

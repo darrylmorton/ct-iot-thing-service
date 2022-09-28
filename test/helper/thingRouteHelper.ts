@@ -4,7 +4,7 @@ import env from '../../src/env'
 import { Express } from 'express'
 import { SimpleThing, ThingPayload, ThingType } from '../../src/types'
 
-export async function getThingTypesRoute(app: Express): Promise<any> {
+export async function getThingTypesRoute(app: Express) {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingType`)
     .set('content-type', 'application/json')
@@ -18,7 +18,7 @@ export async function getThingTypesRoute(app: Express): Promise<any> {
     })
 }
 
-export async function postThingTypeRoute(app: Express, thingType: ThingType): Promise<any> {
+export async function postThingTypeRoute(app: Express, thingType: ThingType) {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingType`)
     .set('content-type', 'application/json')
@@ -33,7 +33,7 @@ export async function postThingTypeRoute(app: Express, thingType: ThingType): Pr
     })
 }
 
-export async function getThingsRoute(app: Express): Promise<any> {
+export async function getThingsRoute(app: Express) {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thing`)
     .set('content-type', 'application/json')
@@ -47,7 +47,7 @@ export async function getThingsRoute(app: Express): Promise<any> {
     })
 }
 
-export async function postThingRoute(app: Express, thing: SimpleThing): Promise<any> {
+export async function postThingRoute(app: Express, thing: SimpleThing) {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thing`)
     .set('content-type', 'application/json')
@@ -62,7 +62,7 @@ export async function postThingRoute(app: Express, thing: SimpleThing): Promise<
     })
 }
 
-export async function getThingPayloadsRoute(app: Express, thingId: string): Promise<any> {
+export async function getThingPayloadsRoute(app: Express, thingId: string) {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingPayload/${thingId}`)
     .set('content-type', 'application/json')
@@ -76,7 +76,7 @@ export async function getThingPayloadsRoute(app: Express, thingId: string): Prom
     })
 }
 
-export async function postThingPayloadRoute(app: Express, thingPayload: ThingPayload): Promise<any> {
+export async function postThingPayloadRoute(app: Express, thingPayload: ThingPayload) {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingPayload`)
     .set('content-type', 'application/json')

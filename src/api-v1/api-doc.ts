@@ -1,10 +1,8 @@
 import env from '../env'
-import { thingDefinitions } from './validators/thingResponseValidators'
-import { thingTypeDefinitions } from './validators/thingTypeResponseValidators'
-import { thingPayloadDefinitions } from './validators/thingPayloadResponseValidators'
 import { API_URI_PREFIX } from '../util/AppUtil'
+import { OpenAPIV3 } from 'openapi-types'
 
-const apiDoc: any = {
+const apiDoc: OpenAPIV3.Document = {
   openapi: '3.0.3',
   info: {
     title: 'ThingService',
@@ -35,13 +33,148 @@ const apiDoc: any = {
     },
     schemas: {
       Thing: {
-        $ref: thingDefinitions.Thing,
+        type: 'object',
+        properties: {
+          id: {
+            description: 'id of the thing',
+            type: 'string',
+            format: 'uuid',
+            nullable: false,
+          },
+          name: {
+            description: 'name of the thing',
+            type: 'string',
+            nullable: false,
+          },
+          thingType: {
+            description: 'type of the thing',
+            type: 'string',
+            nullable: false,
+            properties: {
+              name: {
+                type: 'string',
+                nullable: false,
+              },
+            },
+            required: ['name'],
+            additionalProperties: false,
+          },
+        },
+        required: ['id', 'name', 'thingType'],
+        additionalProperties: false,
       },
       ThingType: {
-        $ref: thingTypeDefinitions.ThingType,
+        type: 'object',
+        properties: {
+          name: {
+            description: 'name of the thing type',
+            type: 'string',
+            nullable: false,
+          },
+        },
+        required: ['name'],
+        additionalProperties: false,
       },
       ThingPayload: {
-        $ref: thingPayloadDefinitions.ThingPayload,
+        type: 'object',
+        properties: {
+          id: {
+            description: 'id of the payload',
+            type: 'string',
+            format: 'uuid',
+            nullable: false,
+          },
+          thing: {
+            description: 'thing of the payload',
+            type: 'string',
+            format: 'uuid',
+            nullable: false,
+          },
+          timestamp: {
+            description: 'timestamp of the payload',
+            type: 'integer',
+            nullable: false,
+          },
+          payload: {
+            description: 'payload',
+            type: 'object',
+            properties: {
+              cadence: {
+                properties: {
+                  value: {
+                    description: 'value of the cadence',
+                    type: 'integer',
+                    nullable: false,
+                  },
+                  unit: {
+                    description: 'unit of the cadence',
+                    type: 'string',
+                    nullable: false,
+                  },
+                },
+              },
+              battery: {
+                properties: {
+                  value: {
+                    description: 'value of the battery',
+                    type: 'integer',
+                    nullable: false,
+                  },
+                  unit: {
+                    description: 'unit of the batteru',
+                    type: 'string',
+                    nullable: false,
+                  },
+                },
+              },
+              temperature: {
+                properties: {
+                  value: {
+                    description: 'value of the temperature',
+                    type: 'integer',
+                    nullable: false,
+                  },
+                  unit: {
+                    description: 'unit of the temperature',
+                    type: 'string',
+                    nullable: false,
+                  },
+                  connection: {
+                    description: 'connection of the temperature',
+                    type: 'string',
+                    nullable: false,
+                  },
+                },
+              },
+              humidity: {
+                properties: {
+                  value: {
+                    description: 'value of the humidity',
+                    type: 'number',
+                    nullable: false,
+                  },
+                  unit: {
+                    description: 'unit of the humidity',
+                    type: 'string',
+                    nullable: false,
+                  },
+                  connection: {
+                    description: 'connection of the humidity',
+                    type: 'string',
+                    nullable: false,
+                  },
+                  precipitation: {
+                    description: 'precipitation of the humidity',
+                    type: 'string',
+                    nullable: false,
+                  },
+                },
+              },
+            },
+          },
+        },
+        required: ['id', 'thing', 'timestamp', 'payload'],
+        additionalProperties: false,
       },
     },
   },

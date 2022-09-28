@@ -1,15 +1,17 @@
 import { Request, Response, NextFunction } from 'express'
 import { Operation } from 'express-openapi'
 
-import { ServiceResponse } from '../../../serviceTypes'
+import { ServiceThingPayloadResponse, ThingServiceInterface } from '../../../serviceTypes'
 import { getThingPayloadsValidator } from '../../validators/thingPayloadResponseValidators'
 import logger from '../../../logger'
 
-export default function (thingService: any) {
+export default function (thingService: ThingServiceInterface) {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const { statusCode, result }: ServiceResponse = await thingService.getThingPayloadsByThingId(req.params.thingId)
+        const { statusCode, result }: ServiceThingPayloadResponse = await thingService.getThingPayloadsByThingId(
+          req.params.thingId
+        )
         logger.trace(`GET thingPayloadByThingId: statusCode, result: ${statusCode}, ${result}`)
 
         const validationErrors = getThingPayloadsValidator.validateResponse(200, result)
