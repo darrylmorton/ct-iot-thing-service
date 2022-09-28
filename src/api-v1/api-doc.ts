@@ -61,7 +61,7 @@ const apiDoc: OpenAPIV3.Document = {
           },
         },
         required: ['id', 'name', 'thingType'],
-        // additionalProperties: false,
+        additionalProperties: false,
       },
       ThingType: {
         type: 'object',
