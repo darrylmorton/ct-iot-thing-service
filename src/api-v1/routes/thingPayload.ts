@@ -37,20 +37,109 @@ export default function (thingService: ThingServiceInterface) {
             type: 'object',
             properties: {
               thing: {
+                description: 'thing of the payload',
                 type: 'string',
                 format: 'uuid',
                 nullable: false,
               },
               timestamp: {
+                description: 'timestamp of the payload',
                 type: 'integer',
+                format: 'int64',
                 nullable: false,
               },
               payload: {
+                description: 'payload',
                 type: 'object',
-                nullable: false,
+                properties: {
+                  cadence: {
+                    properties: {
+                      value: {
+                        description: 'value of the cadence',
+                        type: 'integer',
+                        nullable: false,
+                      },
+                      unit: {
+                        description: 'unit of the cadence',
+                        type: 'string',
+                        nullable: false,
+                      },
+                    },
+                    required: ['value', 'unit'],
+                    additionalProperties: false,
+                  },
+                  battery: {
+                    properties: {
+                      value: {
+                        description: 'value of the battery',
+                        type: 'integer',
+                        nullable: false,
+                      },
+                      unit: {
+                        description: 'unit of the battery',
+                        type: 'string',
+                        nullable: false,
+                      },
+                    },
+                    required: ['value', 'unit'],
+                    additionalProperties: false,
+                  },
+                  temperature: {
+                    properties: {
+                      value: {
+                        description: 'value of the temperature',
+                        type: 'number',
+                        format: 'float',
+                        nullable: false,
+                      },
+                      unit: {
+                        description: 'unit of the temperature',
+                        type: 'string',
+                        nullable: false,
+                      },
+                      connection: {
+                        description: 'connection of the temperature',
+                        type: 'string',
+                        nullable: false,
+                      },
+                    },
+                    required: ['value', 'unit', 'connection'],
+                    additionalProperties: false,
+                  },
+                  humidity: {
+                    properties: {
+                      value: {
+                        description: 'value of the humidity',
+                        type: 'number',
+                        format: 'float',
+                        nullable: false,
+                      },
+                      unit: {
+                        description: 'unit of the humidity',
+                        type: 'string',
+                        nullable: false,
+                      },
+                      connection: {
+                        description: 'connection of the humidity',
+                        type: 'string',
+                        nullable: false,
+                      },
+                      precipitation: {
+                        description: 'precipitation of the humidity',
+                        type: 'boolean',
+                        nullable: false,
+                      },
+                    },
+                    required: ['value', 'unit', 'connection', 'precipitation'],
+                    additionalProperties: false,
+                  },
+                },
+                required: ['cadence', 'battery', 'temperature', 'humidity'],
+                additionalProperties: false,
               },
             },
             required: ['thing', 'timestamp', 'payload'],
+            additionalProperties: false,
           },
         },
       },

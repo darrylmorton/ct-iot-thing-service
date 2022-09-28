@@ -61,7 +61,7 @@ const apiDoc: OpenAPIV3.Document = {
           },
         },
         required: ['id', 'name', 'thingType'],
-        additionalProperties: false,
+        // additionalProperties: false,
       },
       ThingType: {
         type: 'object',
@@ -93,6 +93,7 @@ const apiDoc: OpenAPIV3.Document = {
           timestamp: {
             description: 'timestamp of the payload',
             type: 'integer',
+            format: 'int64',
             nullable: false,
           },
           payload: {
@@ -112,6 +113,8 @@ const apiDoc: OpenAPIV3.Document = {
                     nullable: false,
                   },
                 },
+                required: ['value', 'unit'],
+                additionalProperties: false,
               },
               battery: {
                 properties: {
@@ -121,17 +124,20 @@ const apiDoc: OpenAPIV3.Document = {
                     nullable: false,
                   },
                   unit: {
-                    description: 'unit of the batteru',
+                    description: 'unit of the battery',
                     type: 'string',
                     nullable: false,
                   },
                 },
+                required: ['value', 'unit'],
+                additionalProperties: false,
               },
               temperature: {
                 properties: {
                   value: {
                     description: 'value of the temperature',
-                    type: 'integer',
+                    type: 'number',
+                    format: 'float',
                     nullable: false,
                   },
                   unit: {
@@ -145,12 +151,15 @@ const apiDoc: OpenAPIV3.Document = {
                     nullable: false,
                   },
                 },
+                required: ['value', 'unit', 'connection'],
+                additionalProperties: false,
               },
               humidity: {
                 properties: {
                   value: {
                     description: 'value of the humidity',
                     type: 'number',
+                    format: 'float',
                     nullable: false,
                   },
                   unit: {
@@ -165,12 +174,16 @@ const apiDoc: OpenAPIV3.Document = {
                   },
                   precipitation: {
                     description: 'precipitation of the humidity',
-                    type: 'string',
+                    type: 'boolean',
                     nullable: false,
                   },
                 },
+                required: ['value', 'unit', 'connection', 'precipitation'],
+                additionalProperties: false,
               },
             },
+            required: ['cadence', 'battery', 'temperature', 'humidity'],
+            additionalProperties: false,
           },
         },
         required: ['id', 'thing', 'timestamp', 'payload'],
