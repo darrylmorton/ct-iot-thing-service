@@ -51,6 +51,13 @@ export const getThingValidator = new OpenAPIResponseValidator({
         $ref: '#/definitions/Thing',
       },
     },
+    404: {
+      schema: {
+        NotFoundError: {
+          description: 'This resource cannot be found',
+        },
+      },
+    },
   },
 })
 

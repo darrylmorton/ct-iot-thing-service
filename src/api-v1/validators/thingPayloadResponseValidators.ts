@@ -129,5 +129,12 @@ export const getThingPayloadsValidator = new OpenAPIResponseValidator({
         },
       },
     },
+    404: {
+      schema: {
+        NotFoundError: {
+          description: 'This resource cannot be found',
+        },
+      },
+    },
   },
 })

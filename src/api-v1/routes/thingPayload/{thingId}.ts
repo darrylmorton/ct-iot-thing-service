@@ -14,7 +14,7 @@ export default function (thingService: ThingServiceInterface) {
         )
         logger.trace(`GET thingPayloadByThingId: statusCode, result: ${statusCode}, ${result}`)
 
-        const validationErrors = getThingPayloadsValidator.validateResponse(200, result)
+        const validationErrors = getThingPayloadsValidator.validateResponse(statusCode, result)
         logger.trace(`GET thingPayloadByThingId: validationErrors: ${validationErrors}`)
 
         if (validationErrors) {

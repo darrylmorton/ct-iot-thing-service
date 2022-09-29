@@ -12,7 +12,7 @@ export default function (thingService: ThingServiceInterface) {
         const { statusCode, result }: ServiceThingResponse = await thingService.getThingById(req.params.id)
         logger.trace(`GET thingById: statusCode, result: ${statusCode}, ${result}`)
 
-        const validationErrors = getThingValidator.validateResponse(200, result)
+        const validationErrors = getThingValidator.validateResponse(statusCode, result)
         logger.trace(`GET thingById: validationErrors: ${validationErrors}`)
 
         if (validationErrors) {
