@@ -147,6 +147,16 @@ export default function (thingService: ThingServiceInterface) {
           },
         },
       },
+      404: {
+        description: 'Resource not found',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/responses/NotFoundError',
+            },
+          },
+        },
+      },
       409: {
         description: 'Conflict error',
         content: {

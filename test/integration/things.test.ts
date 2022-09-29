@@ -2,7 +2,7 @@ import { before, describe, it } from 'mocha'
 import { expect } from 'chai'
 import { Express } from 'express'
 
-import { getThingsRoute, postThingRoute, postThingTypeRoute } from '../helper/thingRouteHelper'
+import { getThingByIdRoute, getThingsRoute, postThingRoute, postThingTypeRoute } from '../helper/thingRouteHelper'
 import { createHttpServer } from '../../src/server'
 import { SimpleThing, ThingType } from '../../src/types'
 import { cleanup } from '../../seeds/things'
@@ -12,6 +12,7 @@ describe('Thing routes', function () {
   let app: Express
   let thingTypeOneName: string
   let thingOneName: string
+  let thingZeroId: string
 
   before(async function () {
     await cleanup()
@@ -20,6 +21,7 @@ describe('Thing routes', function () {
 
     thingTypeOneName = 'thingTypeOne'
     thingOneName = 'thingOne'
+    thingZeroId = '00000000-0000-0000-0000-00000000000'
 
     const thingType: ThingType = createThingType(thingTypeOneName)
     await postThingTypeRoute(app, thingType)
@@ -74,5 +76,30 @@ describe('Thing routes', function () {
     expect(actualResult.status).to.equal(200)
     expect(actualResult.body).to.have.length(1)
     assertThing(actualResult.body[0], thing)
+  })
+
+  it('GET Thing by id that is invalid', async function () {
+    const actualResult = await getThingByIdRoute(app, thingZeroId)
+
+    expect(actualResult.status).to.equal(400)
+  })
+
+  it('GET Thing by id that is invalid', async function () {
+    const thingId = '00000000-0000-0000-0000-000000000001'
+
+    const actualResult = await getThingByIdRoute(app, thingId)
+
+    expect(actualResult.status).to.equal(404)
+  })
+
+  it('GET Thing by id', async function () {
+    const thing: SimpleThing = createThing('thingTwo', thingTypeOneName)
+
+    const { body } = await postThingRoute(app, thing)
+
+    const actualResult = await getThingByIdRoute(app, body.id)
+
+    expect(actualResult.status).to.equal(200)
+    assertThing(actualResult.body, thing)
   })
 })

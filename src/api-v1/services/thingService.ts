@@ -40,6 +40,20 @@ const thingService: ThingServiceInterface = {
     return { statusCode: 409, result: {} }
   },
 
+  async getThingById(id: string): Promise<ServiceThingResponse> {
+    const getThingByIdResult: Array<Thing> = await db.findThingById(id)
+    logger.trace(`ThingService getThingById: getThingByIdResult: ${getThingByIdResult}`)
+
+    const result: Thing | Record<string, unknown> = getThingByIdResult.length === 1 ? getThingByIdResult[0] : {}
+    logger.trace(`ThingService getThingById: result: ${result}`)
+
+    if (getThingByIdResult.length === 1) {
+      return { statusCode: 200, result }
+    } else {
+      return { statusCode: 404, result }
+    }
+  },
+
   async getThings(): Promise<ServiceThingsResponse> {
     const result: Array<Thing> = await db.findThings()
     logger.trace(`ThingService getThings: result: ${result}`)
@@ -76,11 +90,11 @@ const thingService: ThingServiceInterface = {
   },
 
   async postThingPayload(thingPayload: ThingPayload): Promise<ServiceThingPayloadResponse> {
-    const findThingByIdResult: Array<Thing> = await db.findThingById(thingPayload.thing)
+    const findThingByIdResult: Array<Thing> | Record<string, unknown> = await db.findThingById(thingPayload.thing)
     logger.trace(`ThingService postThingPayload: findThingByIdResult: ${findThingByIdResult}`)
 
     if (findThingByIdResult.length === 0) {
-      return { statusCode: 404, result: {} }
+      return { statusCode: 404, result: findThingByIdResult }
     }
 
     const addThingPayloadResult: Array<ThingPayload> = await db.addThingPayload(thingPayload)
@@ -98,6 +112,13 @@ const thingService: ThingServiceInterface = {
   },
 
   async getThingPayloadsByThingId(thingId: string): Promise<ServiceThingPayloadsResponse> {
+    const getThingByIdResult: Array<Thing> = await db.findThingById(thingId)
+    logger.trace(`ThingService getThingPayloadsByThingId: getThingByIdResult: ${getThingByIdResult}`)
+
+    if (getThingByIdResult.length === 0) {
+      return { statusCode: 404, result: [] }
+    }
+
     const result: Array<ThingPayload> = await db.findThingPayloadsByThingId(thingId)
     logger.trace(`ThingService getThingPayloadsByThingId: result: ${result}`)
 

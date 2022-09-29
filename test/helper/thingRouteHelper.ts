@@ -33,6 +33,20 @@ export async function postThingTypeRoute(app: Express, thingType: ThingType) {
     })
 }
 
+export async function getThingByIdRoute(app: Express, id: string) {
+  return request(app)
+    .get(`/${env.API_MAJOR_VERSION}/thing/${id}`)
+    .set('content-type', 'application/json')
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(`getThingByIdRouteErr ${err}`)
+      return err
+    })
+}
+
 export async function getThingsRoute(app: Express) {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thing`)

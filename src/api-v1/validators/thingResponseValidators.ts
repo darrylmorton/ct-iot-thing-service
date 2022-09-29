@@ -42,6 +42,18 @@ export const postThingValidator = new OpenAPIResponseValidator({
   },
 })
 
+export const getThingValidator = new OpenAPIResponseValidator({
+  definitions: thingDefinitions.definitions,
+  responses: {
+    200: {
+      schema: {
+        type: 'object',
+        $ref: '#/definitions/Thing',
+      },
+    },
+  },
+})
+
 export const getThingsValidator = new OpenAPIResponseValidator({
   definitions: thingDefinitions.definitions,
   responses: {
