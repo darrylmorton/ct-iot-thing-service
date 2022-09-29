@@ -45,7 +45,6 @@ export default function (thingService: ThingServiceInterface) {
               timestamp: {
                 description: 'timestamp of the payload',
                 type: 'integer',
-                format: 'int64',
                 nullable: false,
               },
               payload: {

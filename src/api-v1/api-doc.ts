@@ -93,7 +93,6 @@ const apiDoc: OpenAPIV3.Document = {
           timestamp: {
             description: 'timestamp of the payload',
             type: 'integer',
-            format: 'int64',
             nullable: false,
           },
           payload: {

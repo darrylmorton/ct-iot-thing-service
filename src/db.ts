@@ -34,6 +34,10 @@ const db: DatabaseInterface = {
       .returning(['id', 'name', 'thing_type AS thingType'])
   },
 
+  async findThingById(id: string): Promise<Array<Thing>> {
+    return this.client('things').select(['id']).where({ id })
+  },
+
   async findThingByName(thing: SimpleThing): Promise<Array<Thing>> {
     return this.client('things').select(['id', 'name', 'thing_type AS thingType']).where({ name: thing.name })
   },

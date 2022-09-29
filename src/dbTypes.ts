@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
-import { SimpleThing, Thing, ThingPayload, ThingType } from './types'
 import { Knex } from 'knex'
+
+import { SimpleThing, Thing, ThingPayload, ThingType } from './types'
 
 export interface DatabaseInterface {
   client: Knex
@@ -8,6 +8,7 @@ export interface DatabaseInterface {
   findThingTypes(): Promise<Array<ThingType>>
   addThingType(thingType: ThingType): Promise<Array<ThingType>>
   addThing(thing: SimpleThing): Promise<Array<Thing>>
+  findThingById(id: string): Promise<Array<Thing>>
   findThingByName(thing: SimpleThing): Promise<Array<Thing>>
   findThings(): Promise<Array<Thing>>
   addThingPayload(thingPayload: ThingPayload): Promise<Array<ThingPayload>>
