@@ -90,11 +90,11 @@ const thingService: ThingServiceInterface = {
   },
 
   async postThingPayload(thingPayload: ThingPayload): Promise<ServiceThingPayloadResponse> {
-    const findThingByIdResult: Array<Thing> | Record<string, unknown> = await db.findThingById(thingPayload.thing)
+    const findThingByIdResult: Array<Thing> = await db.findThingById(thingPayload.thing)
     logger.trace(`ThingService postThingPayload: findThingByIdResult: ${findThingByIdResult}`)
 
     if (findThingByIdResult.length === 0) {
-      return { statusCode: 404, result: findThingByIdResult }
+      return { statusCode: 404, result: [] }
     }
 
     const addThingPayloadResult: Array<ThingPayload> = await db.addThingPayload(thingPayload)
