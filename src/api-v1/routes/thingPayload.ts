@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from 'express'
 import { Operation } from 'express-openapi'
 
-import { ServiceResponse } from '../../serviceTypes'
+import { ServiceThingPayloadResponse, ThingServiceInterface } from '../../serviceTypes'
 import { postThingPayloadValidator } from '../validators/thingPayloadResponseValidators'
 import logger from '../../logger'
 
-export default function (thingService: any) {
+export default function (thingService: ThingServiceInterface) {
   const POST: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const { statusCode, result }: ServiceResponse = await thingService.postThingPayload(req.body)
+        const { statusCode, result }: ServiceThingPayloadResponse = await thingService.postThingPayload(req.body)
         logger.trace(`POST thingPayload: statusCode, result: ${statusCode}, ${result}`)
 
         const validationErrors = postThingPayloadValidator.validateResponse(201, result)
@@ -37,20 +37,108 @@ export default function (thingService: any) {
             type: 'object',
             properties: {
               thing: {
+                description: 'thing of the payload',
                 type: 'string',
                 format: 'uuid',
                 nullable: false,
               },
               timestamp: {
+                description: 'timestamp of the payload',
                 type: 'integer',
                 nullable: false,
               },
               payload: {
+                description: 'payload',
                 type: 'object',
-                nullable: false,
+                properties: {
+                  cadence: {
+                    properties: {
+                      value: {
+                        description: 'value of the cadence',
+                        type: 'integer',
+                        nullable: false,
+                      },
+                      unit: {
+                        description: 'unit of the cadence',
+                        type: 'string',
+                        nullable: false,
+                      },
+                    },
+                    required: ['value', 'unit'],
+                    additionalProperties: false,
+                  },
+                  battery: {
+                    properties: {
+                      value: {
+                        description: 'value of the battery',
+                        type: 'integer',
+                        nullable: false,
+                      },
+                      unit: {
+                        description: 'unit of the battery',
+                        type: 'string',
+                        nullable: false,
+                      },
+                    },
+                    required: ['value', 'unit'],
+                    additionalProperties: false,
+                  },
+                  temperature: {
+                    properties: {
+                      value: {
+                        description: 'value of the temperature',
+                        type: 'number',
+                        format: 'float',
+                        nullable: false,
+                      },
+                      unit: {
+                        description: 'unit of the temperature',
+                        type: 'string',
+                        nullable: false,
+                      },
+                      connection: {
+                        description: 'connection of the temperature',
+                        type: 'string',
+                        nullable: false,
+                      },
+                    },
+                    required: ['value', 'unit', 'connection'],
+                    additionalProperties: false,
+                  },
+                  humidity: {
+                    properties: {
+                      value: {
+                        description: 'value of the humidity',
+                        type: 'number',
+                        format: 'float',
+                        nullable: false,
+                      },
+                      unit: {
+                        description: 'unit of the humidity',
+                        type: 'string',
+                        nullable: false,
+                      },
+                      connection: {
+                        description: 'connection of the humidity',
+                        type: 'string',
+                        nullable: false,
+                      },
+                      precipitation: {
+                        description: 'precipitation of the humidity',
+                        type: 'boolean',
+                        nullable: false,
+                      },
+                    },
+                    required: ['value', 'unit', 'connection', 'precipitation'],
+                    additionalProperties: false,
+                  },
+                },
+                required: ['cadence', 'battery', 'temperature', 'humidity'],
+                additionalProperties: false,
               },
             },
             required: ['thing', 'timestamp', 'payload'],
+            additionalProperties: false,
           },
         },
       },
@@ -72,6 +160,16 @@ export default function (thingService: any) {
           'application/json': {
             schema: {
               $ref: '#/components/responses/BadRequestError',
+            },
+          },
+        },
+      },
+      404: {
+        description: 'Resource not found',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/responses/NotFoundError',
             },
           },
         },

@@ -48,8 +48,7 @@ const config: { [key: string]: Knex.Config } = {
       database: process.env.DB_NAME,
       user: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
-      // @ts-ignore,
-      port: process.env.DB_PORT,
+      port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 0,
     },
     pool: {
       min: 2,
@@ -68,8 +67,7 @@ const config: { [key: string]: Knex.Config } = {
       database: process.env.DB_NAME,
       user: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
-      // @ts-ignore,
-      port: process.env.DB_PORT,
+      port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 0,
     },
     pool: {
       min: 2,

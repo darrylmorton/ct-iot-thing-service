@@ -1,21 +1,19 @@
 import { Request, Response, NextFunction } from 'express'
 import { Operation } from 'express-openapi'
 
-import { ServiceThingPayloadResponse, ThingServiceInterface } from '../../../serviceTypes'
-import { getThingPayloadsValidator } from '../../validators/thingPayloadResponseValidators'
+import { ServiceThingResponse, ThingServiceInterface } from '../../../serviceTypes'
+import { getThingValidator } from '../../validators/thingResponseValidators'
 import logger from '../../../logger'
 
 export default function (thingService: ThingServiceInterface) {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const { statusCode, result }: ServiceThingPayloadResponse = await thingService.getThingPayloadsByThingId(
-          req.params.thingId
-        )
-        logger.trace(`GET thingPayloadByThingId: statusCode, result: ${statusCode}, ${result}`)
+        const { statusCode, result }: ServiceThingResponse = await thingService.getThingById(req.params.id)
+        logger.trace(`GET thingById: statusCode, result: ${statusCode}, ${result}`)
 
-        const validationErrors = getThingPayloadsValidator.validateResponse(statusCode, result)
-        logger.trace(`GET thingPayloadByThingId: validationErrors: ${validationErrors}`)
+        const validationErrors = getThingValidator.validateResponse(statusCode, result)
+        logger.trace(`GET thingById: validationErrors: ${validationErrors}`)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -23,7 +21,7 @@ export default function (thingService: ThingServiceInterface) {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
-        logger.error(`getThingPayloadByThingIdError ${error}`)
+        logger.error(`getThingByIdError ${error}`)
 
         return next(error)
       }
@@ -31,13 +29,13 @@ export default function (thingService: ThingServiceInterface) {
   ]
 
   GET.apiDoc = {
-    summary: 'Get thing payloads',
+    summary: 'Get thing',
     parameters: [
       {
-        description: 'thingId of the payload',
+        description: 'id of the thing',
         in: 'path',
         required: true,
-        name: 'thingId',
+        name: 'id',
         schema: {
           type: 'string',
           format: 'uuid',
@@ -46,13 +44,13 @@ export default function (thingService: ThingServiceInterface) {
     ],
     responses: {
       200: {
-        description: 'Return thing payloads',
+        description: 'Return thing',
         content: {
           'application/json': {
             schema: {
               type: 'array',
               items: {
-                $ref: '#/components/schemas/ThingPayload',
+                $ref: '#/components/schemas/Thing',
               },
             },
           },
@@ -89,7 +87,7 @@ export default function (thingService: ThingServiceInterface) {
         },
       },
     },
-    tags: ['thing payload'],
+    tags: ['thing'],
   }
 
   const doc = {

@@ -1,6 +1,6 @@
 import OpenAPIResponseValidator from 'openapi-response-validator'
 
-export const thingPayloadDefinitions: any = {
+export const thingPayloadDefinitions = {
   definitions: {
     ThingPayload: {
       type: 'object',
@@ -19,7 +19,7 @@ export const thingPayloadDefinitions: any = {
         },
         timestamp: {
           description: 'timestamp of the payload',
-          type: 'string',
+          type: 'integer',
           nullable: false,
         },
         payload: {
@@ -58,7 +58,7 @@ export const thingPayloadDefinitions: any = {
               properties: {
                 value: {
                   description: 'value of the temperature',
-                  type: 'integer',
+                  type: 'number',
                   nullable: false,
                 },
                 unit: {
@@ -92,7 +92,7 @@ export const thingPayloadDefinitions: any = {
                 },
                 precipitation: {
                   description: 'precipitation of the humidity',
-                  type: 'string',
+                  type: 'boolean',
                   nullable: false,
                 },
               },
@@ -107,23 +107,32 @@ export const thingPayloadDefinitions: any = {
 }
 
 export const postThingPayloadValidator = new OpenAPIResponseValidator({
+  definitions: thingPayloadDefinitions.definitions,
   responses: {
     201: {
       schema: {
         type: 'object',
-        $ref: thingPayloadDefinitions.ThingPayload,
+        $ref: '#/definitions/ThingPayload',
       },
     },
   },
 })
 
 export const getThingPayloadsValidator = new OpenAPIResponseValidator({
+  definitions: thingPayloadDefinitions.definitions,
   responses: {
     200: {
       schema: {
         type: 'array',
         items: {
-          $ref: thingPayloadDefinitions.ThingPayload,
+          $ref: '#/definitions/ThingPayload',
+        },
+      },
+    },
+    404: {
+      schema: {
+        NotFoundError: {
+          description: 'This resource cannot be found',
         },
       },
     },

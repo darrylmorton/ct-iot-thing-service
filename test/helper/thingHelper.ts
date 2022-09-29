@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { validate as isValidUuid } from 'uuid'
 
-import { SimpleThing, ThingPayload, ThingType } from '../../src/types'
+import { SimpleThing, Thing, ThingPayload, ThingType } from '../../src/types'
 
 export const createTimestamp = (incrementValue?: number): number => {
   // 24 hours in seconds subtracted for more realistic seed data
@@ -62,13 +62,17 @@ export const createThingPayload = (thingId: string, increment?: number): ThingPa
   return payload
 }
 
-export const assertThing = (actualResult: any, expectedResult: SimpleThing): void => {
+interface TestThingPayload extends ThingPayload {
+  id: string
+}
+
+export const assertThing = (actualResult: Thing, expectedResult: SimpleThing): void => {
   expect(isValidUuid(actualResult.id)).to.be.true
   expect(actualResult.name).to.equal(expectedResult.name)
   expect(actualResult.thingType).to.deep.equal(expectedResult.thingType.name)
 }
 
-export const assertThingPayload = (actualResult: any, expectedResult: ThingPayload): void => {
+export const assertThingPayload = (actualResult: TestThingPayload, expectedResult: ThingPayload): void => {
   expect(isValidUuid(actualResult.id)).to.be.true
   expect(isValidUuid(actualResult.thing)).to.be.true
   expect(actualResult.timestamp).to.equal(expectedResult.timestamp)

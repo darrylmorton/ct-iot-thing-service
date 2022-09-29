@@ -1,6 +1,6 @@
 import OpenAPIResponseValidator from 'openapi-response-validator'
 
-export const thingDefinitions: any = {
+export const thingDefinitions = {
   definitions: {
     Thing: {
       type: 'object',
@@ -18,42 +18,57 @@ export const thingDefinitions: any = {
         },
         thingType: {
           description: 'type of the thing',
-          type: 'object',
+          type: 'string',
           nullable: false,
-          properties: {
-            name: {
-              type: 'string',
-              nullable: false,
-            },
-          },
           required: ['name'],
           additionalProperties: false,
         },
-        required: ['id', 'name', 'thingType'],
-        additionalProperties: false,
       },
+      required: ['id', 'name', 'thingType'],
+      additionalProperties: false,
     },
   },
 }
 
 export const postThingValidator = new OpenAPIResponseValidator({
+  definitions: thingDefinitions.definitions,
   responses: {
     201: {
       schema: {
         type: 'object',
-        $ref: thingDefinitions.Thing,
+        $ref: '#/definitions/Thing',
+      },
+    },
+  },
+})
+
+export const getThingValidator = new OpenAPIResponseValidator({
+  definitions: thingDefinitions.definitions,
+  responses: {
+    200: {
+      schema: {
+        type: 'object',
+        $ref: '#/definitions/Thing',
+      },
+    },
+    404: {
+      schema: {
+        NotFoundError: {
+          description: 'This resource cannot be found',
+        },
       },
     },
   },
 })
 
 export const getThingsValidator = new OpenAPIResponseValidator({
+  definitions: thingDefinitions.definitions,
   responses: {
     200: {
       schema: {
         type: 'array',
         items: {
-          $ref: thingDefinitions.Thing,
+          $ref: '#/definitions/Thing',
         },
       },
     },

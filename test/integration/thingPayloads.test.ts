@@ -43,6 +43,7 @@ describe('Thing Payload routes', function () {
     const actualResult = await postThingPayloadRoute(app, thingPayload)
 
     expect(actualResult.status).to.equal(400)
+    expect(actualResult.body).to.deep.equal({})
   })
 
   it('POST Thing Payload', async function () {
@@ -54,23 +55,30 @@ describe('Thing Payload routes', function () {
     assertThingPayload(actualResult.body, thingPayload)
   })
 
+  it('GET Thing Payloads invalid', async function () {
+    const actualResult = await getThingPayloadsRoute(app, thingZeroId)
+
+    expect(actualResult.status).to.equal(400)
+    expect(actualResult.body).to.deep.equal({})
+  })
+
+  it('GET Thing Payloads invalid', async function () {
+    const thingId = '00000000-0000-0000-0000-000000000001'
+
+    const actualResult = await getThingPayloadsRoute(app, thingId)
+
+    expect(actualResult.status).to.equal(404)
+    expect(actualResult.body).to.deep.equal([])
+  })
+
   it('GET Thing Payloads', async function () {
     const thingPayload: ThingPayload = createThingPayload(thingOneId)
-    const { body: responseBody }: any = await postThingPayloadRoute(app, thingPayload)
+    const { body: responseBody } = await postThingPayloadRoute(app, thingPayload)
 
     const actualResult = await getThingPayloadsRoute(app, thingOneId)
 
     expect(actualResult.status).to.equal(200)
     expect(actualResult.body).to.have.length(2)
     assertThingPayload(actualResult.body[1], responseBody)
-  })
-
-  it('GET Thing Payloads', async function () {
-    const thingId = '00000000-0000-0000-0000-000000000000'
-
-    const actualResult = await getThingPayloadsRoute(app, thingId)
-
-    expect(actualResult.status).to.equal(200)
-    expect(actualResult.body).to.deep.equal([])
   })
 })
