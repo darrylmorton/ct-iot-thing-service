@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { validate as isValidUuid } from 'uuid'
-import { addMinutes, getUnixTime, startOfYesterday } from 'date-fns'
+import { addMinutes, getUnixTime, startOfYesterday, subDays } from 'date-fns'
 
 import { SimpleThing, Thing, ThingPayload, ThingType } from '../../src/types'
 
@@ -9,6 +9,14 @@ export const createTimestamp = (incrementValue?: number): number => {
   const incrementDate = incrementValue ? addMinutes(yesterday, incrementValue * 30) : yesterday
 
   return getUnixTime(incrementDate)
+}
+
+export const getStartTimestamp = (today: Date) => {
+  return subDays(today, 1).toISOString()
+}
+
+export const getEndTimestamp = (today: Date) => {
+  return today.toISOString()
 }
 
 const generateReadingValue = (max: number, min: number): number => {

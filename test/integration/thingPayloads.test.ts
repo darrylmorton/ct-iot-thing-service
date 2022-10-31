@@ -1,7 +1,7 @@
 import { before, describe, it } from 'mocha'
 import { expect } from 'chai'
 import { Express } from 'express'
-import { startOfToday, endOfToday, getUnixTime, parseISO, addHours, subHours } from 'date-fns'
+import { getUnixTime, parseISO, addHours, subHours } from 'date-fns'
 
 import {
   getThingPayloadsRoute,
@@ -14,8 +14,16 @@ import {
 import { createHttpServer } from '../../src/server'
 import { SimpleThing, Thing, ThingPayload, ThingType } from '../../src/types'
 import { cleanup, seed } from '../../seeds/things'
-import { assertThingPayload, createThing, createThingPayload, createThingType } from '../helper/thingHelper'
+import {
+  assertThingPayload,
+  createThing,
+  createThingPayload,
+  createThingType,
+  getEndTimestamp,
+  getStartTimestamp,
+} from '../helper/thingHelper'
 import db from '../../src/db'
+import { getUnixEndTimestamp, getUnixStartTimestamp } from '../../src/util/AppUtil'
 
 describe('Thing Payload routes', function () {
   let app: Express
@@ -86,8 +94,9 @@ describe('Thing Payload routes', function () {
     assertThingPayload(actualResult.body[1], responseBody)
   })
 
-  describe.only('Thing Payload routes with query params', function () {
+  describe('Thing Payload routes with query params', function () {
     let thingIdsResult: string[]
+    let today: Date
 
     before(async function () {
       await seed()
@@ -99,22 +108,21 @@ describe('Thing Payload routes', function () {
 
         return acc
       }, [])
+
+      today = new Date()
     })
 
-    it.only('GET all Thing Payloads by default dates and thingIds', async function () {
+    it('GET all Thing Payloads by default dates and thingIds', async function () {
+      const startTimestamp = getUnixStartTimestamp(today)
+      const endTimestamp = getUnixEndTimestamp(today)
+
+      const expectedResult: ThingPayload[] = await db.findThingPayloads(startTimestamp, endTimestamp, [])
+
       const actualResult = await postThingPayloadsRoute(app, { thingIds: [] })
 
       expect(actualResult.status).to.equal(200)
-      // expect(actualResult.body).to.deep.equal({})
+      expect(actualResult.body).to.deep.equal(expectedResult)
     })
-
-    // TODO thingIds and filtered scenarios...
-    // it('GET all Thing Payloads by default dates and thingIds', async function () {
-    //   const actualResult = await postThingPayloadsRoute(app, { thingIds: [] })
-    //
-    //   expect(actualResult.status).to.equal(200)
-    //   // expect(actualResult.body).to.deep.equal({})
-    // })
 
     it('GET all Thing Payloads by invalid dates and thingIds', async function () {
       const startTimestamp = ''
@@ -129,8 +137,8 @@ describe('Thing Payload routes', function () {
     })
 
     it('GET all Thing Payloads by dates and invalid thingIds', async function () {
-      const startTimestamp = startOfToday().toISOString()
-      const endTimestamp = endOfToday().toISOString()
+      const startTimestamp = getStartTimestamp(today)
+      const endTimestamp = getEndTimestamp(today)
 
       const actualResult = await postThingPayloadsWithQueryParamsRoute(app, startTimestamp, endTimestamp, {
         thingIds: [thingZeroId],
@@ -141,8 +149,8 @@ describe('Thing Payload routes', function () {
     })
 
     it('GET all Thing Payloads by dates and invalid thingIds', async function () {
-      const startTimestamp = startOfToday().toISOString()
-      const endTimestamp = endOfToday().toISOString()
+      const startTimestamp = getStartTimestamp(today)
+      const endTimestamp = getEndTimestamp(today)
 
       const actualResult = await postThingPayloadsWithQueryParamsRoute(app, startTimestamp, endTimestamp, {
         thingIds: ['00000000-0000-0000-0000-000000000001'],
@@ -153,8 +161,9 @@ describe('Thing Payload routes', function () {
     })
 
     it('GET all Thing Payloads by date', async function () {
-      const startTimestamp = startOfToday().toISOString()
-      const endTimestamp = endOfToday().toISOString()
+      const startTimestamp = getStartTimestamp(today)
+      const endTimestamp = getEndTimestamp(today)
+
       const expectedResult: ThingPayload[] = await db.findThingPayloads(
         getUnixTime(parseISO(startTimestamp)),
         getUnixTime(parseISO(endTimestamp)),
@@ -171,8 +180,8 @@ describe('Thing Payload routes', function () {
     })
 
     it('GET all Thing Payloads by date', async function () {
-      const startTimestamp = addHours(startOfToday(), 6).toISOString()
-      const endTimestamp = subHours(endOfToday(), 6).toISOString()
+      const startTimestamp = getStartTimestamp(addHours(today, 6))
+      const endTimestamp = getEndTimestamp(subHours(today, 6))
 
       const expectedResult: ThingPayload[] = await db.findThingPayloads(
         getUnixTime(parseISO(startTimestamp)),
@@ -190,8 +199,8 @@ describe('Thing Payload routes', function () {
     })
 
     it('GET all Thing Payloads by date and filtered thingIds', async function () {
-      const startTimestamp = startOfToday().toISOString()
-      const endTimestamp = endOfToday().toISOString()
+      const startTimestamp = getStartTimestamp(today)
+      const endTimestamp = getEndTimestamp(today)
       const thingIds = thingIdsResult.filter((item, index) => index > 1 && index < 4)
 
       const expectedResult: ThingPayload[] = await db.findThingPayloads(
@@ -208,8 +217,8 @@ describe('Thing Payload routes', function () {
     })
 
     it('GET all Thing Payloads by date and filtered thingIds', async function () {
-      const startTimestamp = addHours(startOfToday(), 6).toISOString()
-      const endTimestamp = subHours(endOfToday(), 6).toISOString()
+      const startTimestamp = getStartTimestamp(addHours(today, 6))
+      const endTimestamp = getEndTimestamp(subHours(today, 6))
       const thingIds = thingIdsResult.filter((item, index) => index > 1 && index < 4)
 
       const expectedResult: ThingPayload[] = await db.findThingPayloads(

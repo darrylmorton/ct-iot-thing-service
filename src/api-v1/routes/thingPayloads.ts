@@ -1,28 +1,31 @@
 import { Request, Response, NextFunction } from 'express'
 import { Operation } from 'express-openapi'
-import { endOfToday, getUnixTime, parseISO, startOfToday } from 'date-fns'
+import { getUnixTime, parseISO } from 'date-fns'
 
 import { ServiceThingPayloadResponse, ThingServiceInterface } from '../../serviceTypes'
 import logger from '../../logger'
 import { postThingPayloadsValidator } from '../validators/thingPayloadsResponseValidators'
+import { getUnixStartTimestamp, getUnixEndTimestamp } from '../../util/AppUtil'
 
 export default function (thingService: ThingServiceInterface) {
   const POST: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
-      const startTimestampQueryParam = String(req.query.startTimestamp)
-      const startTimestamp: number = startTimestampQueryParam
-        ? getUnixTime(parseISO(startTimestampQueryParam))
-        : getUnixTime(startOfToday())
+      let startTimestamp: number
+      let endTimestamp: number
 
-      const endTimestampQueryParam = String(req.query.endTimestamp)
-      const endTimestamp = endTimestampQueryParam
-        ? getUnixTime(new Date(endTimestampQueryParam))
-        : getUnixTime(endOfToday())
+      if (req.query.startTimestamp && req.query.endTimestamp) {
+        const startTimestampQueryParam = String(req.query.startTimestamp)
+        startTimestamp = getUnixTime(parseISO(startTimestampQueryParam))
+
+        const endTimestampQueryParam = String(req.query.endTimestamp)
+        endTimestamp = getUnixTime(parseISO(endTimestampQueryParam))
+      } else {
+        const today = new Date()
+        startTimestamp = getUnixStartTimestamp(today)
+        endTimestamp = getUnixEndTimestamp(today)
+      }
 
       const thingIds = req.body.thingIds
-
-      console.log('startTimestampQueryParam', startTimestampQueryParam)
-      console.log('endTimestampQueryParam', endTimestampQueryParam)
 
       try {
         const { statusCode, result }: ServiceThingPayloadResponse = await thingService.postThingPayloads(
