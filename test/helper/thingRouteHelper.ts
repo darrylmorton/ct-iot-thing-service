@@ -104,3 +104,39 @@ export async function postThingPayloadRoute(app: Express, thingPayload: ThingPay
       return err
     })
 }
+
+export async function postThingPayloadsWithQueryParamsRoute(
+  app: Express,
+  startTimestamp: string,
+  endTimestamp: string,
+  thingIds: Record<string, unknown>
+) {
+  return request(app)
+    .post(`/${env.API_MAJOR_VERSION}/thingPayloads`)
+    .set('content-type', 'application/json')
+    .query({ startTimestamp, endTimestamp })
+    .send(thingIds)
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(`postThingPayloadsWithQueryParamsRouteErr ${err}`)
+      return err
+    })
+}
+
+export async function postThingPayloadsRoute(app: Express, thingIds: Record<string, unknown>) {
+  return request(app)
+    .post(`/${env.API_MAJOR_VERSION}/thingPayloads`)
+    .set('content-type', 'application/json')
+    .send(thingIds)
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(`postThingPayloadRouteErr ${err}`)
+      return err
+    })
+}

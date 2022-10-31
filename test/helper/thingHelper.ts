@@ -1,14 +1,14 @@
 import { expect } from 'chai'
 import { validate as isValidUuid } from 'uuid'
+import { addMinutes, getUnixTime, startOfYesterday } from 'date-fns'
 
 import { SimpleThing, Thing, ThingPayload, ThingType } from '../../src/types'
 
 export const createTimestamp = (incrementValue?: number): number => {
-  // 24 hours in seconds subtracted for more realistic seed data
-  const currentTimeYesterdayInSeconds: number = Date.now() / 1000 - 86400
-  const increment = incrementValue ? incrementValue * 300 : 0
+  const yesterday: Date = startOfYesterday()
+  const incrementDate = incrementValue ? addMinutes(yesterday, incrementValue * 30) : yesterday
 
-  return Math.floor(currentTimeYesterdayInSeconds + increment)
+  return getUnixTime(incrementDate)
 }
 
 const generateReadingValue = (max: number, min: number): number => {
@@ -38,7 +38,7 @@ export const createThingPayload = (thingId: string, increment?: number): ThingPa
     timestamp: createTimestamp(increment),
     payload: {
       cadence: {
-        value: 300,
+        value: 1800,
         unit: 'seconds',
       },
       battery: {

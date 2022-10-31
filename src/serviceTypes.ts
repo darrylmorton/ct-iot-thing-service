@@ -31,7 +31,7 @@ export interface ServiceThingPayloadResponse extends ServiceResponse {
 }
 
 export interface ServiceThingPayloadsResponse extends ServiceResponse {
-  result: Array<ThingPayload> | []
+  result: ThingPayload[]
 }
 
 export interface ThingServiceInterface {
@@ -41,5 +41,10 @@ export interface ThingServiceInterface {
   getThings(): Promise<ServiceThingsResponse>
   postThing(thing: SimpleThing): Promise<ServiceThingResponse>
   postThingPayload(thingPayload: ThingPayload): Promise<ServiceThingPayloadResponse>
+  postThingPayloads(
+    startTimestamp: number,
+    endTimestamp: number,
+    thingIds: string[]
+  ): Promise<ServiceThingPayloadsResponse>
   getThingPayloadsByThingId(thingId: string): Promise<ServiceThingPayloadsResponse>
 }

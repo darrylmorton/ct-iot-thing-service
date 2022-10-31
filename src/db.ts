@@ -56,6 +56,21 @@ const db: DatabaseInterface = {
       .where({ thing: thingId })
       .orderBy('timestamp')
   },
+
+  // TODO start and end timestamps can be optional and default to start and end of today...
+  async findThingPayloads(startTimestamp: number, endTimestamp: number, thingIds: string[]): Promise<ThingPayload[]> {
+    const query = this.client('thing_payloads')
+      .select(['id', 'thing', 'timestamp', 'payload'])
+      .whereBetween('timestamp', [startTimestamp, endTimestamp])
+
+    if (thingIds.length) {
+      query.whereIn('thing', thingIds)
+    }
+
+    query.orderBy(['timestamp', 'thing'])
+
+    return query
+  },
 }
 
 export default db

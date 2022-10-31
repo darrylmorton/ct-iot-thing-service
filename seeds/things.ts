@@ -3,7 +3,7 @@ import db from '../src/db'
 import { ThingPayload } from '../src/types'
 import { createThingPayload } from '../test/helper/thingHelper'
 
-const PAYLOADS_TOTAL = 1000
+const PAYLOADS_TOTAL = 1440 // day in minutes
 const thingNames: Array<string> = ['thingOne', 'thingTwo', 'thingThree', 'thingFour', 'thingFive', 'thingSix']
 const thingTypeNames: Array<string> = ['thingTypeOne', 'thingTypeTwo', 'thingTypeThree']
 
