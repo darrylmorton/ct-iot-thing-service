@@ -50,7 +50,11 @@ const db: DatabaseInterface = {
     return this.client('thing_payloads').insert(thingPayload).returning(['id', 'thing', 'timestamp', 'payload'])
   },
 
-  async findThingPayloads(startTimestamp: number, endTimestamp: number, thingIds: string[]): Promise<ThingPayload[]> {
+  async findThingPayloadsByTimestampsAndThingIds(
+    startTimestamp: number,
+    endTimestamp: number,
+    thingIds: string[]
+  ): Promise<ThingPayload[]> {
     const query = this.client('thing_payloads AS tp')
       .select(['tp.id', 'tp.thing', 't.name AS thing_name', 't.thing_type', 'tp.timestamp', 'tp.payload'])
       .join('things AS t', 'tp.thing', '=', 't.id')

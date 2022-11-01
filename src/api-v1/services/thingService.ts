@@ -111,13 +111,17 @@ const thingService: ThingServiceInterface = {
     }
   },
 
-  async postThingPayloads(
+  async getThingPayloadsByTimestampsAndThingIds(
     startTimestamp: number,
     endTimestamp: number,
     thingIds: string[]
   ): Promise<ServiceThingPayloadsResponse> {
     if (thingIds.length) {
-      const result: ThingPayload[] = await db.findThingPayloads(startTimestamp, endTimestamp, thingIds)
+      const result: ThingPayload[] = await db.findThingPayloadsByTimestampsAndThingIds(
+        startTimestamp,
+        endTimestamp,
+        thingIds
+      )
       logger.trace(`ThingService postThingPayloads: result: ${result}`)
 
       if (result.length === 0) {
@@ -126,7 +130,11 @@ const thingService: ThingServiceInterface = {
         return { statusCode: 200, result }
       }
     } else {
-      const result: ThingPayload[] = await db.findThingPayloads(startTimestamp, endTimestamp, thingIds)
+      const result: ThingPayload[] = await db.findThingPayloadsByTimestampsAndThingIds(
+        startTimestamp,
+        endTimestamp,
+        thingIds
+      )
       logger.trace(`ThingService postThingPayloads: result: ${result}`)
 
       return { statusCode: 200, result }

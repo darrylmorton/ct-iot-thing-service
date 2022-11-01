@@ -28,11 +28,8 @@ export default function (thingService: ThingServiceInterface) {
       const thingIds = req.body.thingIds
 
       try {
-        const { statusCode, result }: ServiceThingPayloadResponse = await thingService.postThingPayloads(
-          startTimestamp,
-          endTimestamp,
-          thingIds
-        )
+        const { statusCode, result }: ServiceThingPayloadResponse =
+          await thingService.getThingPayloadsByTimestampsAndThingIds(startTimestamp, endTimestamp, thingIds)
         logger.trace(`POST thingPayloads: statusCode, result: ${statusCode}, ${result}`)
 
         const validationErrors = postThingPayloadsValidator.validateResponse(200, result)

@@ -88,7 +88,11 @@ describe('Thing Payload routes', function () {
       const startTimestamp = getUnixStartTimestamp(today)
       const endTimestamp = getUnixEndTimestamp(today)
 
-      const expectedResult: ThingPayload[] = await db.findThingPayloads(startTimestamp, endTimestamp, [])
+      const expectedResult: ThingPayload[] = await db.findThingPayloadsByTimestampsAndThingIds(
+        startTimestamp,
+        endTimestamp,
+        []
+      )
 
       const actualResult = await postThingPayloadsRoute(app, { thingIds: [] })
 
@@ -136,7 +140,7 @@ describe('Thing Payload routes', function () {
       const startTimestamp = getStartTimestamp(today)
       const endTimestamp = getEndTimestamp(today)
 
-      const expectedResult: ThingPayload[] = await db.findThingPayloads(
+      const expectedResult: ThingPayload[] = await db.findThingPayloadsByTimestampsAndThingIds(
         getUnixTime(parseISO(startTimestamp)),
         getUnixTime(parseISO(endTimestamp)),
         []
@@ -155,7 +159,7 @@ describe('Thing Payload routes', function () {
       const startTimestamp = getStartTimestamp(addHours(today, 6))
       const endTimestamp = getEndTimestamp(subHours(today, 6))
 
-      const expectedResult: ThingPayload[] = await db.findThingPayloads(
+      const expectedResult: ThingPayload[] = await db.findThingPayloadsByTimestampsAndThingIds(
         getUnixTime(parseISO(startTimestamp)),
         getUnixTime(parseISO(endTimestamp)),
         []
@@ -175,7 +179,7 @@ describe('Thing Payload routes', function () {
       const endTimestamp = getEndTimestamp(today)
       const thingIds = thingIdsResult.filter((item, index) => index > 1 && index < 4)
 
-      const expectedResult: ThingPayload[] = await db.findThingPayloads(
+      const expectedResult: ThingPayload[] = await db.findThingPayloadsByTimestampsAndThingIds(
         getUnixTime(parseISO(startTimestamp)),
         getUnixTime(parseISO(endTimestamp)),
         thingIds
@@ -193,7 +197,7 @@ describe('Thing Payload routes', function () {
       const endTimestamp = getEndTimestamp(subHours(today, 6))
       const thingIds = thingIdsResult.filter((item, index) => index > 1 && index < 4)
 
-      const expectedResult: ThingPayload[] = await db.findThingPayloads(
+      const expectedResult: ThingPayload[] = await db.findThingPayloadsByTimestampsAndThingIds(
         getUnixTime(parseISO(startTimestamp)),
         getUnixTime(parseISO(endTimestamp)),
         thingIds

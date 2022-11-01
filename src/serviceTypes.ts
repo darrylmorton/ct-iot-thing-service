@@ -41,7 +41,7 @@ export interface ThingServiceInterface {
   getThings(): Promise<ServiceThingsResponse>
   postThing(thing: SimpleThing): Promise<ServiceThingResponse>
   postThingPayload(thingPayload: ThingPayload): Promise<ServiceThingPayloadResponse>
-  postThingPayloads(
+  getThingPayloadsByTimestampsAndThingIds(
     startTimestamp: number,
     endTimestamp: number,
     thingIds: string[]
