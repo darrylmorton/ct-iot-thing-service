@@ -4,7 +4,6 @@ import { Express } from 'express'
 import { getUnixTime, parseISO, addHours, subHours } from 'date-fns'
 
 import {
-  getThingPayloadsRoute,
   postThingPayloadRoute,
   postThingPayloadsRoute,
   postThingPayloadsWithQueryParamsRoute,
@@ -65,33 +64,6 @@ describe('Thing Payload routes', function () {
 
     expect(actualResult.status).to.equal(201)
     assertThingPayload(actualResult.body, thingPayload)
-  })
-
-  it('GET Thing Payloads invalid', async function () {
-    const actualResult = await getThingPayloadsRoute(app, thingZeroId)
-
-    expect(actualResult.status).to.equal(400)
-    expect(actualResult.body).to.deep.equal({})
-  })
-
-  it('GET Thing Payloads invalid', async function () {
-    const thingId = '00000000-0000-0000-0000-000000000001'
-
-    const actualResult = await getThingPayloadsRoute(app, thingId)
-
-    expect(actualResult.status).to.equal(404)
-    expect(actualResult.body).to.deep.equal([])
-  })
-
-  it('GET Thing Payloads', async function () {
-    const thingPayload: ThingPayload = createThingPayload(thingOneId)
-    const { body: responseBody } = await postThingPayloadRoute(app, thingPayload)
-
-    const actualResult = await getThingPayloadsRoute(app, thingOneId)
-
-    expect(actualResult.status).to.equal(200)
-    expect(actualResult.body).to.have.length(2)
-    assertThingPayload(actualResult.body[1], responseBody)
   })
 
   describe('Thing Payload routes with query params', function () {

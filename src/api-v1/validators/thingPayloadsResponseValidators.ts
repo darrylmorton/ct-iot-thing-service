@@ -17,6 +17,16 @@ export const thingPayloadsDefinitions = {
           format: 'uuid',
           nullable: false,
         },
+        thing_name: {
+          description: 'thing name of the payload',
+          type: 'string',
+          nullable: false,
+        },
+        thing_type: {
+          description: 'thing type of the payload',
+          type: 'string',
+          nullable: false,
+        },
         timestamp: {
           description: 'timestamp of the payload',
           type: 'integer',
@@ -100,7 +110,7 @@ export const thingPayloadsDefinitions = {
           },
         },
       },
-      required: ['id', 'thing', 'timestamp', 'payload'],
+      required: ['id', 'thing', 'thing_name', 'thing_type', 'timestamp', 'payload'],
       additionalProperties: false,
     },
   },
@@ -127,23 +137,23 @@ export const postThingPayloadsValidator = new OpenAPIResponseValidator({
   },
 })
 
-// export const getThingPayloadsValidator = new OpenAPIResponseValidator({
-//   definitions: thingPayloadDefinitions.definitions,
-//   responses: {
-//     200: {
-//       schema: {
-//         type: 'array',
-//         items: {
-//           $ref: '#/definitions/ThingPayload',
-//         },
-//       },
-//     },
-//     404: {
-//       schema: {
-//         NotFoundError: {
-//           description: 'This resource cannot be found',
-//         },
-//       },
-//     },
-//   },
-// })
+export const getThingPayloadsValidator = new OpenAPIResponseValidator({
+  definitions: thingPayloadsDefinitions.definitions,
+  responses: {
+    200: {
+      schema: {
+        type: 'array',
+        items: {
+          $ref: '#/definitions/ThingPayload',
+        },
+      },
+    },
+    404: {
+      schema: {
+        NotFoundError: {
+          description: 'This resource cannot be found',
+        },
+      },
+    },
+  },
+})

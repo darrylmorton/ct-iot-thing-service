@@ -2,7 +2,7 @@ import OpenAPIResponseValidator from 'openapi-response-validator'
 
 export const thingPayloadDefinitions = {
   definitions: {
-    ThingPayload: {
+    SimpleThingPayload: {
       type: 'object',
       properties: {
         id: {
@@ -112,28 +112,7 @@ export const postThingPayloadValidator = new OpenAPIResponseValidator({
     201: {
       schema: {
         type: 'object',
-        $ref: '#/definitions/ThingPayload',
-      },
-    },
-  },
-})
-
-export const getThingPayloadsValidator = new OpenAPIResponseValidator({
-  definitions: thingPayloadDefinitions.definitions,
-  responses: {
-    200: {
-      schema: {
-        type: 'array',
-        items: {
-          $ref: '#/definitions/ThingPayload',
-        },
-      },
-    },
-    404: {
-      schema: {
-        NotFoundError: {
-          description: 'This resource cannot be found',
-        },
+        $ref: '#/definitions/SimpleThingPayload',
       },
     },
   },

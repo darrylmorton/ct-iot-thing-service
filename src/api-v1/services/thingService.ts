@@ -132,20 +132,6 @@ const thingService: ThingServiceInterface = {
       return { statusCode: 200, result }
     }
   },
-
-  async getThingPayloadsByThingId(thingId: string): Promise<ServiceThingPayloadsResponse> {
-    const getThingByIdResult: Array<Thing> = await db.findThingById(thingId)
-    logger.trace(`ThingService getThingPayloadsByThingId: getThingByIdResult: ${getThingByIdResult}`)
-
-    if (getThingByIdResult.length === 0) {
-      return { statusCode: 404, result: [] }
-    }
-
-    const result: Array<ThingPayload> = await db.findThingPayloadsByThingId(thingId)
-    logger.trace(`ThingService getThingPayloadsByThingId: result: ${result}`)
-
-    return { statusCode: 200, result }
-  },
 }
 
 export default thingService

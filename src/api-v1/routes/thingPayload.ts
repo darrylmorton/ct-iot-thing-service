@@ -149,7 +149,7 @@ export default function (thingService: ThingServiceInterface) {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ThingPayload',
+              $ref: '#/components/schemas/SimpleThingPayload',
             },
           },
         },

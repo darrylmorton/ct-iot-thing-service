@@ -12,6 +12,5 @@ export interface DatabaseInterface {
   findThingByName(thing: SimpleThing): Promise<Array<Thing>>
   findThings(): Promise<Array<Thing>>
   addThingPayload(thingPayload: ThingPayload): Promise<Array<ThingPayload>>
-  findThingPayloadsByThingId(thingId: string): Promise<Array<ThingPayload>>
   findThingPayloads(startTimestamp: number, endTimestamp: number, thingIds: string[]): Promise<ThingPayload[]>
 }

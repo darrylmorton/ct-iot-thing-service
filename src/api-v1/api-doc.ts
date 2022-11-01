@@ -75,7 +75,7 @@ const apiDoc: OpenAPIV3.Document = {
         required: ['name'],
         additionalProperties: false,
       },
-      ThingPayload: {
+      SimpleThingPayload: {
         type: 'object',
         properties: {
           id: {
@@ -186,6 +186,129 @@ const apiDoc: OpenAPIV3.Document = {
           },
         },
         required: ['id', 'thing', 'timestamp', 'payload'],
+        additionalProperties: false,
+      },
+      ThingPayload: {
+        type: 'object',
+        properties: {
+          id: {
+            description: 'id of the payload',
+            type: 'string',
+            format: 'uuid',
+            nullable: false,
+          },
+          thing: {
+            description: 'thing of the payload',
+            type: 'string',
+            format: 'uuid',
+            nullable: false,
+          },
+          thing_name: {
+            description: 'thing name of the payload',
+            type: 'string',
+            nullable: false,
+          },
+          thing_type: {
+            description: 'thing type of the payload',
+            type: 'string',
+            nullable: false,
+          },
+          timestamp: {
+            description: 'timestamp of the payload',
+            type: 'integer',
+            nullable: false,
+          },
+          payload: {
+            description: 'payload',
+            type: 'object',
+            properties: {
+              cadence: {
+                properties: {
+                  value: {
+                    description: 'value of the cadence',
+                    type: 'integer',
+                    nullable: false,
+                  },
+                  unit: {
+                    description: 'unit of the cadence',
+                    type: 'string',
+                    nullable: false,
+                  },
+                },
+                required: ['value', 'unit'],
+                additionalProperties: false,
+              },
+              battery: {
+                properties: {
+                  value: {
+                    description: 'value of the battery',
+                    type: 'integer',
+                    nullable: false,
+                  },
+                  unit: {
+                    description: 'unit of the battery',
+                    type: 'string',
+                    nullable: false,
+                  },
+                },
+                required: ['value', 'unit'],
+                additionalProperties: false,
+              },
+              temperature: {
+                properties: {
+                  value: {
+                    description: 'value of the temperature',
+                    type: 'number',
+                    format: 'float',
+                    nullable: false,
+                  },
+                  unit: {
+                    description: 'unit of the temperature',
+                    type: 'string',
+                    nullable: false,
+                  },
+                  connection: {
+                    description: 'connection of the temperature',
+                    type: 'string',
+                    nullable: false,
+                  },
+                },
+                required: ['value', 'unit', 'connection'],
+                additionalProperties: false,
+              },
+              humidity: {
+                properties: {
+                  value: {
+                    description: 'value of the humidity',
+                    type: 'number',
+                    format: 'float',
+                    nullable: false,
+                  },
+                  unit: {
+                    description: 'unit of the humidity',
+                    type: 'string',
+                    nullable: false,
+                  },
+                  connection: {
+                    description: 'connection of the humidity',
+                    type: 'string',
+                    nullable: false,
+                  },
+                  precipitation: {
+                    description: 'precipitation of the humidity',
+                    type: 'boolean',
+                    nullable: false,
+                  },
+                },
+                required: ['value', 'unit', 'connection', 'precipitation'],
+                additionalProperties: false,
+              },
+            },
+            required: ['cadence', 'battery', 'temperature', 'humidity'],
+            additionalProperties: false,
+          },
+        },
+        required: ['id', 'thing', 'thing_name', 'thing_type', 'timestamp', 'payload'],
         additionalProperties: false,
       },
     },

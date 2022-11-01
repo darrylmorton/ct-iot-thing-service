@@ -50,24 +50,17 @@ const db: DatabaseInterface = {
     return this.client('thing_payloads').insert(thingPayload).returning(['id', 'thing', 'timestamp', 'payload'])
   },
 
-  async findThingPayloadsByThingId(thingId: string): Promise<Array<ThingPayload>> {
-    return this.client('thing_payloads')
-      .select(['id', 'thing', 'timestamp', 'payload'])
-      .where({ thing: thingId })
-      .orderBy('timestamp')
-  },
-
-  // TODO start and end timestamps can be optional and default to start and end of today...
   async findThingPayloads(startTimestamp: number, endTimestamp: number, thingIds: string[]): Promise<ThingPayload[]> {
-    const query = this.client('thing_payloads')
-      .select(['id', 'thing', 'timestamp', 'payload'])
+    const query = this.client('thing_payloads AS tp')
+      .select(['tp.id', 'tp.thing', 't.name AS thing_name', 't.thing_type', 'tp.timestamp', 'tp.payload'])
+      .join('things AS t', 'tp.thing', '=', 't.id')
       .whereBetween('timestamp', [startTimestamp, endTimestamp])
 
     if (thingIds.length) {
       query.whereIn('thing', thingIds)
     }
 
-    query.orderBy(['timestamp', 'thing'])
+    query.orderBy(['tp.timestamp', 't.name'])
 
     return query
   },

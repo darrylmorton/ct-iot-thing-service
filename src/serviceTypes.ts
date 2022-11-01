@@ -46,5 +46,4 @@ export interface ThingServiceInterface {
     endTimestamp: number,
     thingIds: string[]
   ): Promise<ServiceThingPayloadsResponse>
-  getThingPayloadsByThingId(thingId: string): Promise<ServiceThingPayloadsResponse>
 }
