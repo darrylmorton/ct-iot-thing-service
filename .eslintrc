@@ -1,0 +1,30 @@
+{
+  "extends": ["eslint:recommended", "prettier", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["prettier", "@typescript-eslint"],
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 9,
+    "sourceType": "module"
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "no-console": 2,
+    "@typescript-eslint/ban-ts-comment": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["**/test/**/*.test.ts"],
+      "rules": {
+        "prettier/prettier": "error"
+      },
+      "env": {
+        "mocha": true
+      }
+    }
+  ],
+  "ignorePatterns": ["./node_modules","./dist/**/*"]
+}

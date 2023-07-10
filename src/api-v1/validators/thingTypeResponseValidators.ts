@@ -1,0 +1,61 @@
+import OpenAPIResponseValidator from 'openapi-response-validator'
+
+export const thingTypeDefinitions = {
+  definitions: {
+    ThingType: {
+      type: 'object',
+      properties: {
+        name: {
+          description: 'name of the thing type',
+          type: 'string',
+          nullable: false,
+        },
+        description: {
+          description: 'description of the thing type',
+          type: 'string',
+          nullable: false,
+        },
+      },
+      required: ['name', 'description'],
+      additionalProperties: false,
+    },
+  },
+}
+
+export const postThingTypeValidator = new OpenAPIResponseValidator({
+  definitions: thingTypeDefinitions.definitions,
+  responses: {
+    201: {
+      schema: {
+        type: 'object',
+        $ref: '#/definitions/ThingType',
+      },
+    },
+  },
+})
+
+export const getThingTypeValidator = new OpenAPIResponseValidator({
+  definitions: thingTypeDefinitions.definitions,
+  responses: {
+    200: {
+      schema: {
+        type: 'object',
+        $ref: '#/definitions/ThingType',
+      },
+    },
+  },
+})
+
+export const getThingTypesValidator = new OpenAPIResponseValidator({
+  definitions: thingTypeDefinitions.definitions,
+  responses: {
+    200: {
+      schema: {
+        type: 'array',
+        items: {
+          $ref: '#/definitions/ThingType',
+        },
+      },
+    },
+  },
+})
