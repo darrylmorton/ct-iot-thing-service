@@ -1,22 +1,16 @@
-import pino from 'pino'
+import winston from 'winston'
 
 import env from './env'
+import { getWinstonTransportConsole } from './util/AppUtil'
 
-const logger = pino(
-  {
-    name: 'THING_SERVICE',
-    level: env.LOG_LEVEL,
-    enabled: true,
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        colorize: true,
-      },
-    },
-  },
-  process.stdout
-)
+const logger: winston.Logger = winston.createLogger({
+  level: env.LOG_LEVEL,
+  transports: [getWinstonTransportConsole()],
+})
 
-logger.debug('Environment variables %j', { ...env })
+logger.debug({
+  message: 'Environment variables',
+  messageObject: { ...env },
+})
 
 export default logger

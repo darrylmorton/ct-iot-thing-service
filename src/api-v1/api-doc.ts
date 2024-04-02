@@ -1,6 +1,7 @@
+import { OpenAPIV3 } from 'openapi-types'
+
 import env from '../env'
 import { API_URI_PREFIX } from '../util/AppUtil'
-import { OpenAPIV3 } from 'openapi-types'
 
 const apiDoc: OpenAPIV3.Document = {
   openapi: '3.0.3',

@@ -2,9 +2,9 @@ import request from 'supertest'
 
 import { Express } from 'express'
 
-export async function healthCheckRoute(app: Express) {
+export const healthCheckRoute = async (app: Express): Promise<Response> => {
   return request(app)
-    .get('/health')
+    .get('/healthz')
     .set('content-type', 'application/json')
     .then((response) => {
       return response

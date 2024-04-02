@@ -23,7 +23,7 @@ export interface ServiceThingResponse extends ServiceResponse {
 }
 
 export interface ServiceThingsResponse extends ServiceResponse {
-  result: Array<Thing> | []
+  result: Thing[] | []
 }
 
 export interface ServiceThingTypeResponse extends ServiceResponse {
@@ -31,7 +31,7 @@ export interface ServiceThingTypeResponse extends ServiceResponse {
 }
 
 export interface ServiceThingTypesResponse extends ServiceResponse {
-  result: Array<ThingType> | []
+  result: ThingType[] | []
 }
 
 export interface ServiceThingGroupResponse extends ServiceResponse {
@@ -39,7 +39,7 @@ export interface ServiceThingGroupResponse extends ServiceResponse {
 }
 
 export interface ServiceThingGroupsResponse extends ServiceResponse {
-  result: Array<ThingGroup> | []
+  result: ThingGroup[] | []
 }
 
 export interface ServiceThingGroupDeviceResponse extends ServiceResponse {
@@ -47,7 +47,7 @@ export interface ServiceThingGroupDeviceResponse extends ServiceResponse {
 }
 
 export interface ServiceThingGroupDevicesResponse extends ServiceResponse {
-  result: Array<ThingGroupDevice> | []
+  result: ThingGroupDevice[] | []
 }
 
 export interface ServiceThingPayloadResponse extends ServiceResponse {

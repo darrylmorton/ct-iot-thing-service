@@ -5,16 +5,16 @@ import { ServiceThingGroupDeviceResponse, ThingServiceInterface } from '../../..
 import logger from '../../../../../logger'
 import { getThingGroupDeviceValidator } from '../../../../validators/thingGroupDeviceResponseValidators'
 
-export default function (thingService: ThingServiceInterface) {
+export default function (thingService: ThingServiceInterface): Operation {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { statusCode, result }: ServiceThingGroupDeviceResponse =
           await thingService.getThingGroupDeviceByNameAndDeviceId(req.params.name, req.params.deviceId)
-        logger.trace('GET thingGroupDevicesByNameAndDeviceId: statusCode, result %d %j', statusCode, result)
+        logger.debug('GET thingGroupDevicesByNameAndDeviceId: statusCode, result %d %j', statusCode, result)
 
         const validationErrors = getThingGroupDeviceValidator.validateResponse(200, result)
-        logger.trace('GET thingGroupDevicesByNameAndDeviceId: validationErrors %j', validationErrors)
+        logger.debug('GET thingGroupDevicesByNameAndDeviceId: validationErrors %j', validationErrors)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)

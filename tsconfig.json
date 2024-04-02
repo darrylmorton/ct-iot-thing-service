@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "target": "es6",
+    "target": "ESNext",
     "strict": true,
     "preserveConstEnums": true,
     "noEmit": false,
     "sourceMap": true,
-    "module":"commonjs",
+    "module": "commonjs",
     "moduleResolution":"node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -15,5 +14,8 @@
     "isolatedModules": true,
     "resolveJsonModule": true
   },
+  "include": [
+    "./**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

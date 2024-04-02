@@ -1,8 +1,6 @@
-import type { Knex } from 'knex'
-
 import env from './src/env'
 
-const config: { [key: string]: Knex.Config } = {
+const config = {
   test: {
     client: 'pg',
     connection: {

@@ -5,15 +5,15 @@ import { ServiceThingTypeResponse, ThingServiceInterface } from '../../../servic
 import { getThingTypeValidator } from '../../validators/thingTypeResponseValidators'
 import logger from '../../../logger'
 
-export default function (thingService: ThingServiceInterface) {
+export default function (thingService: ThingServiceInterface): { GET: OperationHandlerArray } {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { statusCode, result }: ServiceThingTypeResponse = await thingService.getThingTypeByName(req.params.name)
-        logger.trace('GET thingTypeByName: statusCode, result %d %j', statusCode, result)
+        logger.debug('GET thingTypeByName: statusCode, result %d %j', statusCode, result)
 
         const validationErrors = getThingTypeValidator.validateResponse(statusCode, result)
-        logger.trace('GET thingTypeByName: validationErrors %j', validationErrors)
+        logger.debug('GET thingTypeByName: validationErrors %j', validationErrors)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)

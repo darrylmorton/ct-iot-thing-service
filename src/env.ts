@@ -1,13 +1,14 @@
 import { cleanEnv, str, port, host } from 'envalid'
-import dotenv from 'dotenv'
+import { config } from 'dotenv'
 
 import { version } from '../package.json'
 
 if (process.env.NODE_ENV === 'test') {
-  dotenv.config({ path: './test/test.env' })
+  config({ path: './test/test.env' })
 }
 
 const env = cleanEnv(process.env, {
+  SERVICE_NAME: str({ default: 'thing-service' }),
   LOG_LEVEL: str({ default: 'info', devDefault: 'debug' }),
   API_VERSION: str({ default: version }),
   API_MAJOR_VERSION: str({ default: 'v1' }),

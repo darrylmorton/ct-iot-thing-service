@@ -5,17 +5,17 @@ import { ServiceThingGroupResponse, ThingServiceInterface } from '../../../servi
 import logger from '../../../logger'
 import { getThingGroupValidator } from '../../validators/thingGroupResponseValidators'
 
-export default function (thingService: ThingServiceInterface) {
+export default function (thingService: ThingServiceInterface): Operation {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { statusCode, result }: ServiceThingGroupResponse = await thingService.getThingGroupByName(
           req.params.name
         )
-        logger.trace('GET thingGroupByName: statusCode, result %d %j', statusCode, result)
+        logger.debug('GET thingGroupByName: statusCode, result %d %j', statusCode, result)
 
         const validationErrors = getThingGroupValidator.validateResponse(statusCode, result)
-        logger.trace('GET thingGroupByName: validationErrors %j', validationErrors)
+        logger.debug('GET thingGroupByName: validationErrors %j', validationErrors)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)

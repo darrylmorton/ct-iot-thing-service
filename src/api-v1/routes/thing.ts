@@ -1,20 +1,23 @@
 import { Request, Response, NextFunction } from 'express'
 import { Operation, OperationHandlerArray } from 'express-openapi'
 
-import { ServiceThingResponse, ServiceThingsResponse } from '../../serviceTypes'
+import { ServiceThingResponse, ServiceThingsResponse, ThingServiceInterface } from '../../serviceTypes'
 import { getThingsValidator, postThingValidator } from '../validators/thingResponseValidators'
-import { ThingServiceInterface } from '../../serviceTypes'
 import logger from '../../logger'
+import { Thing } from '../../types'
 
-export default function (thingService: ThingServiceInterface) {
+export default function (thingService: ThingServiceInterface): {
+  GET: OperationHandlerArray
+  POST: OperationHandlerArray
+} {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { statusCode, result }: ServiceThingsResponse = await thingService.getThings()
-        logger.trace('GET thing: statusCode, result %d %j', statusCode, result)
+        logger.debug('GET thing: statusCode, result %d %j', statusCode, result)
 
         const validationErrors = getThingsValidator.validateResponse(200, result)
-        logger.trace('GET thing: validationErrors %j', validationErrors)
+        logger.debug('GET thing: validationErrors %j', validationErrors)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -32,11 +35,11 @@ export default function (thingService: ThingServiceInterface) {
   const POST: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const { statusCode, result }: ServiceThingResponse = await thingService.postThing(req.body)
-        logger.trace('POST thing: statusCode, result %d %j', statusCode, result)
+        const { statusCode, result }: ServiceThingResponse = await thingService.postThing(req.body as Thing)
+        logger.debug('POST thing: statusCode, result %d %j', statusCode, result)
 
         const validationErrors = postThingValidator.validateResponse(201, result)
-        logger.trace('POST thing: validationErrors %j', validationErrors)
+        logger.debug('POST thing: validationErrors %j', validationErrors)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -188,7 +191,10 @@ export default function (thingService: ThingServiceInterface) {
     tags: ['thing'],
   }
 
-  const doc: { GET: OperationHandlerArray; POST: OperationHandlerArray } = {
+  const doc: {
+    GET: OperationHandlerArray
+    POST: OperationHandlerArray
+  } = {
     GET,
     POST,
   }

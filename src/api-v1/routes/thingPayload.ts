@@ -6,8 +6,12 @@ import { ServiceThingPayloadResponse, ThingServiceInterface } from '../../servic
 import { postThingPayloadValidator } from '../validators/thingPayloadResponseValidators'
 import logger from '../../logger'
 import { getStartIsoTimestamp } from '../../util/AppUtil'
+import { ThingPayload } from '../../types'
 
-export default function (thingService: ThingServiceInterface) {
+export default function (thingService: ThingServiceInterface): {
+  GET: OperationHandlerArray
+  POST: OperationHandlerArray
+} {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       const queryParams = <Record<string, string>>req.query
@@ -26,13 +30,12 @@ export default function (thingService: ThingServiceInterface) {
       }
 
       try {
-        const { statusCode, result }: ServiceThingPayloadResponse = await thingService.getThingPayloadsByQueryParams(
-          queryParams
-        )
-        logger.trace('GET thingPayload: statusCode, result %d %j', statusCode, result)
+        const { statusCode, result }: ServiceThingPayloadResponse =
+          await thingService.getThingPayloadsByQueryParams(queryParams)
+        logger.debug('GET thingPayload: statusCode, result %d %j', statusCode, result)
 
         const validationErrors = postThingPayloadValidator.validateResponse(200, result)
-        logger.trace('GET thingPayload: validationErrors %j', validationErrors)
+        logger.debug('GET thingPayload: validationErrors %j', validationErrors)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -50,11 +53,13 @@ export default function (thingService: ThingServiceInterface) {
   const POST: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const { statusCode, result }: ServiceThingPayloadResponse = await thingService.postThingPayload(req.body)
-        logger.trace('POST thingPayload: statusCode, result %d %j', statusCode, result)
+        const { statusCode, result }: ServiceThingPayloadResponse = await thingService.postThingPayload(
+          req.body as ThingPayload
+        )
+        logger.debug('POST thingPayload: statusCode, result %d %j', statusCode, result)
 
         const validationErrors = postThingPayloadValidator.validateResponse(201, result)
-        logger.trace('POST thingPayload: validationErrors %j', validationErrors)
+        logger.debug('POST thingPayload: validationErrors %j', validationErrors)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -334,7 +339,10 @@ export default function (thingService: ThingServiceInterface) {
     tags: ['thing payload'],
   }
 
-  const doc: { GET: OperationHandlerArray; POST: OperationHandlerArray } = {
+  const doc: {
+    GET: OperationHandlerArray
+    POST: OperationHandlerArray
+  } = {
     GET,
     POST,
   }
