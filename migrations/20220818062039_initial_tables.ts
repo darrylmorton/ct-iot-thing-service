@@ -1,4 +1,4 @@
-import { Knex } from 'knex'
+import { Knex, Raw } from 'knex'
 import CreateTableBuilder = Knex.CreateTableBuilder
 
 export const up = async (knex: Knex): Promise<void> => {
@@ -9,7 +9,7 @@ export const up = async (knex: Knex): Promise<void> => {
     await knex.raw('CREATE EXTENSION "uuid-ossp"')
   }
 
-  const uuidGenerateV4 = async (): Promise<void> => knex.raw('uuid_generate_v4()')
+  const uuidGenerateV4 = async (): Promise<Raw<Knex>> => knex.raw('uuid_generate_v4()')
   const now = (): Knex.Raw => knex.fn.now()
 
   // thing_groups
@@ -46,8 +46,10 @@ export const up = async (knex: Knex): Promise<void> => {
     def.index(['thing_type'])
   })
   // thing_group_devices
-  await knex.schema.createTable('thing_group_devices', (def: CreateTableBuilder) => {
-    def.uuid('id').defaultTo(uuidGenerateV4())
+  await knex.schema.createTable('thing_group_devices', async (def: CreateTableBuilder) => {
+    const uuid = uuidGenerateV4()
+
+    def.uuid('id').defaultTo(uuid)
     def.string('thing_group').notNullable()
     def.string('device_id').notNullable()
     def.datetime('created_at').notNullable().defaultTo(now())
@@ -58,7 +60,9 @@ export const up = async (knex: Knex): Promise<void> => {
   })
   // thing_payloads
   await knex.schema.createTable('thing_payloads', (def: CreateTableBuilder) => {
-    def.uuid('id').defaultTo(uuidGenerateV4())
+    const uuid = uuidGenerateV4()
+
+    def.uuid('id').defaultTo(uuid)
     def.string('device_id').notNullable()
     def.integer('payload_timestamp').notNullable()
     def.jsonb('payload').notNullable()
