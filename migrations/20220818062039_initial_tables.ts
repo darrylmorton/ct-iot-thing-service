@@ -1,7 +1,7 @@
 import { Knex } from 'knex'
 import CreateTableBuilder = Knex.CreateTableBuilder
 
-export async function up(knex: Knex): Promise<void> {
+export const up = async (knex: Knex): Promise<void> => {
   // check extension is not installed
   const [extInstalled] = await knex('pg_extension').select('*').where({ extname: 'uuid-ossp' })
 
@@ -9,8 +9,8 @@ export async function up(knex: Knex): Promise<void> {
     await knex.raw('CREATE EXTENSION "uuid-ossp"')
   }
 
-  const uuidGenerateV4 = () => knex.raw('uuid_generate_v4()')
-  const now = () => knex.fn.now()
+  const uuidGenerateV4 = (): Knex.Raw => knex.raw('uuid_generate_v4()')
+  const now = (): Knex.Raw => knex.fn.now()
 
   // thing_groups
   await knex.schema.createTable('thing_groups', (def: CreateTableBuilder) => {
@@ -73,7 +73,7 @@ export async function up(knex: Knex): Promise<void> {
   })
 }
 
-export async function down(knex: Knex): Promise<void> {
+export const down = async (knex: Knex): Promise<void> => {
   await knex.schema.dropTable('thing_group_devices')
   await knex.schema.dropTable('thing_groups')
   await knex.schema.dropTable('thing_payloads')

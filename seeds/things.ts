@@ -2,7 +2,7 @@
 import db from '../src/db'
 import { createThingPayload } from '../test/helper/thingHelper'
 
-export const DEVICE_IDS: Array<string> = [
+export const DEVICE_IDS: string[] = [
   'aaa-111111',
   'bbb-222222',
   'ccc-333333',
@@ -10,9 +10,9 @@ export const DEVICE_IDS: Array<string> = [
   'eee-555555',
   'fff-666666',
 ]
-export const THING_NAMES: Array<string> = ['thingOne', 'thingTwo', 'thingThree', 'thingFour', 'thingFive', 'thingSix']
-export const THING_TYPE_NAMES: Array<string> = ['thingTypeOne', 'thingTypeTwo', 'thingTypeThree']
-export const THING_GROUP_NAMES: Array<string> = [
+export const THING_NAMES: string[] = ['thingOne', 'thingTwo', 'thingThree', 'thingFour', 'thingFive', 'thingSix']
+export const THING_TYPE_NAMES: string[] = ['thingTypeOne', 'thingTypeTwo', 'thingTypeThree']
+export const THING_GROUP_NAMES: string[] = [
   'test-one-env',
   'test-two-env',
   'test-three-env',

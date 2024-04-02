@@ -2,9 +2,9 @@ import request from 'supertest'
 
 import env from '../../src/env'
 import { Express } from 'express'
-import { ThingType } from '../../src/types'
+import { ThingPayload, ThingType } from '../../src/types'
 
-export async function getThingTypesRoute(app: Express) {
+export const getThingTypesRoute = async (app: Express): Promise<any> => {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingType`)
     .set('content-type', 'application/json')
@@ -18,7 +18,7 @@ export async function getThingTypesRoute(app: Express) {
     })
 }
 
-export async function getThingTypeByNameRoute(app: Express, name: string) {
+export const getThingTypeByNameRoute = async (app: Express, name: string): Promise<any> => {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingType/${name}`)
     .set('content-type', 'application/json')
@@ -32,7 +32,7 @@ export async function getThingTypeByNameRoute(app: Express, name: string) {
     })
 }
 
-export async function getThingGroupsRoute(app: Express) {
+export const getThingGroupsRoute = async (app: Express): Promise<any> => {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingGroup`)
     .set('content-type', 'application/json')
@@ -46,7 +46,7 @@ export async function getThingGroupsRoute(app: Express) {
     })
 }
 
-export async function getThingGroupByNameRoute(app: Express, name?: unknown) {
+export const getThingGroupByNameRoute = async (app: Express, name?: unknown): Promise<any> => {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingGroup/${name}`)
     .set('content-type', 'application/json')
@@ -60,10 +60,10 @@ export async function getThingGroupByNameRoute(app: Express, name?: unknown) {
     })
 }
 
-export async function getThingGroupDeviceByNameAndDeviceIdRoute(
+export const getThingGroupDeviceByNameAndDeviceIdRoute = async (
   app: Express,
   thingGroupDevice?: Record<string, unknown>
-) {
+): Promise<any> => {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingGroup/${thingGroupDevice?.thingGroup}/thing/${thingGroupDevice?.deviceId}`)
     .set('content-type', 'application/json')
@@ -77,7 +77,7 @@ export async function getThingGroupDeviceByNameAndDeviceIdRoute(
     })
 }
 
-export async function getThingGroupDevicesByNameRoute(app: Express, name?: string | unknown) {
+export const getThingGroupDevicesByNameRoute = async (app: Express, name?: string | unknown): Promise<any> => {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingGroup/${name}/thing`)
     .set('content-type', 'application/json')
@@ -91,7 +91,10 @@ export async function getThingGroupDevicesByNameRoute(app: Express, name?: strin
     })
 }
 
-export async function postThingGroupDeviceRoute(app: Express, thingGroupDevice?: Record<string, unknown>) {
+export const postThingGroupDeviceRoute = async (
+  app: Express,
+  thingGroupDevice?: Record<string, unknown>
+): Promise<any> => {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingGroup/${thingGroupDevice?.thingGroup}/thing`)
     .set('content-type', 'application/json')
@@ -106,7 +109,7 @@ export async function postThingGroupDeviceRoute(app: Express, thingGroupDevice?:
     })
 }
 
-export async function postThingGroupRoute(app: Express, thingGroup?: Record<string, unknown>) {
+export const postThingGroupRoute = async (app: Express, thingGroup?: Record<string, unknown>): Promise<any> => {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingGroup`)
     .set('content-type', 'application/json')
@@ -121,7 +124,7 @@ export async function postThingGroupRoute(app: Express, thingGroup?: Record<stri
     })
 }
 
-export async function postThingTypeRoute(app: Express, thingType: ThingType) {
+export const postThingTypeRoute = async (app: Express, thingType: ThingType): Promise<any> => {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingType`)
     .set('content-type', 'application/json')
@@ -136,7 +139,7 @@ export async function postThingTypeRoute(app: Express, thingType: ThingType) {
     })
 }
 
-export async function getThingByNameRoute(app: Express, name: unknown) {
+export const getThingByNameRoute = async (app: Express, name: unknown): Promise<any> => {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thing/${name}`)
     .set('content-type', 'application/json')
@@ -150,7 +153,7 @@ export async function getThingByNameRoute(app: Express, name: unknown) {
     })
 }
 
-export async function getThingsRoute(app: Express) {
+export const getThingsRoute = async (app: Express): Promise<any> => {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thing`)
     .set('content-type', 'application/json')
@@ -164,7 +167,7 @@ export async function getThingsRoute(app: Express) {
     })
 }
 
-export async function postThingRoute(app: Express, thing?: Record<string, unknown>) {
+export const postThingRoute = async (app: Express, thing?: Record<string, unknown>): Promise<any> => {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thing`)
     .set('content-type', 'application/json')
@@ -179,11 +182,11 @@ export async function postThingRoute(app: Express, thing?: Record<string, unknow
     })
 }
 
-export async function postThingPayloadRoute(app: Express, thingPayload: Record<string, unknown>) {
+export const postThingPayloadRoute = async (app: Express, thingPayload: any): Promise<any> => {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingPayload`)
     .set('content-type', 'application/json')
-    .send(thingPayload)
+    .send(thingPayload as ThingPayload)
     .then((response) => {
       return response
     })
@@ -194,7 +197,10 @@ export async function postThingPayloadRoute(app: Express, thingPayload: Record<s
     })
 }
 
-export async function getThingPayloadsWithQueryParamsRoute(app: Express, queryParams: Record<string, string>) {
+export const getThingPayloadsWithQueryParamsRoute = async (
+  app: Express,
+  queryParams: Record<string, string>
+): Promise<any> => {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingPayload`)
     .set('content-type', 'application/json')

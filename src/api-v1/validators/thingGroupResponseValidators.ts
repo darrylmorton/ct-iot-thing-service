@@ -22,7 +22,7 @@ export const thingGroupDefinitions = {
   },
 }
 
-export const postThingGroupValidator = new OpenAPIResponseValidator({
+export const postThingGroupValidator: OpenAPIResponseValidator = new OpenAPIResponseValidator({
   definitions: thingGroupDefinitions.definitions,
   responses: {
     201: {
@@ -34,7 +34,7 @@ export const postThingGroupValidator = new OpenAPIResponseValidator({
   },
 })
 
-export const getThingGroupValidator = new OpenAPIResponseValidator({
+export const getThingGroupValidator: OpenAPIResponseValidator = new OpenAPIResponseValidator({
   definitions: thingGroupDefinitions.definitions,
   responses: {
     200: {
@@ -53,7 +53,7 @@ export const getThingGroupValidator = new OpenAPIResponseValidator({
   },
 })
 
-export const getThingGroupsValidator = new OpenAPIResponseValidator({
+export const getThingGroupsValidator: OpenAPIResponseValidator = new OpenAPIResponseValidator({
   definitions: thingGroupDefinitions.definitions,
   responses: {
     200: {

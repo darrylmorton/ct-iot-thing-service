@@ -12,17 +12,20 @@ import {
   postThingGroupDeviceValidator,
 } from '../../../validators/thingGroupDeviceResponseValidators'
 
-export default function (thingService: ThingServiceInterface) {
+export default function (thingService: ThingServiceInterface): {
+  GET: OperationHandlerArray
+  POST: OperationHandlerArray
+} {
   const GET: Operation = [
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { statusCode, result }: ServiceThingGroupDevicesResponse = await thingService.getThingGroupDevicesByName(
           req.params.name
         )
-        logger.trace('GET thingGroupDevicesByName: statusCode, result %d %j', statusCode, result)
+        logger.debug('GET thingGroupDevicesByName: statusCode, result %d %j', statusCode, result)
 
         const validationErrors = getThingGroupDevicesValidator.validateResponse(200, result)
-        logger.trace('GET thingGroupDevicesByName: validationErrors %j', validationErrors)
+        logger.debug('GET thingGroupDevicesByName: validationErrors %j', validationErrors)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -44,10 +47,10 @@ export default function (thingService: ThingServiceInterface) {
           thingGroup: req.params.name,
           deviceId: req.body.deviceId,
         })
-        logger.trace('POST thingGroupDevice: statusCode, result %d %j', statusCode, result)
+        logger.debug('POST thingGroupDevice: statusCode, result %d %j', statusCode, result)
 
         const validationErrors = postThingGroupDeviceValidator.validateResponse(201, result)
-        logger.trace('POST thingGroupDevice: validationErrors %j', validationErrors)
+        logger.debug('POST thingGroupDevice: validationErrors %j', validationErrors)
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -211,7 +214,10 @@ export default function (thingService: ThingServiceInterface) {
     tags: ['thing group device'],
   }
 
-  const doc: { GET: OperationHandlerArray; POST: OperationHandlerArray } = {
+  const doc: {
+    GET: OperationHandlerArray
+    POST: OperationHandlerArray
+  } = {
     GET,
     POST,
   }

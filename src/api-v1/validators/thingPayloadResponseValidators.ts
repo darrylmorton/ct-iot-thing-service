@@ -105,7 +105,7 @@ export const thingPayloadDefinitions = {
   },
 }
 
-export const postThingPayloadValidator = new OpenAPIResponseValidator({
+export const postThingPayloadValidator: OpenAPIResponseValidator = new OpenAPIResponseValidator({
   definitions: thingPayloadDefinitions.definitions,
   responses: {
     200: {

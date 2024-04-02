@@ -1,8 +1,7 @@
-import express, { Express, Request, Response, NextFunction } from 'express'
-import pinoHttp from 'pino-http'
+import express, { Express, Request, Response } from 'express'
 import { initialize } from 'express-openapi'
 import swaggerUi from 'swagger-ui-express'
-import * as bodyParser from 'body-parser'
+import bodyParser from 'body-parser'
 import cors from 'cors'
 
 import env from './env'
@@ -12,19 +11,13 @@ import v1ThingService from './api-v1/services/thingService'
 import { HealthCheckResponse } from './serviceTypes'
 import { API_URI_PREFIX } from './util/AppUtil'
 
-export async function createHttpServer() {
+export const createHttpServer = async (): Promise<Express> => {
   const app: Express = express()
-  const requestLogger = pinoHttp({ logger })
 
   app.use(cors())
   app.use(bodyParser.json())
 
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    if (req.path !== '/health') requestLogger(req, res)
-    next()
-  })
-
-  app.get('/health', async (req: Request, res: Response) => {
+  app.get('/healthz', async (req: Request, res: Response): Promise<Response> => {
     const result: HealthCheckResponse = { status: 'ok', version: env.API_VERSION }
 
     return res.status(200).json(result)
@@ -36,9 +29,14 @@ export async function createHttpServer() {
     dependencies: {
       thingService: v1ThingService,
     },
-    paths: './dist/src/api-v1/routes',
+    paths: './src/api-v1/routes',
     routesGlob: '**/*.{ts,js}',
     routesIndexFileRegExp: /(?:index)?\.[tj]s$/,
+    errorMiddleware: (err, req, res, next) => {
+      logger.debug({ message: 'errorMiddleware', messageObject: err })
+
+      return next(err)
+    },
   })
 
   const options = {
@@ -46,7 +44,7 @@ export async function createHttpServer() {
       urls: [
         {
           url: `http://${API_URI_PREFIX}/${env.API_MAJOR_VERSION}/api-docs`,
-          name: 'ThingService',
+          name: env.SERVICE_NAME,
         },
       ],
     },
@@ -57,7 +55,7 @@ export async function createHttpServer() {
   return app
 }
 
-export async function startServer(): Promise<void> {
+export const startServer = async (): Promise<void> => {
   const app: Express = await createHttpServer()
 
   try {

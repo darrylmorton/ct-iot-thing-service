@@ -7,14 +7,14 @@ import { createHttpServer } from '../../src/server'
 import { healthCheckRoute } from '../helper/healthCheckHelper'
 import { HealthCheckResponse } from '../../src/serviceTypes'
 
-describe('Health route', function () {
+describe('Health route', () => {
   let app: Express
 
   before(async function () {
     app = await createHttpServer()
   })
 
-  it('GET health check', async function () {
+  it('GET health check', async () => {
     const expectedResult: HealthCheckResponse = { status: 'ok', version: env.API_VERSION }
 
     const actualResult = await healthCheckRoute(app)

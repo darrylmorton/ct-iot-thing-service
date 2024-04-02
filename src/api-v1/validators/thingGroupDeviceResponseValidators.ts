@@ -28,7 +28,7 @@ export const thingGroupDeviceDefinitions = {
   },
 }
 
-export const postThingGroupDeviceValidator = new OpenAPIResponseValidator({
+export const postThingGroupDeviceValidator: OpenAPIResponseValidator = new OpenAPIResponseValidator({
   definitions: thingGroupDeviceDefinitions.definitions,
   responses: {
     201: {
@@ -54,7 +54,7 @@ export const postThingGroupDeviceValidator = new OpenAPIResponseValidator({
   },
 })
 
-export const getThingGroupDeviceValidator = new OpenAPIResponseValidator({
+export const getThingGroupDeviceValidator: OpenAPIResponseValidator = new OpenAPIResponseValidator({
   definitions: thingGroupDeviceDefinitions.definitions,
   responses: {
     200: {
@@ -73,7 +73,7 @@ export const getThingGroupDeviceValidator = new OpenAPIResponseValidator({
   },
 })
 
-export const getThingGroupDevicesValidator = new OpenAPIResponseValidator({
+export const getThingGroupDevicesValidator: OpenAPIResponseValidator = new OpenAPIResponseValidator({
   definitions: thingGroupDeviceDefinitions.definitions,
   responses: {
     200: {

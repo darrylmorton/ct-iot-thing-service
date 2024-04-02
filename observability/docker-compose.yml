@@ -1,15 +1,15 @@
-version: "3"
+version: '3'
 
 services:
   grafana:
     image: grafana/grafana-enterprise
     ports:
-      - "3000:3000"
+      - '3000:3000'
 
   prometheus:
     image: prom/prometheus
     ports:
-      - "9090:9090"
+      - '9090:9090'
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
 
@@ -17,7 +17,7 @@ services:
     container_name: postgres
     image: postgres:13.8-alpine
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -26,9 +26,9 @@ services:
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter
     ports:
-      - "9187:9187"
+      - '9187:9187'
     environment:
-      DATA_SOURCE_NAME: "postgresql://postgres:postgres@postgres:5432/things?sslmode=disable"
+      DATA_SOURCE_NAME: 'postgresql://postgres:postgres@postgres:5432/things?sslmode=disable'
     links:
       - postgres
       - prometheus

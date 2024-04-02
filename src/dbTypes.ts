@@ -4,23 +4,23 @@ import { SimpleThingPayload, Thing, ThingGroup, ThingGroupDevice, ThingPayload, 
 
 export interface DatabaseInterface {
   client: Knex
-  findThingGroupByName(name: string): Promise<Array<ThingGroup>>
-  findThingGroups(): Promise<Array<ThingGroup>>
-  addThingGroup(thingGroup: ThingGroup): Promise<Array<ThingGroup>>
-  findThingGroupDevices(): Promise<Array<ThingGroupDevice>>
-  findThingGroupDevicesByName(name: string): Promise<Array<ThingGroupDevice>>
-  findThingGroupDeviceByNameAndDeviceId(name: string, deviceId: string): Promise<Array<ThingGroupDevice>>
-  addThingGroupDevice(thingGroupDevice: ThingGroupDevice): Promise<Array<ThingGroupDevice>>
-  findThingTypeByName(name: string): Promise<Array<ThingType>>
-  findThingTypes(): Promise<Array<ThingType>>
-  addThingType(thingType: ThingType): Promise<Array<ThingType>>
-  addThing(thing: Thing): Promise<Array<Thing>>
-  findThingByDeviceId(deviceId: string): Promise<Array<Thing>>
-  findThingByName(name: string): Promise<Array<Thing>>
-  findThingByType(name: string): Promise<Array<Thing>>
-  findThings(): Promise<Array<Thing>>
-  findThingsByThingType(name: string): Promise<Array<Thing>>
-  addThingPayload(thingPayload: SimpleThingPayload): Promise<Array<ThingPayload>>
+  findThingGroupByName(name: string): Promise<ThingGroup[]>
+  findThingGroups(): Promise<ThingGroup[]>
+  addThingGroup(thingGroup: ThingGroup): Promise<ThingGroup[]>
+  findThingGroupDevices(): Promise<ThingGroupDevice[]>
+  findThingGroupDevicesByName(name: string): Promise<ThingGroupDevice[]>
+  findThingGroupDeviceByNameAndDeviceId(name: string, deviceId: string): Promise<ThingGroupDevice[]>
+  addThingGroupDevice(thingGroupDevice: ThingGroupDevice): Promise<ThingGroupDevice[]>
+  findThingTypeByName(name: string): Promise<ThingType[]>
+  findThingTypes(): Promise<ThingType[]>
+  addThingType(thingType: ThingType): Promise<ThingType[]>
+  addThing(thing: Thing): Promise<Thing[]>
+  findThingByDeviceId(deviceId: string): Promise<Thing[]>
+  findThingByName(name: string): Promise<Thing[]>
+  findThingByType(name: string): Promise<Thing[]>
+  findThings(): Promise<Thing[]>
+  findThingsByThingType(name: string): Promise<Thing[]>
+  addThingPayload(thingPayload: SimpleThingPayload): Promise<ThingPayload[]>
   findThingPayloadsByTimestamps(startTimestamp: number, endTimestamp: number): Promise<ThingPayload[]>
   findThingPayloadsByDeviceIdAndTimestamps(
     deviceId: string,

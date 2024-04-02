@@ -22,7 +22,7 @@ export const thingTypeDefinitions = {
   },
 }
 
-export const postThingTypeValidator = new OpenAPIResponseValidator({
+export const postThingTypeValidator: OpenAPIResponseValidator = new OpenAPIResponseValidator({
   definitions: thingTypeDefinitions.definitions,
   responses: {
     201: {
@@ -34,7 +34,7 @@ export const postThingTypeValidator = new OpenAPIResponseValidator({
   },
 })
 
-export const getThingTypeValidator = new OpenAPIResponseValidator({
+export const getThingTypeValidator: OpenAPIResponseValidator = new OpenAPIResponseValidator({
   definitions: thingTypeDefinitions.definitions,
   responses: {
     200: {
@@ -46,7 +46,7 @@ export const getThingTypeValidator = new OpenAPIResponseValidator({
   },
 })
 
-export const getThingTypesValidator = new OpenAPIResponseValidator({
+export const getThingTypesValidator: OpenAPIResponseValidator = new OpenAPIResponseValidator({
   definitions: thingTypeDefinitions.definitions,
   responses: {
     200: {

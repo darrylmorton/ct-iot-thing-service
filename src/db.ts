@@ -16,30 +16,30 @@ const db: DatabaseInterface = {
     },
   }),
 
-  async findThingGroupByName(name: string): Promise<Array<ThingGroup>> {
+  async findThingGroupByName(name: string): Promise<ThingGroup[]> {
     return this.client('thing_groups').select(['name', 'description']).where({ name })
   },
 
-  async findThingGroups(): Promise<Array<ThingGroup>> {
+  async findThingGroups(): Promise<ThingGroup[]> {
     return this.client('thing_groups').select(['name', 'description'])
   },
 
-  async addThingGroup(thingGroup: ThingGroup): Promise<Array<ThingGroup>> {
+  async addThingGroup(thingGroup: ThingGroup): Promise<ThingGroup[]> {
     return this.client('thing_groups').insert(thingGroup).returning(['name', 'description'])
   },
 
-  async findThingGroupDevices(): Promise<Array<ThingGroupDevice>> {
+  async findThingGroupDevices(): Promise<ThingGroupDevice[]> {
     return this.client('thing_group_devices').select(['id', 'thing_group AS thingGroup', 'device_id AS deviceId'])
   },
 
-  async findThingGroupDevicesByName(name: string): Promise<Array<ThingGroupDevice>> {
+  async findThingGroupDevicesByName(name: string): Promise<ThingGroupDevice[]> {
     return this.client('thing_group_devices')
       .select(['id', 'thing_group AS thingGroup', 'device_id AS deviceId'])
       .where({ thing_group: name })
       .orderBy('thing_group', 'device_id')
   },
 
-  async findThingGroupDeviceByNameAndDeviceId(name: string, deviceId: string): Promise<Array<ThingGroupDevice>> {
+  async findThingGroupDeviceByNameAndDeviceId(name: string, deviceId: string): Promise<ThingGroupDevice[]> {
     return this.client('thing_group_devices')
       .select(['id', 'thing_group', 'device_id AS deviceId'])
       .where({ thing_group: name })
@@ -47,25 +47,25 @@ const db: DatabaseInterface = {
       .orderBy('thing_group', 'device_id')
   },
 
-  async addThingGroupDevice(thingGroupDevice: ThingGroupDevice): Promise<Array<ThingGroupDevice>> {
+  async addThingGroupDevice(thingGroupDevice: ThingGroupDevice): Promise<ThingGroupDevice[]> {
     return this.client('thing_group_devices')
       .insert({ device_id: thingGroupDevice.deviceId, thing_group: thingGroupDevice.thingGroup })
       .returning(['id', 'thing_group AS thingGroup', 'device_id AS deviceId'])
   },
 
-  async findThingTypeByName(name: string): Promise<Array<ThingType>> {
+  async findThingTypeByName(name: string): Promise<ThingType[]> {
     return this.client('thing_types').select(['name', 'description']).where({ name })
   },
 
-  async findThingTypes(): Promise<Array<ThingType>> {
+  async findThingTypes(): Promise<ThingType[]> {
     return this.client('thing_types').select(['name', 'description'])
   },
 
-  async addThingType(thingType: ThingType): Promise<Array<ThingType>> {
+  async addThingType(thingType: ThingType): Promise<ThingType[]> {
     return this.client('thing_types').insert(thingType).returning(['name', 'description'])
   },
 
-  async addThing(thing: Thing): Promise<Array<Thing>> {
+  async addThing(thing: Thing): Promise<Thing[]> {
     return this.client('things')
       .insert({
         name: thing.name,
@@ -76,38 +76,38 @@ const db: DatabaseInterface = {
       .returning(['name', 'device_id AS deviceId', 'description', 'thing_type AS thingType'])
   },
 
-  async findThingByName(name: string): Promise<Array<Thing>> {
+  async findThingByName(name: string): Promise<Thing[]> {
     return this.client('things')
       .select(['name', 'device_id AS deviceId', 'description', 'thing_type AS thingType'])
       .where({ name })
   },
 
-  async findThingByDeviceId(deviceId: string): Promise<Array<Thing>> {
+  async findThingByDeviceId(deviceId: string): Promise<Thing[]> {
     return this.client('things')
       .select(['name', 'device_id AS deviceId', 'description', 'thing_type AS thingType'])
       .where({ device_id: deviceId })
   },
 
-  async findThingByType(name: string): Promise<Array<Thing>> {
+  async findThingByType(name: string): Promise<Thing[]> {
     return this.client('things')
       .select(['name', 'device_id AS deviceId', 'description', 'thing_type AS thingType'])
       .where({ thing_type: name })
   },
 
-  async findThings(): Promise<Array<Thing>> {
+  async findThings(): Promise<Thing[]> {
     return this.client('things')
       .select(['name', 'device_id AS deviceId', 'description', 'thing_type AS thingType'])
       .orderBy('name')
       .orderBy('device_id')
   },
 
-  async findThingsByThingType(name: string): Promise<Array<Thing>> {
+  async findThingsByThingType(name: string): Promise<Thing[]> {
     return this.client('things')
       .select(['name', 'device_id AS deviceId', 'description', 'thing_type AS thingType'])
       .where({ name })
   },
 
-  async addThingPayload(thingPayload: SimpleThingPayload): Promise<Array<ThingPayload>> {
+  async addThingPayload(thingPayload: SimpleThingPayload): Promise<ThingPayload[]> {
     return this.client('thing_payloads')
       .insert({
         device_id: thingPayload.deviceId,
