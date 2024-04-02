@@ -11,6 +11,7 @@
     "dev:migrate": "NODE_ENV=development NODE_OPTIONS='--import tsx' npx knex migrate:latest",
     "dev:start": "NODE_ENV=development NODE_OPTIONS='--import tsx' nodemon -q ./src/index.ts",
     "test": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/**/*.test.ts",
+    "test:migrate": "NODE_ENV=test NODE_OPTIONS='--import tsx' npx knex migrate:latest",
     "test:seed": "NODE_ENV=test NODE_OPTIONS='--import tsx' npx knex seed:run",
     "stage:start": "NODE_ENV=staging NODE_OPTIONS='--import tsx' npx knex migrate:latest && npx knex seed:run && NODE_ENV=staging node ./src/index.js",
     "prod:start": "NODE_ENV=production NODE_OPTIONS='--import tsx' node src/index.ts"
