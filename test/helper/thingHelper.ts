@@ -5,7 +5,19 @@ import { expect } from 'chai'
 import { validate as isValidUuid } from 'uuid'
 import { addMinutes, getUnixTime, startOfYesterday, subDays } from 'date-fns'
 
-import { Thing, ThingGroup, ThingType } from '../../src/types'
+import { Thing, ThingGroup, ThingGroupDevice, ThingPayload, ThingType } from '../../src/types'
+
+export const DEVICE_IDS: string[] = ['aaa-111111', 'bbb-222222', 'ccc-333333', 'ddd-444444', 'eee-555555', 'fff-666666']
+export const THING_NAMES: string[] = ['thingOne', 'thingTwo', 'thingThree', 'thingFour', 'thingFive', 'thingSix']
+export const THING_TYPE_NAMES: string[] = ['thingTypeOne', 'thingTypeTwo', 'thingTypeThree']
+export const THING_GROUP_NAMES: string[] = [
+  'test-one-env',
+  'test-two-env',
+  'test-three-env',
+  'test-four-env',
+  'test-five-env',
+  'test-six-env',
+]
 
 export const createTimestamp = (incrementValue?: number): number => {
   const yesterday: Date = startOfYesterday()
@@ -33,6 +45,14 @@ export const createThingType = (name: string): ThingType => {
   }
 }
 
+export const createThingTypes = (): ThingType[] => {
+  return [
+    { name: THING_TYPE_NAMES[0], description: THING_NAMES[0] },
+    { name: THING_TYPE_NAMES[1], description: THING_NAMES[1] },
+    { name: THING_TYPE_NAMES[2], description: THING_NAMES[2] },
+  ]
+}
+
 export const createThing = (name: string, deviceId: string, thingTypeName: string): Thing => {
   return {
     name,
@@ -42,6 +62,17 @@ export const createThing = (name: string, deviceId: string, thingTypeName: strin
   }
 }
 
+export const createThings = (): Thing[] => {
+  return [
+    { name: THING_NAMES[0], description: THING_NAMES[0], deviceId: DEVICE_IDS[0], thingType: THING_TYPE_NAMES[0] },
+    { name: THING_NAMES[1], description: THING_NAMES[1], deviceId: DEVICE_IDS[1], thingType: THING_TYPE_NAMES[0] },
+    { name: THING_NAMES[2], description: THING_NAMES[2], deviceId: DEVICE_IDS[2], thingType: THING_TYPE_NAMES[1] },
+    { name: THING_NAMES[3], description: THING_NAMES[3], deviceId: DEVICE_IDS[3], thingType: THING_TYPE_NAMES[1] },
+    { name: THING_NAMES[4], description: THING_NAMES[4], deviceId: DEVICE_IDS[4], thingType: THING_TYPE_NAMES[2] },
+    { name: THING_NAMES[5], description: THING_NAMES[5], deviceId: DEVICE_IDS[5], thingType: THING_TYPE_NAMES[2] },
+  ]
+}
+
 export const createThingGroup = (name: string): ThingGroup => {
   return {
     name,
@@ -49,8 +80,30 @@ export const createThingGroup = (name: string): ThingGroup => {
   }
 }
 
+export const createThingGroups = (): ThingGroup[] => {
+  return [
+    { name: THING_GROUP_NAMES[0], description: THING_GROUP_NAMES[0] },
+    { name: THING_GROUP_NAMES[1], description: THING_GROUP_NAMES[1] },
+    { name: THING_GROUP_NAMES[2], description: THING_GROUP_NAMES[2] },
+    { name: THING_GROUP_NAMES[3], description: THING_GROUP_NAMES[3] },
+    { name: THING_GROUP_NAMES[4], description: THING_GROUP_NAMES[4] },
+    { name: THING_GROUP_NAMES[5], description: THING_GROUP_NAMES[5] },
+  ]
+}
+
+export const createThingGroupDevices = (): ThingGroupDevice[] => {
+  return [
+    { thingGroup: THING_GROUP_NAMES[0], deviceId: DEVICE_IDS[0] },
+    { thingGroup: THING_GROUP_NAMES[1], deviceId: DEVICE_IDS[1] },
+    { thingGroup: THING_GROUP_NAMES[1], deviceId: DEVICE_IDS[2] },
+    { thingGroup: THING_GROUP_NAMES[2], deviceId: DEVICE_IDS[3] },
+    { thingGroup: THING_GROUP_NAMES[2], deviceId: DEVICE_IDS[4] },
+    { thingGroup: THING_GROUP_NAMES[2], deviceId: DEVICE_IDS[5] },
+  ]
+}
+
 // prettier-ignore
-export const createThingPayload = ({ deviceId, increment }: { deviceId?: any, increment?: number }): any => {
+export const createThingPayload = ({ deviceId, increment }: { deviceId?: any, increment?: number }): ThingPayload => {
   return {
     deviceId,
     payloadTimestamp: createTimestamp(increment),
@@ -77,6 +130,20 @@ export const createThingPayload = ({ deviceId, increment }: { deviceId?: any, in
     },
   }
 }
+export const createThingPayloads = (payloadsTotal: number): ThingPayload[] => {
+  const thingPayloads: ThingPayload[] = []
+
+  for (let payloadsCounter = 0; payloadsCounter < payloadsTotal; payloadsCounter++) {
+    thingPayloads.push(createThingPayload(DEVICE_IDS[0], payloadsCounter))
+    thingPayloads.push(createThingPayload(DEVICE_IDS[1], payloadsCounter))
+    thingPayloads.push(createThingPayload(DEVICE_IDS[2], payloadsCounter))
+    thingPayloads.push(createThingPayload(DEVICE_IDS[3], payloadsCounter))
+    thingPayloads.push(createThingPayload(DEVICE_IDS[4], payloadsCounter))
+    thingPayloads.push(createThingPayload(DEVICE_IDS[5], payloadsCounter))
+  }
+
+  return thingPayloads
+}
 
 export const assertThing = (actualResult: any, expectedResult: any): void => {
   expect(actualResult.name).to.equal(expectedResult.name)
@@ -84,6 +151,13 @@ export const assertThing = (actualResult: any, expectedResult: any): void => {
   expect(actualResult.description).to.equal(expectedResult.description)
   expect(actualResult.thingType).to.equal(expectedResult.thingType)
 }
+
+// export const assertThings = (actualResult: any, expectedResult: any): void => {
+//   expect(actualResult.name).to.equal(expectedResult.name)
+//   expect(actualResult.deviceId).to.equal(expectedResult.deviceId)
+//   expect(actualResult.description).to.equal(expectedResult.description)
+//   expect(actualResult.thingType).to.equal(expectedResult.thingType)
+// }
 
 export const assertThingPayload = (actualResult: any, expectedResult: any): void => {
   expect(isValidUuid(actualResult.id as string)).to.equal(true)

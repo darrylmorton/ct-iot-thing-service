@@ -50,8 +50,32 @@ jobs:
       - name: Dependency Check
         run: npm run depcheck
 
-  tests:
-    name: Run tests
+#  test-unit:
+#    needs: [ lint ]
+#    name: Run unit tests
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@master
+#      - uses: actions/setup-node@master
+#        with:
+#          node-version: 20.x
+#      - name: Cache Node.js modules
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-node-
+#            ${{ runner.OS }}-
+#      - name: Install Packages
+#        run: npm ci
+#      - name: Run tests
+#        run: npm run test:unit
+
+  test-integration:
+    needs: [ lint ]
+    name: Run integration tests
     runs-on: ubuntu-latest
 
     steps:
@@ -78,4 +102,4 @@ jobs:
       - name: Initialise DB
         run: npm run test:migrate
       - name: Run tests
-        run: npm run test
+        run: npm run test:integration
