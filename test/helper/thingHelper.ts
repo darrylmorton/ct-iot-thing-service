@@ -128,6 +128,10 @@ export const createThingGroups = (sortBy?: string): ThingGroup[] => {
   }
 }
 
+export const createThingGroupDevice = (thingGroup: string, deviceId: string): ThingGroupDevice => {
+  return { thingGroup, deviceId }
+}
+
 export const createThingGroupDevices = (sortBy?: string): ThingGroupDevice[] => {
   const result = [
     { thingGroup: THING_GROUP_NAMES[0], deviceId: DEVICE_IDS[0] },
@@ -204,6 +208,14 @@ export const assertThing = (actualResult: any, expectedResult: any): void => {
   expect(actualResult.thingType).to.equal(expectedResult.thingType)
 }
 
+export const assertThings = (actualResult: any, expectedResult: any): void => {
+  expect(actualResult).to.have.length(expectedResult.length as number)
+
+  for (let counter = 0; counter < actualResult.length; counter++) {
+    assertThing(actualResult[counter], expectedResult[counter])
+  }
+}
+
 export const assertThingPayload = (actualResult: any, expectedResult: any): void => {
   expect(isValidUuid(actualResult.id as string)).to.equal(true)
   expect(actualResult.deviceId).to.equal(expectedResult.deviceId)
@@ -230,5 +242,31 @@ export const assertThingGroupDevices = (actualResult: any, expectedResult: any):
 
   for (let counter = 0; counter < actualResult.length; counter++) {
     assertThingGroupDevice(actualResult[counter], expectedResult[counter])
+  }
+}
+
+export const assertThingGroup = (actualResult: any, expectedResult: any): void => {
+  expect(actualResult.name).to.equal(expectedResult.name)
+  expect(actualResult.description).to.equal(expectedResult.description)
+}
+
+export const assertThingGroups = (actualResult: any, expectedResult: any): void => {
+  expect(actualResult).to.have.length(expectedResult.length as number)
+
+  for (let counter = 0; counter < actualResult.length; counter++) {
+    assertThingGroup(actualResult[counter], expectedResult[counter])
+  }
+}
+
+export const assertThingType = (actualResult: any, expectedResult: any): void => {
+  expect(actualResult.name).to.equal(expectedResult.name)
+  expect(actualResult.description).to.equal(expectedResult.description)
+}
+
+export const assertThingTypes = (actualResult: any, expectedResult: any): void => {
+  expect(actualResult).to.have.length(expectedResult.length as number)
+
+  for (let counter = 0; counter < actualResult.length; counter++) {
+    assertThingType(actualResult[counter], expectedResult[counter])
   }
 }

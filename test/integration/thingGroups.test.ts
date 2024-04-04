@@ -11,8 +11,8 @@ import {
   postThingGroupRoute,
 } from '../helper/thingRouteHelper'
 import { createHttpServer } from '../../src/server'
-import { DEVICE_IDS, seed, THING_GROUP_NAMES } from '../../seeds/things'
-import { assertThingGroupDevices, createThingGroup } from '../helper/thingHelper'
+import { seed } from '../../seeds/things'
+import { assertThingGroupDevices, createThingGroup, DEVICE_IDS, THING_GROUP_NAMES } from '../helper/thingHelper'
 import db from '../../src/db'
 
 describe('Thing Group routes', () => {

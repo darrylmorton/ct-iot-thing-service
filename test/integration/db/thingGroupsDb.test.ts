@@ -1,8 +1,14 @@
 import { expect } from 'chai'
 
 import db from '../../../src/db'
-import { createThingGroups, SORT_THING_GROUPS_BY_NAME, THING_GROUP_NAMES } from '../../helper/thingHelper'
-import { seed } from '../../../seeds/things'
+import {
+  assertThingGroups,
+  createThingGroup,
+  createThingGroups,
+  SORT_THING_GROUPS_BY_NAME,
+  THING_GROUP_NAMES,
+} from '../../helper/thingHelper'
+import { cleanup, seed } from '../../../seeds/things'
 
 describe.only('Thing Groups', () => {
   before(async () => {
@@ -33,6 +39,20 @@ describe.only('Thing Groups', () => {
       const actualResult = await db.findThingGroupByName(groupName)
 
       expect(actualResult).to.deep.equal(expectedResult)
+    })
+  })
+
+  describe('add', () => {
+    before(async () => {
+      await cleanup()
+    })
+
+    it('single', async () => {
+      const expectedResult = [createThingGroup(THING_GROUP_NAMES[0])]
+
+      const actualResult = await db.addThingGroup(expectedResult[0])
+
+      assertThingGroups(actualResult, expectedResult)
     })
   })
 })

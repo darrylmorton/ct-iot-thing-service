@@ -1,15 +1,17 @@
-import { subDays } from 'date-fns'
+import { getUnixTime, subDays } from 'date-fns'
 
 import db from '../../../src/db'
 import {
   assertThingPayloads,
+  createThingPayload,
   createThingPayloads,
   DEVICE_IDS,
   SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID,
   THING_GROUP_NAMES,
+  THING_NAMES,
   THING_TYPE_NAMES,
 } from '../../helper/thingHelper'
-import { seed, thingPayloadSeed } from '../../../seeds/things'
+import { cleanup, seed, thingPayloadSeed } from '../../../seeds/things'
 import { ThingPayload } from '../../../src/types'
 import { getUnixEndTimestamp, getUnixStartTimestamp } from '../../../src/util/AppUtil'
 
@@ -81,6 +83,30 @@ describe.only('Thing Payloads', () => {
       )
 
       assertThingPayloads(actualResult, expectedResult)
+    })
+  })
+
+  describe('add', () => {
+    before(async () => {
+      await cleanup()
+    })
+
+    it('single', async () => {
+      await db.addThingType({ name: THING_TYPE_NAMES[0], description: THING_TYPE_NAMES[0] })
+      await db.addThing({
+        name: THING_NAMES[0],
+        description: THING_NAMES[0],
+        deviceId: DEVICE_IDS[0],
+        thingType: THING_TYPE_NAMES[0],
+      })
+      const expectedResult = createThingPayload({
+        deviceId: DEVICE_IDS[0],
+        payloadTimestamp: getUnixTime(startDate),
+      })
+
+      const actualResult = await db.addThingPayload(expectedResult)
+
+      assertThingPayloads(actualResult, [expectedResult])
     })
   })
 })
