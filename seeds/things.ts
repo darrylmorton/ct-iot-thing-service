@@ -39,12 +39,14 @@ const createThingGroupDevicesData = (): any[] => {
   }, [])
 }
 
-const createThingPayloadsData = (payloadsTotal: number, startDate: Date, sortBy?: string): any[] => {
-  return createThingPayloads(payloadsTotal, startDate, sortBy).reduce((acc: any, item: any) => {
+const createThingPayloadsData = (thingPayloads: ThingPayload[]): any[] => {
+  // const thingPayloadsCopy: ThingPayload[] = [...thingPayloads]
+
+  return thingPayloads.reduce((acc: any, item: any) => {
     delete Object.assign(item, { device_id: item.deviceId }).deviceId
     delete Object.assign(item, { payload_timestamp: item.payloadTimestamp }).payloadTimestamp
 
-    acc.push(item)
+    acc.push(insertThingPayload(item))
 
     return acc
   }, [])
@@ -63,32 +65,13 @@ export const seed = async (): Promise<void> => {
 }
 
 const insertThingPayload = async (thingPayload: any): Promise<any> => {
-  // console.log('insertThingPayload', thingPayload)
-
-  await db.client('thing_payloads').insert({
-    device_id: thingPayload.deviceId,
-    payload_timestamp: thingPayload.payloadTimestamp,
-    payload: thingPayload.payload,
-  })
+  await db.client('thing_payloads').insert({ ...thingPayload })
 }
 
 export const thingPayloadSeed = async (thingPayloads: ThingPayload[]): Promise<any> => {
-  // console.log('thingPayloadSeed thingPayloads', thingPayloads[1].deviceId)
+  const thingPayloadsCopy = thingPayloads.map(({ ...item }) => item)
 
-  const thingPayloadInserts = thingPayloads.reduce((acc: any[], item: any): any => {
-    // delete Object.assign(item, { device_id: item.deviceId }).deviceId
-    // delete Object.assign(item, { payload_timestamp: item.payloadTimestamp }).payloadTimestamp
-
-    // console.log('thingPayloadSeed item', item)
-
-    acc.push(insertThingPayload(item))
-
-    return acc
-  }, [])
-
-  // console.log('thingPayloadInserts', thingPayloadInserts)
-
-  await Promise.all(thingPayloadInserts)
+  await Promise.all(createThingPayloadsData(thingPayloadsCopy))
 }
 
 export const cleanup = async (): Promise<void> => {

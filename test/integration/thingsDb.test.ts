@@ -21,17 +21,14 @@ import { getUnixEndTimestamp, getUnixStartTimestamp } from '../../src/util/AppUt
 
 describe.only('Database', () => {
   let thingPayloads: ThingPayload[]
-  // let startDate: Date
   let startTimestamp: number
-  // let startTimestampParam: string
   let endTimestamp: number
-  // let endTimestampParam: string
 
   before(async () => {
     const today = new Date()
     const startDate = subDays(today, 2)
     const endDate = subDays(today, 1)
-    // const date = startOfYesterday()
+
     startTimestamp = getUnixStartTimestamp(startDate)
     endTimestamp = getUnixEndTimestamp(endDate)
 
@@ -39,9 +36,6 @@ describe.only('Database', () => {
 
     await seed()
     await thingPayloadSeed(thingPayloads)
-
-    console.log('startTimestamp', startTimestamp)
-    console.log('endTimestamp', endTimestamp)
   })
 
   describe('Things', () => {
@@ -95,10 +89,8 @@ describe.only('Database', () => {
 
     it('find thing payloads', async () => {
       const expectedResult = thingPayloads // createThingPayloads(48, startDate, SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID)
-      console.log('expectedResult first, last', expectedResult[0], expectedResult[expectedResult.length - 1])
 
       const actualResult = await db.findThingPayloadsByTimestamps(startTimestamp, endTimestamp)
-      console.log('actualResult first, last', actualResult[0], actualResult[actualResult.length - 1])
 
       assertThingPayloads(actualResult, expectedResult)
     })

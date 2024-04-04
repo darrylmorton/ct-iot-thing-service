@@ -196,7 +196,7 @@ export const createThingGroupDevices = (sortBy?: string): ThingGroupDevice[] => 
 }
 
 // prettier-ignore
-export const createThingPayload = ({ startDate, deviceId, payloadTimestamp }: { startDate: Date, deviceId: string, payloadTimestamp: number }): ThingPayload => {
+export const createThingPayload = ({ deviceId, payloadTimestamp }: { deviceId: string, payloadTimestamp: number }): ThingPayload => {
   return {
     deviceId,
     payloadTimestamp,
@@ -240,12 +240,12 @@ export const createThingPayloads = (payloadsTotal: number, startDate: Date, sort
   for (let payloadsCounter = 0; payloadsCounter < payloadsTotal; payloadsCounter++) {
     const payloadTimestamp = createTimestampByDateAndIncrement(startDate, payloadsCounter)
 
-    result.push(createThingPayload({ startDate, deviceId: DEVICE_IDS[0], payloadTimestamp }))
-    result.push(createThingPayload({ startDate, deviceId: DEVICE_IDS[1], payloadTimestamp }))
-    result.push(createThingPayload({ startDate, deviceId: DEVICE_IDS[2], payloadTimestamp }))
-    result.push(createThingPayload({ startDate, deviceId: DEVICE_IDS[3], payloadTimestamp }))
-    result.push(createThingPayload({ startDate, deviceId: DEVICE_IDS[4], payloadTimestamp }))
-    result.push(createThingPayload({ startDate, deviceId: DEVICE_IDS[5], payloadTimestamp }))
+    result.push(createThingPayload({ deviceId: DEVICE_IDS[0], payloadTimestamp }))
+    result.push(createThingPayload({ deviceId: DEVICE_IDS[1], payloadTimestamp }))
+    result.push(createThingPayload({ deviceId: DEVICE_IDS[2], payloadTimestamp }))
+    result.push(createThingPayload({ deviceId: DEVICE_IDS[3], payloadTimestamp }))
+    result.push(createThingPayload({ deviceId: DEVICE_IDS[4], payloadTimestamp }))
+    result.push(createThingPayload({ deviceId: DEVICE_IDS[5], payloadTimestamp }))
   }
 
   // console.log('thing payloads', result[1].deviceId)
@@ -273,9 +273,6 @@ export const assertThing = (actualResult: any, expectedResult: any): void => {
 // }
 
 export const assertThingPayload = (actualResult: any, expectedResult: any): void => {
-  console.log('assertThingPayload actualResult', actualResult)
-  console.log('assertThingPayload expectedResult', expectedResult)
-
   expect(isValidUuid(actualResult.id as string)).to.equal(true)
   expect(actualResult.deviceId).to.equal(expectedResult.deviceId)
   expect(actualResult.payloadTimestamp).to.equal(expectedResult.payloadTimestamp)
