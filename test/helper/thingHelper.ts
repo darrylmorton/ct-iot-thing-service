@@ -24,9 +24,7 @@ export const SORT_THING_TYPES_BY_NAME = 'SORT_THING_TYPES_BY_NAME'
 export const SORT_THING_GROUPS_BY_NAME = 'SORT_THING_GROUPS_BY_NAME'
 export const SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID =
   'SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID'
-// export const SORT_THING_PAYLOADS_BY_TIMESTAMP = 'SORT_THING_PAYLOADS_BY_TIMESTAMP'
 export const SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID = 'SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID'
-export const SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_THING_GROUP = 'SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_THING_GROUP'
 
 export const createTimestamp = (incrementValue?: number): number => {
   const yesterday: Date = startOfYesterday()
@@ -169,16 +167,6 @@ export const createThingGroups = (sortBy?: string): ThingGroup[] => {
   }
 }
 
-const sortThingGroupDevicesByThingGroupAndDeviceId = (a: ThingGroupDevice, b: ThingGroupDevice): number => {
-  if (a.thingGroup > b.thingGroup || a.deviceId > b.thingGroup) {
-    return 1
-  } else if (a.thingGroup < b.thingGroup || a.deviceId < b.thingGroup) {
-    return -1
-  }
-
-  return 0
-}
-
 export const createThingGroupDevices = (sortBy?: string): ThingGroupDevice[] => {
   const result = [
     { thingGroup: THING_GROUP_NAMES[0], deviceId: DEVICE_IDS[0] },
@@ -191,7 +179,7 @@ export const createThingGroupDevices = (sortBy?: string): ThingGroupDevice[] => 
 
   switch (sortBy) {
     case SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID:
-      return result.sort(sortThingGroupDevicesByThingGroupAndDeviceId)
+      return result.sort((a, b) => a.thingGroup.localeCompare(b.thingGroup) || a.deviceId - b.deviceId)
     default:
       return result
   }

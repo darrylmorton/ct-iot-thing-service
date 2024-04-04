@@ -29,7 +29,10 @@ const db: DatabaseInterface = {
   },
 
   async findThingGroupDevices(): Promise<ThingGroupDevice[]> {
-    return this.client('thing_group_devices').select(['id', 'thing_group AS thingGroup', 'device_id AS deviceId'])
+    return this.client('thing_group_devices')
+      .select(['id', 'thing_group AS thingGroup', 'device_id AS deviceId'])
+      .orderBy('thing_group', 'ASC')
+      .orderBy('device_id', 'ASC')
   },
 
   async findThingGroupDevicesByName(name: string): Promise<ThingGroupDevice[]> {
@@ -42,9 +45,11 @@ const db: DatabaseInterface = {
 
   async findThingGroupDeviceByNameAndDeviceId(name: string, deviceId: string): Promise<ThingGroupDevice[]> {
     return this.client('thing_group_devices')
-      .select(['id', 'thing_group', 'device_id AS deviceId'])
+      .select(['id', 'thing_group AS thingGroup', 'device_id AS deviceId'])
       .where({ thing_group: name })
       .andWhere({ device_id: deviceId })
+      .orderBy('thing_group', 'ASC')
+      .orderBy('device_id', 'ASC')
   },
 
   async addThingGroupDevice(thingGroupDevice: ThingGroupDevice): Promise<ThingGroupDevice[]> {

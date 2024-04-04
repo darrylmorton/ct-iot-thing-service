@@ -3,12 +3,15 @@ import { subDays } from 'date-fns'
 
 import db from '../../src/db'
 import {
+  assertThingGroupDevices,
   assertThingPayloads,
+  createThingGroupDevices,
   createThingGroups,
   createThingPayloads,
   createThings,
   createThingTypes,
   DEVICE_IDS,
+  SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID,
   SORT_THING_GROUPS_BY_NAME,
   SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID,
   SORT_THING_TYPES_BY_NAME,
@@ -78,57 +81,65 @@ describe.only('Database', () => {
       expect(actualResult).to.deep.equal(expectedResult)
     })
 
-    describe('Thing Payloads', () => {
-      describe('sorted by device id and timestamps', () => {
-        it('find thing payloads by timestamps', async () => {
-          const expectedResult = thingPayloads
+    it('find thing group devices', async () => {
+      const expectedResult = createThingGroupDevices(SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID)
 
-          const actualResult = await db.findThingPayloadsByTimestamps(startTimestamp, endTimestamp)
+      const actualResult = await db.findThingGroupDevices()
 
-          assertThingPayloads(actualResult, expectedResult)
-        })
+      assertThingGroupDevices(actualResult, expectedResult)
+    })
+  })
 
-        it('find thing payloads by device id and timestamps', async () => {
-          const deviceId = DEVICE_IDS[3]
-          const expectedResult = thingPayloads.filter((item) => item.deviceId === deviceId)
+  describe('Thing Payloads', () => {
+    describe('sorted by device id and timestamps', () => {
+      it('find thing payloads by timestamps', async () => {
+        const expectedResult = thingPayloads
 
-          const actualResult = await db.findThingPayloadsByDeviceIdAndTimestamps(deviceId, startTimestamp, endTimestamp)
-
-          assertThingPayloads(actualResult, expectedResult)
-        })
-      })
-
-      it('find thing payloads by thing group and timestamps', async () => {
-        const thingGroupName = THING_GROUP_NAMES[1]
-        // seeded data for thing group devices has the following device ids within this group
-        const expectedResult = thingPayloads.filter(
-          (item) => item.deviceId === DEVICE_IDS[1] || item.deviceId === DEVICE_IDS[2]
-        )
-
-        const actualResult = await db.findThingPayloadsByThingGroupAndTimestamps(
-          thingGroupName,
-          startTimestamp,
-          endTimestamp
-        )
+        const actualResult = await db.findThingPayloadsByTimestamps(startTimestamp, endTimestamp)
 
         assertThingPayloads(actualResult, expectedResult)
       })
 
-      it('find thing payloads by thing type and timestamps', async () => {
-        const thingTypeName = THING_TYPE_NAMES[1]
-        // seeded data for thing types has the following device ids for this type
-        const expectedResult = thingPayloads.filter(
-          (item) => item.deviceId === DEVICE_IDS[2] || item.deviceId === DEVICE_IDS[3]
-        )
+      it('find thing payloads by device id and timestamps', async () => {
+        const deviceId = DEVICE_IDS[3]
+        const expectedResult = thingPayloads.filter((item) => item.deviceId === deviceId)
 
-        const actualResult = await db.findThingPayloadsByThingTypeAndTimestamps(
-          thingTypeName,
-          startTimestamp,
-          endTimestamp
-        )
+        const actualResult = await db.findThingPayloadsByDeviceIdAndTimestamps(deviceId, startTimestamp, endTimestamp)
 
         assertThingPayloads(actualResult, expectedResult)
       })
+    })
+
+    it('find thing payloads by thing group and timestamps', async () => {
+      const thingGroupName = THING_GROUP_NAMES[1]
+      // seeded data for thing group devices has the following device ids within this group
+      const expectedResult = thingPayloads.filter(
+        (item) => item.deviceId === DEVICE_IDS[1] || item.deviceId === DEVICE_IDS[2]
+      )
+
+      const actualResult = await db.findThingPayloadsByThingGroupAndTimestamps(
+        thingGroupName,
+        startTimestamp,
+        endTimestamp
+      )
+
+      assertThingPayloads(actualResult, expectedResult)
+    })
+
+    it('find thing payloads by thing type and timestamps', async () => {
+      const thingTypeName = THING_TYPE_NAMES[1]
+      // seeded data for thing types has the following device ids for this type
+      const expectedResult = thingPayloads.filter(
+        (item) => item.deviceId === DEVICE_IDS[2] || item.deviceId === DEVICE_IDS[3]
+      )
+
+      const actualResult = await db.findThingPayloadsByThingTypeAndTimestamps(
+        thingTypeName,
+        startTimestamp,
+        endTimestamp
+      )
+
+      assertThingPayloads(actualResult, expectedResult)
     })
   })
 })
