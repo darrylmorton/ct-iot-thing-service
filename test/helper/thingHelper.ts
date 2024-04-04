@@ -58,16 +58,6 @@ export const createThingType = (name: string): ThingType => {
   }
 }
 
-const sortThingTypesByName = (a: ThingType, b: ThingType): number => {
-  if (a.name > b.name) {
-    return 1
-  } else if (a.name < b.name) {
-    return -1
-  }
-
-  return 0
-}
-
 export const createThingTypes = (sortBy?: string): ThingType[] => {
   const result = [
     { name: THING_TYPE_NAMES[0], description: THING_NAMES[0] },
@@ -77,7 +67,7 @@ export const createThingTypes = (sortBy?: string): ThingType[] => {
 
   switch (sortBy) {
     case SORT_THING_TYPES_BY_NAME:
-      return result.sort(sortThingTypesByName)
+      return result.sort((a, b) => a.name.localeCompare(b.name))
     default:
       return result
   }
@@ -92,26 +82,6 @@ export const createThing = (name: string, deviceId: string, thingTypeName: strin
   }
 }
 
-const sortThingsByNameAndDeviceId = (a: Thing, b: Thing): number => {
-  if (a.name > b.name || a.deviceId > b.name) {
-    return 1
-  } else if (a.name < b.name || a.deviceId < b.name) {
-    return -1
-  }
-
-  return 0
-}
-
-const sortThingsByNameAndThingType = (a: Thing, b: Thing): number => {
-  if (a.name > b.name || a.thingType > b.name) {
-    return 1
-  } else if (a.name < b.name || a.thingType < b.name) {
-    return -1
-  }
-
-  return 0
-}
-
 export const createThings = (sortBy?: string): Thing[] => {
   const result = [
     { name: THING_NAMES[0], description: THING_NAMES[0], deviceId: DEVICE_IDS[0], thingType: THING_TYPE_NAMES[0] },
@@ -124,9 +94,9 @@ export const createThings = (sortBy?: string): Thing[] => {
 
   switch (sortBy) {
     case SORT_THINGS_BY_NAME_AND_DEVICE_ID:
-      return result.sort(sortThingsByNameAndDeviceId)
+      return result.sort((a, b) => a.name.localeCompare(b.name) || a.deviceId - b.deviceId)
     case SORT_THINGS_BY_NAME_AND_THING_TYPE:
-      return result.sort(sortThingsByNameAndThingType)
+      return result.sort((a, b) => a.name.localeCompare(b.name) || a.thingType - b.thingType)
     default:
       return result
   }
@@ -137,16 +107,6 @@ export const createThingGroup = (name: string): ThingGroup => {
     name,
     description: name,
   }
-}
-
-const sortThingGroupsByName = (a: ThingGroup, b: ThingGroup): number => {
-  if (a.name > b.name) {
-    return 1
-  } else if (a.name < b.name) {
-    return -1
-  }
-
-  return 0
 }
 
 export const createThingGroups = (sortBy?: string): ThingGroup[] => {
@@ -161,7 +121,7 @@ export const createThingGroups = (sortBy?: string): ThingGroup[] => {
 
   switch (sortBy) {
     case SORT_THING_GROUPS_BY_NAME:
-      return result.sort(sortThingGroupsByName)
+      return result.sort((a, b) => a.name.localeCompare(b.name))
     default:
       return result
   }
@@ -214,26 +174,6 @@ export const createThingPayload = ({ deviceId, payloadTimestamp }: { deviceId: s
   }
 }
 
-const sortThingPayloadsByTimestamp = (a: ThingPayload, b: ThingPayload): number => {
-  if (a.payloadTimestamp > b.payloadTimestamp) {
-    return 1
-  } else if (a.payloadTimestamp < b.payloadTimestamp) {
-    return -1
-  }
-
-  return 0
-}
-
-const sortThingPayloadsByTimestampAndDeviceId = (a: ThingPayload, b: ThingPayload): number => {
-  if (a.payloadTimestamp > b.payloadTimestamp || a.deviceId > b.payloadTimestamp) {
-    return 1
-  } else if (a.payloadTimestamp < b.payloadTimestamp || a.deviceId < b.payloadTimestamp) {
-    return -1
-  }
-
-  return 0
-}
-
 export const createThingPayloads = (payloadsTotal: number, startDate: Date, sortBy?: string): ThingPayload[] => {
   const result: ThingPayload[] = []
 
@@ -250,9 +190,9 @@ export const createThingPayloads = (payloadsTotal: number, startDate: Date, sort
 
   switch (sortBy) {
     case SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID:
-      return result.sort(sortThingPayloadsByTimestampAndDeviceId)
+      return result.sort((a, b) => a.payloadTimestamp - b.payloadTimestamp || a.deviceId - b.deviceId)
     default:
-      return result.sort(sortThingPayloadsByTimestamp)
+      return result.sort((a, b) => a.payloadTimestamp - b.payloadTimestamp)
   }
 }
 
