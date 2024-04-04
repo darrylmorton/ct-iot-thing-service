@@ -1,12 +1,6 @@
 // eslint-disable no-unused-var
 import db from '../src/db'
-import {
-  createThingGroupDevices,
-  createThingGroups,
-  createThingPayloads,
-  createThings,
-  createThingTypes,
-} from '../test/helper/thingHelper'
+import { createThingGroupDevices, createThingGroups, createThings, createThingTypes } from '../test/helper/thingHelper'
 import { ThingPayload } from '../src/types'
 
 const createThingTypesData = (): any[] => {
@@ -39,9 +33,11 @@ const createThingGroupDevicesData = (): any[] => {
   }, [])
 }
 
-const createThingPayloadsData = (thingPayloads: ThingPayload[]): any[] => {
-  // const thingPayloadsCopy: ThingPayload[] = [...thingPayloads]
+const insertThingPayload = async (thingPayload: any): Promise<any> => {
+  await db.client('thing_payloads').insert({ ...thingPayload })
+}
 
+const createThingPayloadsData = (thingPayloads: ThingPayload[]): any[] => {
   return thingPayloads.reduce((acc: any, item: any) => {
     delete Object.assign(item, { device_id: item.deviceId }).deviceId
     delete Object.assign(item, { payload_timestamp: item.payloadTimestamp }).payloadTimestamp
@@ -62,10 +58,6 @@ export const seed = async (): Promise<void> => {
   await db.client('things').insert(createThingsData())
 
   await db.client('thing_group_devices').insert(createThingGroupDevicesData())
-}
-
-const insertThingPayload = async (thingPayload: any): Promise<any> => {
-  await db.client('thing_payloads').insert({ ...thingPayload })
 }
 
 export const thingPayloadSeed = async (thingPayloads: ThingPayload[]): Promise<any> => {

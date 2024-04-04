@@ -87,10 +87,19 @@ describe.only('Database', () => {
       expect(actualResult).to.deep.equal(expectedResult)
     })
 
-    it('find thing payloads', async () => {
-      const expectedResult = thingPayloads // createThingPayloads(48, startDate, SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID)
+    it('find thing payloads by timestamps', async () => {
+      const expectedResult = thingPayloads
 
       const actualResult = await db.findThingPayloadsByTimestamps(startTimestamp, endTimestamp)
+
+      assertThingPayloads(actualResult, expectedResult)
+    })
+
+    it('find thing payloads by device id and timestamps', async () => {
+      const deviceId = 'ddd-444444'
+      const expectedResult = thingPayloads.filter((item) => item.deviceId === deviceId)
+
+      const actualResult = await db.findThingPayloadsByDeviceIdAndTimestamps(deviceId, startTimestamp, endTimestamp)
 
       assertThingPayloads(actualResult, expectedResult)
     })
