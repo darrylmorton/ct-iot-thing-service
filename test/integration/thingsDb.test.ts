@@ -11,6 +11,7 @@ import {
   createThings,
   createThingTypes,
   DEVICE_IDS,
+  SORT_THING_GROUP_DEVICES_BY_THING_GROUP,
   SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID,
   SORT_THING_GROUPS_BY_NAME,
   SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID,
@@ -18,7 +19,6 @@ import {
   SORT_THINGS_BY_NAME_AND_DEVICE_ID,
   SORT_THINGS_BY_NAME_AND_THING_TYPE,
   THING_GROUP_NAMES,
-  THING_NAMES,
   THING_TYPE_NAMES,
 } from '../helper/thingHelper'
 import { seed, thingPayloadSeed } from '../../seeds/things'
@@ -65,10 +65,37 @@ describe.only('Database', () => {
       expect(actualResult).to.deep.equal(expectedResult)
     })
 
+    it('find thing by type', async () => {
+      const thingType = THING_TYPE_NAMES[2]
+      const expectedResult = createThings().filter((item: Thing) => item.thingType === thingType)
+
+      const actualResult = await db.findThingByType(thingType)
+
+      expect(actualResult).to.deep.equal(expectedResult)
+    })
+
+    it('find thing by device id', async () => {
+      const deviceId = DEVICE_IDS[3]
+      const expectedResult = createThings().filter((item: Thing) => item.deviceId === deviceId)
+
+      const actualResult = await db.findThingByDeviceId(deviceId)
+
+      expect(actualResult).to.deep.equal(expectedResult)
+    })
+
     it('find thing types', async () => {
       const expectedResult = createThingTypes(SORT_THING_TYPES_BY_NAME)
 
       const actualResult = await db.findThingTypes()
+
+      expect(actualResult).to.deep.equal(expectedResult)
+    })
+
+    it('find thing type by name', async () => {
+      const thingTypeName = THING_TYPE_NAMES[1]
+      const expectedResult = createThingTypes(SORT_THING_TYPES_BY_NAME).filter((item) => item.name === thingTypeName)
+
+      const actualResult = await db.findThingTypeByName(thingTypeName)
 
       expect(actualResult).to.deep.equal(expectedResult)
     })
@@ -81,10 +108,51 @@ describe.only('Database', () => {
       expect(actualResult).to.deep.equal(expectedResult)
     })
 
+    it('find thing groups by name', async () => {
+      const expectedResult = createThingGroups(SORT_THING_GROUPS_BY_NAME)
+
+      const actualResult = await db.findThingGroups()
+
+      expect(actualResult).to.deep.equal(expectedResult)
+    })
+
+    it('find thing group by name', async () => {
+      const groupName = THING_GROUP_NAMES[2]
+      const expectedResult = createThingGroups().filter((item) => item.name === groupName)
+
+      const actualResult = await db.findThingGroupByName(groupName)
+
+      expect(actualResult).to.deep.equal(expectedResult)
+    })
+
     it('find thing group devices', async () => {
       const expectedResult = createThingGroupDevices(SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID)
 
       const actualResult = await db.findThingGroupDevices()
+
+      assertThingGroupDevices(actualResult, expectedResult)
+    })
+
+    it('find thing group devices by name', async () => {
+      const thingGroupName = THING_GROUP_NAMES[2]
+      const expectedResult = createThingGroupDevices(SORT_THING_GROUP_DEVICES_BY_THING_GROUP).filter(
+        (item) => item.thingGroup === thingGroupName
+      )
+
+      const actualResult = await db.findThingGroupDevicesByName(thingGroupName)
+
+      assertThingGroupDevices(actualResult, expectedResult)
+    })
+
+    it('find thing group devices by name and device id', async () => {
+      const thingGroupName = THING_GROUP_NAMES[2]
+      const deviceId = DEVICE_IDS[3]
+
+      const expectedResult = createThingGroupDevices(SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID).filter(
+        (item) => item.thingGroup === thingGroupName && item.deviceId === deviceId
+      )
+
+      const actualResult = await db.findThingGroupDeviceByNameAndDeviceId(thingGroupName, deviceId)
 
       assertThingGroupDevices(actualResult, expectedResult)
     })
