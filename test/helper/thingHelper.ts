@@ -275,13 +275,6 @@ export const assertThing = (actualResult: any, expectedResult: any): void => {
   expect(actualResult.thingType).to.equal(expectedResult.thingType)
 }
 
-// export const assertThings = (actualResult: any, expectedResult: any): void => {
-//   expect(actualResult.name).to.equal(expectedResult.name)
-//   expect(actualResult.deviceId).to.equal(expectedResult.deviceId)
-//   expect(actualResult.description).to.equal(expectedResult.description)
-//   expect(actualResult.thingType).to.equal(expectedResult.thingType)
-// }
-
 export const assertThingPayload = (actualResult: any, expectedResult: any): void => {
   expect(isValidUuid(actualResult.id as string)).to.equal(true)
   expect(actualResult.deviceId).to.equal(expectedResult.deviceId)

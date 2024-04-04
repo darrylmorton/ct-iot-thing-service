@@ -14,6 +14,8 @@ import {
   SORT_THING_TYPES_BY_NAME,
   SORT_THINGS_BY_NAME_AND_DEVICE_ID,
   SORT_THINGS_BY_NAME_AND_THING_TYPE,
+  THING_GROUP_NAMES,
+  THING_NAMES,
   THING_TYPE_NAMES,
 } from '../helper/thingHelper'
 import { seed, thingPayloadSeed } from '../../seeds/things'
@@ -87,7 +89,7 @@ describe.only('Database', () => {
         })
 
         it('find thing payloads by device id and timestamps', async () => {
-          const deviceId = 'ddd-444444'
+          const deviceId = DEVICE_IDS[3]
           const expectedResult = thingPayloads.filter((item) => item.deviceId === deviceId)
 
           const actualResult = await db.findThingPayloadsByDeviceIdAndTimestamps(deviceId, startTimestamp, endTimestamp)
@@ -97,7 +99,7 @@ describe.only('Database', () => {
       })
 
       it('find thing payloads by thing group and timestamps', async () => {
-        const thingGroupName = 'test-two-env'
+        const thingGroupName = THING_GROUP_NAMES[1]
         // seeded data for thing group devices has the following device ids within this group
         const expectedResult = thingPayloads.filter(
           (item) => item.deviceId === DEVICE_IDS[1] || item.deviceId === DEVICE_IDS[2]
@@ -105,6 +107,22 @@ describe.only('Database', () => {
 
         const actualResult = await db.findThingPayloadsByThingGroupAndTimestamps(
           thingGroupName,
+          startTimestamp,
+          endTimestamp
+        )
+
+        assertThingPayloads(actualResult, expectedResult)
+      })
+
+      it('find thing payloads by thing type and timestamps', async () => {
+        const thingTypeName = THING_TYPE_NAMES[1]
+        // seeded data for thing types has the following device ids for this type
+        const expectedResult = thingPayloads.filter(
+          (item) => item.deviceId === DEVICE_IDS[2] || item.deviceId === DEVICE_IDS[3]
+        )
+
+        const actualResult = await db.findThingPayloadsByThingTypeAndTimestamps(
+          thingTypeName,
           startTimestamp,
           endTimestamp
         )
