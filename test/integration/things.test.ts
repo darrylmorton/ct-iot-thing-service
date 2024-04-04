@@ -4,8 +4,8 @@ import { Express } from 'express'
 
 import { getThingByNameRoute, getThingsRoute, postThingRoute } from '../helper/thingRouteHelper'
 import { createHttpServer } from '../../src/server'
-import { DEVICE_IDS, seed, THING_NAMES, THING_TYPE_NAMES } from '../../seeds/things'
-import { assertThing, createThing } from '../helper/thingHelper'
+import { seed } from '../../seeds/things'
+import { assertThing, createThing, DEVICE_IDS, THING_NAMES, THING_TYPE_NAMES } from '../helper/thingHelper'
 import db from '../../src/db'
 
 describe('Thing routes', function () {

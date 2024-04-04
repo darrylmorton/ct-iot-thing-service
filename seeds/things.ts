@@ -7,6 +7,7 @@ import {
   createThings,
   createThingTypes,
 } from '../test/helper/thingHelper'
+import { ThingPayload } from '../src/types'
 
 const createThingTypesData = (): any[] => {
   return createThingTypes()
@@ -38,12 +39,15 @@ const createThingGroupDevicesData = (): any[] => {
   }, [])
 }
 
-const insertThingPayload = async (thingPayload: any): Promise<void> => {
-  await db.client('thing_payloads').insert({
-    device_id: thingPayload.deviceId,
-    payload_timestamp: thingPayload.payloadTimestamp,
-    payload: thingPayload.payload,
-  })
+const createThingPayloadsData = (payloadsTotal: number, startDate: Date, sortBy?: string): any[] => {
+  return createThingPayloads(payloadsTotal, startDate, sortBy).reduce((acc: any, item: any) => {
+    delete Object.assign(item, { device_id: item.deviceId }).deviceId
+    delete Object.assign(item, { payload_timestamp: item.payloadTimestamp }).payloadTimestamp
+
+    acc.push(item)
+
+    return acc
+  }, [])
 }
 
 export const seed = async (): Promise<void> => {
@@ -53,36 +57,36 @@ export const seed = async (): Promise<void> => {
 
   await db.client('thing_types').insert(createThingTypesData())
 
-  // const things = createThings().reduce((acc: any[], item: any) => {
-  //   delete Object.assign(item, { device_id: item.deviceId }).deviceId
-  //   delete Object.assign(item, { thing_type: item.thingType }).thingType
-  //
-  //   acc.push(item)
-  //
-  //   return acc
-  // }, [])
-  // console.log('things', things)
   await db.client('things').insert(createThingsData())
-  //
-  // const thingGroupDevices = createThingGroupDevices().reduce((acc: any[], item: any) => {
-  //   delete Object.assign(item, { thing_group: item.thingGroup }).thingGroup
-  //   delete Object.assign(item, { device_id: item.deviceId }).deviceId
-  //
-  //   acc.push(item)
-  //
-  //   return acc
-  // }, [])
-  // console.log('createThingGroupDevices()', thingGroupDevices)
+
   await db.client('thing_group_devices').insert(createThingGroupDevicesData())
 }
 
-export const thingPayloadSeed = async (payloadsTotal: number): Promise<void> => {
-  const thingPayloadInserts = createThingPayloads(payloadsTotal).reduce(async (acc: any, item: any): Promise<void> => {
-    delete Object.assign(item, { device_id: item.deviceId }).deviceId
-    delete Object.assign(item, { payload_timestamp: item.payloadTimestamp }).payloadTimestamp
+const insertThingPayload = async (thingPayload: any): Promise<any> => {
+  // console.log('insertThingPayload', thingPayload)
 
-    acc.push(await insertThingPayload(item))
+  await db.client('thing_payloads').insert({
+    device_id: thingPayload.deviceId,
+    payload_timestamp: thingPayload.payloadTimestamp,
+    payload: thingPayload.payload,
+  })
+}
+
+export const thingPayloadSeed = async (thingPayloads: ThingPayload[]): Promise<any> => {
+  // console.log('thingPayloadSeed thingPayloads', thingPayloads[1].deviceId)
+
+  const thingPayloadInserts = thingPayloads.reduce((acc: any[], item: any): any => {
+    // delete Object.assign(item, { device_id: item.deviceId }).deviceId
+    // delete Object.assign(item, { payload_timestamp: item.payloadTimestamp }).payloadTimestamp
+
+    // console.log('thingPayloadSeed item', item)
+
+    acc.push(insertThingPayload(item))
+
+    return acc
   }, [])
+
+  // console.log('thingPayloadInserts', thingPayloadInserts)
 
   await Promise.all(thingPayloadInserts)
 }

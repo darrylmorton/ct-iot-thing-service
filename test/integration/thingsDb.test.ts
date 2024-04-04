@@ -1,12 +1,47 @@
-import db from '../../src/db'
-import { createThings } from '../helper/thingHelper'
-import { seed } from '../../seeds/things'
 import { expect } from 'chai'
+import { subDays } from 'date-fns'
+
+import db from '../../src/db'
+import {
+  assertThingPayloads,
+  createThingGroups,
+  createThingPayloads,
+  createThings,
+  createThingTypes,
+  SORT_THING_GROUPS_BY_NAME,
+  SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID,
+  SORT_THING_TYPES_BY_NAME,
+  SORT_THINGS_BY_NAME_AND_DEVICE_ID,
+  SORT_THINGS_BY_NAME_AND_THING_TYPE,
+  THING_TYPE_NAMES,
+} from '../helper/thingHelper'
+import { seed, thingPayloadSeed } from '../../seeds/things'
+import { Thing, ThingPayload } from '../../src/types'
+import { getUnixEndTimestamp, getUnixStartTimestamp } from '../../src/util/AppUtil'
 
 describe.only('Database', () => {
+  let thingPayloads: ThingPayload[]
+  // let startDate: Date
+  let startTimestamp: number
+  // let startTimestampParam: string
+  let endTimestamp: number
+  // let endTimestampParam: string
+
   before(async () => {
-    // await db.client('things').del()
+    const today = new Date()
+    const startDate = subDays(today, 2)
+    const endDate = subDays(today, 1)
+    // const date = startOfYesterday()
+    startTimestamp = getUnixStartTimestamp(startDate)
+    endTimestamp = getUnixEndTimestamp(endDate)
+
+    thingPayloads = createThingPayloads(48, startDate, SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID)
+
     await seed()
+    await thingPayloadSeed(thingPayloads)
+
+    console.log('startTimestamp', startTimestamp)
+    console.log('endTimestamp', endTimestamp)
   })
 
   describe('Things', () => {
@@ -22,13 +57,50 @@ describe.only('Database', () => {
     //
     //   assertThing(actualResult, expectedResult)
     // })
+
     it('find things', async () => {
-      const expectedResult = createThings()
+      const expectedResult = createThings(SORT_THINGS_BY_NAME_AND_DEVICE_ID)
 
       const actualResult = await db.findThings()
 
-      // assertThing(actualResult, [])
       expect(actualResult).to.deep.equal(expectedResult)
+    })
+
+    it('find things by thing type', async () => {
+      const thingType = THING_TYPE_NAMES[2]
+      const expectedResult = createThings(SORT_THINGS_BY_NAME_AND_THING_TYPE).filter(
+        (item: Thing) => item.thingType === thingType
+      )
+
+      const actualResult = await db.findThingsByThingType(thingType)
+
+      expect(actualResult).to.deep.equal(expectedResult)
+    })
+
+    it('find thing types', async () => {
+      const expectedResult = createThingTypes(SORT_THING_TYPES_BY_NAME)
+
+      const actualResult = await db.findThingTypes()
+
+      expect(actualResult).to.deep.equal(expectedResult)
+    })
+
+    it('find thing groups', async () => {
+      const expectedResult = createThingGroups(SORT_THING_GROUPS_BY_NAME)
+
+      const actualResult = await db.findThingGroups()
+
+      expect(actualResult).to.deep.equal(expectedResult)
+    })
+
+    it('find thing payloads', async () => {
+      const expectedResult = thingPayloads // createThingPayloads(48, startDate, SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID)
+      console.log('expectedResult first, last', expectedResult[0], expectedResult[expectedResult.length - 1])
+
+      const actualResult = await db.findThingPayloadsByTimestamps(startTimestamp, endTimestamp)
+      console.log('actualResult first, last', actualResult[0], actualResult[actualResult.length - 1])
+
+      assertThingPayloads(actualResult, expectedResult)
     })
   })
 })
