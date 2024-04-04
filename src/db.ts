@@ -155,7 +155,7 @@ const db: DatabaseInterface = {
       .whereBetween('tp.payload_timestamp', [startTimestamp, endTimestamp])
       .andWhere('tg.name', thingGroup)
       .orderBy('tp.payload_timestamp', 'ASC')
-      .orderBy('tg.name', 'ASC')
+      .orderBy('tp.device_id', 'ASC')
       .limit(300)
   },
 
@@ -171,7 +171,7 @@ const db: DatabaseInterface = {
       .whereBetween('tp.payload_timestamp', [startTimestamp, endTimestamp])
       .andWhere('tt.name', thingType)
       .orderBy('tp.payload_timestamp', 'ASC')
-      .orderBy('tt.name', 'ASC')
+      .orderBy('tp.device_id', 'ASC')
       .limit(300)
   },
 }

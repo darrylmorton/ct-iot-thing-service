@@ -24,7 +24,9 @@ export const SORT_THING_TYPES_BY_NAME = 'SORT_THING_TYPES_BY_NAME'
 export const SORT_THING_GROUPS_BY_NAME = 'SORT_THING_GROUPS_BY_NAME'
 export const SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID =
   'SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID'
+// export const SORT_THING_PAYLOADS_BY_TIMESTAMP = 'SORT_THING_PAYLOADS_BY_TIMESTAMP'
 export const SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID = 'SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID'
+export const SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_THING_GROUP = 'SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_THING_GROUP'
 
 export const createTimestamp = (incrementValue?: number): number => {
   const yesterday: Date = startOfYesterday()
@@ -224,6 +226,16 @@ export const createThingPayload = ({ deviceId, payloadTimestamp }: { deviceId: s
   }
 }
 
+const sortThingPayloadsByTimestamp = (a: ThingPayload, b: ThingPayload): number => {
+  if (a.payloadTimestamp > b.payloadTimestamp) {
+    return 1
+  } else if (a.payloadTimestamp < b.payloadTimestamp) {
+    return -1
+  }
+
+  return 0
+}
+
 const sortThingPayloadsByTimestampAndDeviceId = (a: ThingPayload, b: ThingPayload): number => {
   if (a.payloadTimestamp > b.payloadTimestamp || a.deviceId > b.payloadTimestamp) {
     return 1
@@ -248,13 +260,11 @@ export const createThingPayloads = (payloadsTotal: number, startDate: Date, sort
     result.push(createThingPayload({ deviceId: DEVICE_IDS[5], payloadTimestamp }))
   }
 
-  // console.log('thing payloads', result[1].deviceId)
-
   switch (sortBy) {
     case SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID:
       return result.sort(sortThingPayloadsByTimestampAndDeviceId)
     default:
-      return result
+      return result.sort(sortThingPayloadsByTimestamp)
   }
 }
 
@@ -277,10 +287,6 @@ export const assertThingPayload = (actualResult: any, expectedResult: any): void
   expect(actualResult.deviceId).to.equal(expectedResult.deviceId)
   expect(actualResult.payloadTimestamp).to.equal(expectedResult.payloadTimestamp)
   expect(actualResult.payload).to.deep.equal(expectedResult.payload)
-
-  // expect(actualResult.deviceId).to.equal(expectedResult.deviceId)
-  // expect(actualResult.payloadTimestamp).to.equal(expectedResult.payloadTimestamp)
-  // expect(actualResult.payload).to.deep.equal(expectedResult.payload)
 }
 
 export const assertThingPayloads = (actualResult: any, expectedResult: any): void => {

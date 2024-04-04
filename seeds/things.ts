@@ -61,6 +61,8 @@ export const seed = async (): Promise<void> => {
 }
 
 export const thingPayloadSeed = async (thingPayloads: ThingPayload[]): Promise<any> => {
+  await db.client('thing_payloads').del()
+
   const thingPayloadsCopy = thingPayloads.map(({ ...item }) => item)
 
   await Promise.all(createThingPayloadsData(thingPayloadsCopy))
@@ -71,5 +73,4 @@ export const cleanup = async (): Promise<void> => {
   await db.client('thing_groups').del()
   await db.client('thing_types').del()
   await db.client('things').del()
-  await db.client('thing_payloads').del()
 }
