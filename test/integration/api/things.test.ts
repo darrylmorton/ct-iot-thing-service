@@ -5,134 +5,148 @@ import { Express } from 'express'
 import { getThingByNameRoute, getThingsRoute, postThingRoute } from '../../helper/thingRouteHelper'
 import { createHttpServer } from '../../../src/server'
 import { seed } from '../../../seeds/things'
-import { assertThing, createThing, DEVICE_IDS, THING_NAMES, THING_TYPE_NAMES } from '../../helper/thingHelper'
+import {
+  assertThing,
+  assertThings,
+  createThing,
+  DEVICE_IDS,
+  THING_NAMES,
+  THING_TYPE_NAMES,
+} from '../../helper/thingHelper'
 import db from '../../../src/db'
+import { Thing } from '../../../src/types/types'
 
-describe('Thing routes', function () {
+describe('Thing routes', () => {
   let app: Express
 
-  before(async function () {
+  before(async () => {
     await seed()
 
     app = await createHttpServer()
   })
 
-  it('POST Thing invalid', async function () {
-    const actualResult = await postThingRoute(app, {})
+  describe('POST', () => {
+    it('invalid thing', async () => {
+      const actualResult = await postThingRoute(app, {})
 
-    expect(actualResult.status).to.equal(400)
-    expect(actualResult.body).to.deep.equal({})
-  })
-
-  it('POST Thing invalid', async function () {
-    const actualResult = await postThingRoute(app, {
-      name: '',
-      description: '',
-      deviceId: '',
-      thingType: '',
+      expect(actualResult.status).to.equal(400)
+      expect(actualResult.body).to.deep.equal({})
     })
 
-    expect(actualResult.status).to.equal(400)
-    expect(actualResult.body).to.deep.equal({})
-  })
+    it('invalid thing', async () => {
+      const actualResult = await postThingRoute(app, {
+        name: '',
+        description: '',
+        deviceId: '',
+        thingType: '',
+      })
 
-  it('POST Thing with invalid name', async function () {
-    const actualResult = await postThingRoute(app, {
-      name: '',
-      description: THING_NAMES[0],
-      deviceId: DEVICE_IDS[0],
-      thingType: THING_TYPE_NAMES[0],
+      expect(actualResult.status).to.equal(400)
+      expect(actualResult.body).to.deep.equal({})
     })
 
-    expect(actualResult.status).to.equal(400)
-    expect(actualResult.body).to.deep.equal({})
-  })
+    it('invalid name', async () => {
+      const actualResult = await postThingRoute(app, {
+        name: '',
+        description: THING_NAMES[0],
+        deviceId: DEVICE_IDS[0],
+        thingType: THING_TYPE_NAMES[0],
+      })
 
-  it('POST Thing with invalid description', async function () {
-    const actualResult = await postThingRoute(app, {
-      name: THING_NAMES[0],
-      description: '',
-      deviceId: DEVICE_IDS[0],
-      thingType: THING_TYPE_NAMES[0],
+      expect(actualResult.status).to.equal(400)
+      expect(actualResult.body).to.deep.equal({})
     })
 
-    expect(actualResult.status).to.equal(400)
-    expect(actualResult.body).to.deep.equal({})
-  })
+    it('invalid description', async () => {
+      const actualResult = await postThingRoute(app, {
+        name: THING_NAMES[0],
+        description: '',
+        deviceId: DEVICE_IDS[0],
+        thingType: THING_TYPE_NAMES[0],
+      })
 
-  it('POST Thing with invalid deviceId', async function () {
-    const actualResult = await postThingRoute(app, {
-      name: THING_NAMES[0],
-      description: THING_NAMES[0],
-      deviceId: '',
-      thingType: THING_TYPE_NAMES[0],
+      expect(actualResult.status).to.equal(400)
+      expect(actualResult.body).to.deep.equal({})
     })
 
-    expect(actualResult.status).to.equal(400)
-    expect(actualResult.body).to.deep.equal({})
-  })
+    it('invalid device id', async () => {
+      const actualResult = await postThingRoute(app, {
+        name: THING_NAMES[0],
+        description: THING_NAMES[0],
+        deviceId: '',
+        thingType: THING_TYPE_NAMES[0],
+      })
 
-  it('POST Thing with invalid thing type', async function () {
-    const actualResult = await postThingRoute(app, {
-      name: THING_NAMES[0],
-      description: THING_NAMES[0],
-      deviceId: DEVICE_IDS[0],
-      thingType: '',
+      expect(actualResult.status).to.equal(400)
+      expect(actualResult.body).to.deep.equal({})
     })
 
-    expect(actualResult.status).to.equal(404)
-  })
+    it('invalid thing type', async () => {
+      const actualResult = await postThingRoute(app, {
+        name: THING_NAMES[0],
+        description: THING_NAMES[0],
+        deviceId: DEVICE_IDS[0],
+        thingType: '',
+      })
 
-  it('POST Thing that already exists - name', async function () {
-    const actualResult = await postThingRoute(app, {
-      name: THING_NAMES[0],
-      description: THING_NAMES[0],
-      deviceId: 'zzz-000000',
-      thingType: THING_TYPE_NAMES[0],
+      expect(actualResult.status).to.equal(404)
     })
 
-    expect(actualResult.status).to.equal(409)
-  })
+    it('name exists', async () => {
+      const actualResult = await postThingRoute(app, {
+        name: THING_NAMES[0],
+        description: THING_NAMES[0],
+        deviceId: 'zzz-000000',
+        thingType: THING_TYPE_NAMES[0],
+      })
 
-  it('POST Thing that already exists - device id', async function () {
-    const actualResult = await postThingRoute(app, {
-      name: 'thingZero',
-      description: THING_NAMES[0],
-      deviceId: DEVICE_IDS[0],
-      thingType: THING_TYPE_NAMES[0],
+      expect(actualResult.status).to.equal(409)
     })
 
-    expect(actualResult.status).to.equal(409)
+    it('device id exists', async () => {
+      const actualResult = await postThingRoute(app, {
+        name: 'thingZero',
+        description: THING_NAMES[0],
+        deviceId: DEVICE_IDS[0],
+        thingType: THING_TYPE_NAMES[0],
+      })
+
+      expect(actualResult.status).to.equal(409)
+    })
+
+    it('create', async () => {
+      const expectedResult: Thing = createThing('thingZero', 'zzz-000000', THING_TYPE_NAMES[0])
+
+      const actualResult = await postThingRoute(app, expectedResult)
+
+      expect(actualResult.status).to.equal(201)
+      assertThing(actualResult.body, expectedResult)
+    })
   })
 
-  it('POST Thing', async function () {
-    const expectedResult = createThing('thingZero', 'zzz-000000', THING_TYPE_NAMES[0])
+  describe('GET', () => {
+    it('all', async () => {
+      const expectedResult = await db.findThings()
 
-    const actualResult = await postThingRoute(app, expectedResult)
+      const actualResult = await getThingsRoute(app)
 
-    expect(actualResult.status).to.equal(201)
-    assertThing(actualResult.body, expectedResult)
-  })
+      expect(actualResult.status).to.equal(200)
+      assertThings(actualResult.body, expectedResult)
+    })
 
-  it('GET Things', async function () {
-    const expectedResult = await db.findThings()
+    it('by name - does not exist', async () => {
+      const actualResult = await getThingByNameRoute(app, 'thingSubZero')
 
-    const actualResult = await getThingsRoute(app)
+      expect(actualResult.status).to.equal(404)
+    })
 
-    expect(actualResult.status).to.equal(200)
-    expect(actualResult.body).to.deep.equal(expectedResult)
-  })
+    it('by name', async () => {
+      const expectedResult = createThing(THING_NAMES[0], DEVICE_IDS[0], THING_TYPE_NAMES[0])
 
-  it('GET Thing by name that is missing', async function () {
-    const actualResult = await getThingByNameRoute(app, 'thingSubZero')
+      const actualResult = await getThingByNameRoute(app, THING_NAMES[0])
 
-    expect(actualResult.status).to.equal(404)
-  })
-
-  it('GET Thing by name', async function () {
-    const actualResult = await getThingByNameRoute(app, THING_NAMES[0])
-
-    expect(actualResult.status).to.equal(200)
-    expect(actualResult.body.name).to.deep.equal(THING_NAMES[0])
+      expect(actualResult.status).to.equal(200)
+      assertThing(actualResult.body, expectedResult)
+    })
   })
 })

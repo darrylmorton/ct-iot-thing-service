@@ -16,6 +16,7 @@
     "test:seed": "NODE_ENV=test NODE_OPTIONS='--import tsx' npx knex seed:run",
     "test:unit": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/unit/",
     "test:integration-db": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/db/",
+    "test:integration-service": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/service/",
     "test:integration-api": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/api/",
     "test:integration": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/",
     "test": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/",

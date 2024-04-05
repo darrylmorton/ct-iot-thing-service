@@ -6,6 +6,10 @@
         "src/**/*.ts"
     ],
     "exclude": [
+        "src/api-v1/api-doc.ts",
+        "src/api-v1/routes/**",
+        "src/env.ts",
+        "src/logger.ts",
         "src/index.ts",
         "src/types/**",
         "test/**"
