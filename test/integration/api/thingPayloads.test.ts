@@ -22,7 +22,7 @@ import { getUnixEndTimestamp, getUnixStartTimestamp } from '../../helper/appHelp
 
 // TODO validation scenarios would need openapi request validation min/max length implemented
 //  currently null or missing parameters can only be tested against
-describe.only('Thing Payload routes', function () {
+describe('Thing Payload routes', function () {
   let app: Express
   let startDate: Date
   let thingPayloads: ThingPayload[]
