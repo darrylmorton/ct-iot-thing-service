@@ -10,8 +10,14 @@ import {
 } from '../../helper/thingRouteHelper'
 import { createHttpServer } from '../../../src/server'
 import { seed } from '../../../seeds/things'
-import { assertThingGroupDevices, DEVICE_IDS, THING_GROUP_NAMES } from '../../helper/thingHelper'
+import {
+  assertThingGroupDevices,
+  createThingGroupDevice,
+  DEVICE_IDS,
+  THING_GROUP_NAMES,
+} from '../../helper/thingHelper'
 import db from '../../../src/db'
+import { ThingGroupDevice } from '../../../src/types/types'
 
 describe('Thing Group Device Routes', () => {
   let app: Express
@@ -44,7 +50,7 @@ describe('Thing Group Device Routes', () => {
 
     it('all by name and device id - thing group does not exist', async () => {
       const actualResult = await getThingGroupDeviceByNameAndDeviceIdRoute(app, {
-        thingGroup: 'thingGroup',
+        thingGroup: 'zero-thing-group',
         deviceId: DEVICE_IDS[0],
       })
 
@@ -54,7 +60,7 @@ describe('Thing Group Device Routes', () => {
     it('all by name and device id - device id does not exist', async () => {
       const actualResult = await getThingGroupDeviceByNameAndDeviceIdRoute(app, {
         thingGroup: THING_GROUP_NAMES[0],
-        deviceId: 'deviceId',
+        deviceId: 'zero-device-id',
       })
 
       expect(actualResult.status).to.equal(404)
@@ -78,39 +84,33 @@ describe('Thing Group Device Routes', () => {
 
     describe('POST', () => {
       it('exists', async () => {
-        const actualResult = await postThingGroupDeviceRoute(app, {
-          thingGroup: THING_GROUP_NAMES[0],
-          deviceId: DEVICE_IDS[0],
-        })
+        const thingGroupDevice: ThingGroupDevice = createThingGroupDevice(THING_GROUP_NAMES[0], DEVICE_IDS[0])
+
+        const actualResult = await postThingGroupDeviceRoute(app, thingGroupDevice)
 
         expect(actualResult.status).to.equal(409)
       })
 
       it('thing group does not exist', async () => {
-        const actualResult = await postThingGroupDeviceRoute(app, {
-          thingGroup: 'zero-group-device',
-          deviceId: DEVICE_IDS[0],
-        })
+        const thingGroupDevice: ThingGroupDevice = createThingGroupDevice('zero-group-device', DEVICE_IDS[0])
+
+        const actualResult = await postThingGroupDeviceRoute(app, thingGroupDevice)
 
         expect(actualResult.status).to.equal(404)
       })
 
       it('device id does not exist', async () => {
-        const actualResult = await postThingGroupDeviceRoute(app, {
-          thingGroup: THING_GROUP_NAMES[0],
-          deviceId: 'zero-device',
-        })
+        const thingGroupDevice: ThingGroupDevice = createThingGroupDevice(THING_GROUP_NAMES[0], 'zero-device')
+
+        const actualResult = await postThingGroupDeviceRoute(app, thingGroupDevice)
 
         expect(actualResult.status).to.equal(404)
       })
 
       it('create', async () => {
-        const expectedResult = { thingGroup: THING_GROUP_NAMES[3], deviceId: DEVICE_IDS[0] }
+        const expectedResult: ThingGroupDevice = createThingGroupDevice(THING_GROUP_NAMES[3], DEVICE_IDS[0])
 
-        const actualResult = await postThingGroupDeviceRoute(app, {
-          thingGroup: THING_GROUP_NAMES[3],
-          deviceId: DEVICE_IDS[0],
-        })
+        const actualResult = await postThingGroupDeviceRoute(app, expectedResult)
 
         expect(actualResult.status).to.equal(201)
         expect(actualResult.body.thingGroup).to.deep.equal(expectedResult.thingGroup)

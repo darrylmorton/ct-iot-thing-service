@@ -82,6 +82,7 @@ const thingService: ThingServiceInterface = {
     return { statusCode: 200, result }
   },
 
+  // TODO cleanup...
   async getThingGroupDeviceByNameAndDeviceId(name: string, deviceId: string): Promise<ServiceThingGroupDeviceResponse> {
     const findThingGroupByNameResult: ThingGroup[] = await db.findThingGroupByName(name)
     logger.debug(
@@ -89,11 +90,9 @@ const thingService: ThingServiceInterface = {
       findThingGroupByNameResult
     )
 
-    const findThingByDeviceIdResult: Thing[] = await db.findThingByDeviceId(deviceId)
-    logger.debug(
-      'ThingService getThingGroupDeviceByNameAndDeviceId: findThingByDeviceIdResult',
-      findThingByDeviceIdResult
-    )
+    const findThingByDeviceIdResult: ThingGroup[] | Thing[] =
+      findThingGroupByNameResult.length > 0 ? [] : await db.findThingByDeviceId(deviceId)
+    logger.debug('*** findThingByDeviceIdResult', findThingByDeviceIdResult)
 
     if (findThingGroupByNameResult.length === 0 || findThingByDeviceIdResult.length === 0) {
       return { statusCode: 404, result: {} }
@@ -113,7 +112,7 @@ const thingService: ThingServiceInterface = {
     if (result) {
       return { statusCode: 200, result }
     } else {
-      return { statusCode: 500, result }
+      return { statusCode: 500, result: {} }
     }
   },
 

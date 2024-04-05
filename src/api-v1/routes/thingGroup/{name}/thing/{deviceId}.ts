@@ -11,7 +11,7 @@ export default function (thingService: ThingServiceInterface): Operation {
       try {
         const { statusCode, result }: ServiceThingGroupDeviceResponse =
           await thingService.getThingGroupDeviceByNameAndDeviceId(req.params.name, req.params.deviceId)
-        logger.debug('GET thingGroupDevicesByNameAndDeviceId: statusCode, result %d %j', statusCode, result)
+        logger.debug('GET thingGroupDevicesByNameAndDeviceId: statusCode, result', statusCode, result)
 
         const validationErrors = getThingGroupDeviceValidator.validateResponse(200, result)
         logger.debug('GET thingGroupDevicesByNameAndDeviceId: validationErrors %j', validationErrors)
