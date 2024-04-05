@@ -9,6 +9,7 @@ import {
   THING_GROUP_NAMES,
 } from '../../helper/thingHelper'
 import { cleanup, seed } from '../../../seeds/things'
+import { ThingGroup } from '../../../src/types/types'
 
 describe('Thing Groups', () => {
   before(async () => {
@@ -48,7 +49,7 @@ describe('Thing Groups', () => {
     })
 
     it('single', async () => {
-      const expectedResult = [createThingGroup(THING_GROUP_NAMES[0])]
+      const expectedResult: ThingGroup[] = [createThingGroup(THING_GROUP_NAMES[0])]
 
       const actualResult = await db.addThingGroup(expectedResult[0])
 

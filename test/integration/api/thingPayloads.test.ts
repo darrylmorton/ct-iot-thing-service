@@ -202,7 +202,7 @@ describe('Thing Payload routes', function () {
 
   describe('POST', async () => {
     it('invalid payload', async () => {
-      const expectedResult = createThingPayload({})
+      const expectedResult: ThingPayload = createThingPayload({})
 
       const actualResult = await postThingPayloadRoute(app, expectedResult)
 
@@ -211,7 +211,7 @@ describe('Thing Payload routes', function () {
     })
 
     it('invalid deviceId', async () => {
-      const expectedResult = createThingPayload({
+      const expectedResult: ThingPayload = createThingPayload({
         deviceId: null,
       })
 

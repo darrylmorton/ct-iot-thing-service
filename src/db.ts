@@ -1,8 +1,8 @@
 import knex from 'knex'
 
 import env from './env'
-import { ThingPayload, Thing, ThingType, ThingGroup, SimpleThingPayload, ThingGroupDevice } from './types'
-import { DatabaseInterface } from './dbTypes'
+import { ThingPayload, Thing, ThingType, ThingGroup, SimpleThingPayload, ThingGroupDevice } from './types/types'
+import { DatabaseInterface } from './types/dbTypes'
 
 const db: DatabaseInterface = {
   client: knex({

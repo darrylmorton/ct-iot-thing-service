@@ -96,7 +96,7 @@ describe('Thing Payloads', () => {
         deviceId: DEVICE_IDS[0],
         thingType: THING_TYPE_NAMES[0],
       })
-      const expectedResult = createThingPayload({
+      const expectedResult: ThingPayload = createThingPayload({
         deviceId: DEVICE_IDS[0],
         payloadTimestamp: getUnixTime(startDate),
       })

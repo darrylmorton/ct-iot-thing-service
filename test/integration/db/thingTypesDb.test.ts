@@ -9,6 +9,7 @@ import {
   THING_TYPE_NAMES,
 } from '../../helper/thingHelper'
 import { cleanup, seed } from '../../../seeds/things'
+import { ThingType } from '../../../src/types/types'
 
 describe('Thing Types', () => {
   before(async () => {
@@ -40,7 +41,7 @@ describe('Thing Types', () => {
     })
 
     it('single', async () => {
-      const expectedResult = [createThingType(THING_TYPE_NAMES[0])]
+      const expectedResult: ThingType[] = [createThingType(THING_TYPE_NAMES[0])]
 
       const actualResult = await db.addThingType(expectedResult[0])
 

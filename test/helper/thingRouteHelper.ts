@@ -2,6 +2,7 @@ import request from 'supertest'
 import { Express } from 'express'
 
 import env from '../../src/env'
+import { ThingGroupDevice, ThingPayload, ThingType } from '../../src/types/types'
 
 export const getThingTypesRoute = async (app: Express): Promise<any> => {
   return request(app)
@@ -90,10 +91,7 @@ export const getThingGroupDevicesByNameRoute = async (app: Express, name: unknow
     })
 }
 
-export const postThingGroupDeviceRoute = async (
-  app: Express,
-  thingGroupDevice?: Record<string, unknown>
-): Promise<any> => {
+export const postThingGroupDeviceRoute = async (app: Express, thingGroupDevice?: ThingGroupDevice): Promise<any> => {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingGroup/${thingGroupDevice?.thingGroup}/thing`)
     .set('content-type', 'application/json')
@@ -123,11 +121,11 @@ export const postThingGroupRoute = async (app: Express, thingGroup?: Record<stri
     })
 }
 
-export const postThingTypeRoute = async (app: Express, thingType?: Record<string, unknown>): Promise<any> => {
+export const postThingTypeRoute = async (app: Express, thingType?: unknown): Promise<any> => {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingType`)
     .set('content-type', 'application/json')
-    .send(thingType)
+    .send(thingType as ThingType)
     .then((response) => {
       return response
     })
@@ -181,11 +179,11 @@ export const postThingRoute = async (app: Express, thing?: Record<string, unknow
     })
 }
 
-export const postThingPayloadRoute = async (app: Express, thingPayload: Record<string, unknown>): Promise<any> => {
+export const postThingPayloadRoute = async (app: Express, thingPayload: unknown): Promise<any> => {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingPayload`)
     .set('content-type', 'application/json')
-    .send(thingPayload)
+    .send(thingPayload as ThingPayload)
     .then((response) => {
       return response
     })
