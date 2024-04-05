@@ -21,7 +21,7 @@ const db: DatabaseInterface = {
   },
 
   async findThingGroups(): Promise<ThingGroup[]> {
-    return this.client('thing_groups').select(['name', 'description'])
+    return this.client('thing_groups').select(['name', 'description']).orderBy('name', 'ASC')
   },
 
   async addThingGroup(thingGroup: ThingGroup): Promise<ThingGroup[]> {
@@ -29,22 +29,27 @@ const db: DatabaseInterface = {
   },
 
   async findThingGroupDevices(): Promise<ThingGroupDevice[]> {
-    return this.client('thing_group_devices').select(['id', 'thing_group AS thingGroup', 'device_id AS deviceId'])
+    return this.client('thing_group_devices')
+      .select(['id', 'thing_group AS thingGroup', 'device_id AS deviceId'])
+      .orderBy('thing_group', 'ASC')
+      .orderBy('device_id', 'ASC')
   },
 
   async findThingGroupDevicesByName(name: string): Promise<ThingGroupDevice[]> {
     return this.client('thing_group_devices')
       .select(['id', 'thing_group AS thingGroup', 'device_id AS deviceId'])
       .where({ thing_group: name })
-      .orderBy('thing_group', 'device_id')
+      .orderBy('thing_group', 'ASC')
+      .orderBy('device_id', 'ASC')
   },
 
   async findThingGroupDeviceByNameAndDeviceId(name: string, deviceId: string): Promise<ThingGroupDevice[]> {
     return this.client('thing_group_devices')
-      .select(['id', 'thing_group', 'device_id AS deviceId'])
+      .select(['id', 'thing_group AS thingGroup', 'device_id AS deviceId'])
       .where({ thing_group: name })
       .andWhere({ device_id: deviceId })
-      .orderBy('thing_group', 'device_id')
+      .orderBy('thing_group', 'ASC')
+      .orderBy('device_id', 'ASC')
   },
 
   async addThingGroupDevice(thingGroupDevice: ThingGroupDevice): Promise<ThingGroupDevice[]> {
@@ -58,7 +63,7 @@ const db: DatabaseInterface = {
   },
 
   async findThingTypes(): Promise<ThingType[]> {
-    return this.client('thing_types').select(['name', 'description'])
+    return this.client('thing_types').select(['name', 'description']).orderBy('name', 'ASC')
   },
 
   async addThingType(thingType: ThingType): Promise<ThingType[]> {
@@ -97,14 +102,16 @@ const db: DatabaseInterface = {
   async findThings(): Promise<Thing[]> {
     return this.client('things')
       .select(['name', 'device_id AS deviceId', 'description', 'thing_type AS thingType'])
-      .orderBy('name')
-      .orderBy('device_id')
+      .orderBy('name', 'ASC')
+      .orderBy('device_id', 'ASC')
   },
 
-  async findThingsByThingType(name: string): Promise<Thing[]> {
+  async findThingsByThingType(thingType: string): Promise<Thing[]> {
     return this.client('things')
       .select(['name', 'device_id AS deviceId', 'description', 'thing_type AS thingType'])
-      .where({ name })
+      .where({ thing_type: thingType })
+      .orderBy('name', 'ASC')
+      .orderBy('thing_type', 'ASC')
   },
 
   async addThingPayload(thingPayload: SimpleThingPayload): Promise<ThingPayload[]> {
@@ -122,7 +129,8 @@ const db: DatabaseInterface = {
     return this.client('thing_payloads AS tp')
       .select(['tp.id', 'tp.device_id AS deviceId', 'tp.payload_timestamp AS payloadTimestamp', 'tp.payload'])
       .whereBetween('tp.payload_timestamp', [startTimestamp, endTimestamp])
-      .orderBy(['tp.payload_timestamp', 'tp.device_id'])
+      .orderBy('tp.payload_timestamp', 'ASC')
+      .orderBy('tp.device_id', 'ASC')
       .limit(300)
   },
 
@@ -135,7 +143,8 @@ const db: DatabaseInterface = {
       .select(['tp.id', 'tp.device_id AS deviceId', 'tp.payload_timestamp AS payloadTimestamp', 'tp.payload'])
       .whereBetween('tp.payload_timestamp', [startTimestamp, endTimestamp])
       .andWhere('tp.device_id', deviceId)
-      .orderBy(['tp.payload_timestamp', 'tp.device_id'])
+      .orderBy('tp.payload_timestamp', 'ASC')
+      .orderBy('tp.device_id', 'ASC')
       .limit(300)
   },
 
@@ -150,7 +159,8 @@ const db: DatabaseInterface = {
       .join('thing_groups AS tg', 'tg.name', '=', 'tgd.thing_group')
       .whereBetween('tp.payload_timestamp', [startTimestamp, endTimestamp])
       .andWhere('tg.name', thingGroup)
-      .orderBy(['tp.payload_timestamp', 'tg.name'])
+      .orderBy('tp.payload_timestamp', 'ASC')
+      .orderBy('tp.device_id', 'ASC')
       .limit(300)
   },
 
@@ -165,7 +175,8 @@ const db: DatabaseInterface = {
       .join('thing_types AS tt', 'tt.name', '=', 't.thing_type')
       .whereBetween('tp.payload_timestamp', [startTimestamp, endTimestamp])
       .andWhere('tt.name', thingType)
-      .orderBy(['tp.payload_timestamp', 'tt.name'])
+      .orderBy('tp.payload_timestamp', 'ASC')
+      .orderBy('tp.device_id', 'ASC')
       .limit(300)
   },
 }
