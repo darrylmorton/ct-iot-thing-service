@@ -50,7 +50,7 @@ describe('Thing Payload routes', function () {
       await thingPayloadSeed(thingPayloads)
     })
 
-    it('all by default dates', async () => {
+    it('by default timestamps', async () => {
       const expectedResult: ThingPayload[] = await db.findThingPayloadsByTimestamps(startTimestamp, endTimestamp)
 
       const actualResult = await getThingPayloadsWithQueryParamsRoute(app, {})
@@ -59,7 +59,7 @@ describe('Thing Payload routes', function () {
       assertThingPayloads(actualResult.body, expectedResult)
     })
 
-    it('all by invalid dates', async () => {
+    it('by invalid timestamps', async () => {
       const actualResult = await getThingPayloadsWithQueryParamsRoute(app, {
         startTimestamp: '0',
         endTimestamp: '0',
@@ -69,7 +69,7 @@ describe('Thing Payload routes', function () {
       expect(actualResult.body).to.deep.equal({})
     })
 
-    it('all Thing Payloads by invalid dates - startTimestamp must be before endTimestamp', async () => {
+    it('by invalid timestamps - startTimestamp must be before endTimestamp', async () => {
       const actualResult = await getThingPayloadsWithQueryParamsRoute(app, {
         startTimestamp: endTimestampParam,
         endTimestamp: startTimestampParam,
@@ -79,7 +79,7 @@ describe('Thing Payload routes', function () {
       expect(actualResult.body).to.deep.equal({})
     })
 
-    it('all Thing Payloads by timestamps', async () => {
+    it('by timestamps', async () => {
       const expectedResult: ThingPayload[] = await db.findThingPayloadsByTimestamps(startTimestamp, endTimestamp)
 
       const actualResult = await getThingPayloadsWithQueryParamsRoute(app, {
@@ -91,7 +91,7 @@ describe('Thing Payload routes', function () {
       assertThingPayloads(actualResult.body, expectedResult)
     })
 
-    it('all Thing Payloads by default dates and deviceId', async () => {
+    it('by default dates and deviceId', async () => {
       const deviceId = DEVICE_IDS[2]
 
       const expectedResult: ThingPayload[] = await db.findThingPayloadsByDeviceIdAndTimestamps(
@@ -108,7 +108,7 @@ describe('Thing Payload routes', function () {
       assertThingPayloads(actualResult.body, expectedResult)
     })
 
-    it('all Thing Payloads by timestamps and deviceId', async () => {
+    it('by timestamps and deviceId', async () => {
       const deviceId = DEVICE_IDS[2]
 
       const expectedResult: ThingPayload[] = await db.findThingPayloadsByDeviceIdAndTimestamps(
@@ -127,7 +127,7 @@ describe('Thing Payload routes', function () {
       assertThingPayloads(actualResult.body, expectedResult)
     })
 
-    it('all Thing Payloads by default dates and thing group name', async () => {
+    it('by default dates and thing group name', async () => {
       const thingGroup = THING_GROUP_NAMES[2]
 
       const expectedResult: ThingPayload[] = await db.findThingPayloadsByThingGroupAndTimestamps(
@@ -144,7 +144,7 @@ describe('Thing Payload routes', function () {
       assertThingPayloads(actualResult.body, expectedResult)
     })
 
-    it('all Thing Payloads by timestamps and thing group name', async () => {
+    it('by timestamps and thing group name', async () => {
       const thingGroup = THING_GROUP_NAMES[2]
 
       const expectedResult: ThingPayload[] = await db.findThingPayloadsByThingGroupAndTimestamps(
@@ -163,7 +163,7 @@ describe('Thing Payload routes', function () {
       assertThingPayloads(actualResult.body, expectedResult)
     })
 
-    it('all Thing Payloads by default dates and thing type name', async () => {
+    it('by default dates and thing type name', async () => {
       const thingType = THING_TYPE_NAMES[2]
 
       const expectedResult: ThingPayload[] = await db.findThingPayloadsByThingTypeAndTimestamps(
@@ -180,7 +180,7 @@ describe('Thing Payload routes', function () {
       assertThingPayloads(actualResult.body, expectedResult)
     })
 
-    it('all Thing Payloads by timestamps and thing type name', async () => {
+    it('by timestamps and thing type name', async () => {
       const thingType = THING_TYPE_NAMES[2]
 
       const expectedResult: ThingPayload[] = await db.findThingPayloadsByThingTypeAndTimestamps(
