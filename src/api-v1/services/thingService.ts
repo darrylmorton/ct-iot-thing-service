@@ -90,7 +90,7 @@ const thingService: ThingServiceInterface = {
       findThingGroupByNameResult
     )
 
-    const findThingByDeviceIdResult: ThingGroup[] | Thing[] =
+    const findThingByDeviceIdResult: [] | Thing[] =
       findThingGroupByNameResult.length > 0 ? [] : await db.findThingByDeviceId(deviceId)
     logger.debug('*** findThingByDeviceIdResult', findThingByDeviceIdResult)
 
