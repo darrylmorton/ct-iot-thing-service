@@ -3,14 +3,15 @@
 ## Description
 A Nodejs Typescript Express microservice that serves an OpenAPI/Swagger UI API 
 
+## Requirements
+docker v24+
+node v20+
+npm v10.2+
+
 ## Setup
 ```
 npm install
 npm run lint
-
-docker-compose up
-
-npm run dev:migrate
 ```
 
 ## Run
@@ -19,15 +20,8 @@ npm run dev:migrate
 ```
 docker-compose up -d
 
+npm run test:migrate
 npm run test
-```
-
-### With seed data
-```
-docker-compose up -d
-
-npm run test:seed
-npm run dev:start
 ```
 
 ### Development
