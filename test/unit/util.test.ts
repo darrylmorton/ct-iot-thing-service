@@ -1,18 +1,15 @@
-import db from '../../src/db'
-import { assertThing, createThing } from '../helper/thingHelper'
+import { parseISO, subDays } from 'date-fns'
+import { expect } from 'chai'
 
-describe('Database', () => {
-  before(async () => {
-    await db.client('things').del()
-  })
+import { getStartIsoTimestamp } from '../../src/util/AppUtil'
 
-  describe.only('Things', () => {
-    it('things', async () => {
-      const expectedResult = createThing('thingOne', 'thingOne', 'thingTypeOne')
+describe('Utils', () => {
+  it('getStartIsoTimestamp', async () => {
+    const date = parseISO('2024-04-04T19:30:30Z')
+    const expectedResult = subDays(date, 2).toISOString()
 
-      const actualResult = await db.addThing(expectedResult)
+    const actualResult = getStartIsoTimestamp(date, 2)
 
-      assertThing(actualResult, expectedResult)
-    })
+    expect(actualResult).to.equal(expectedResult)
   })
 })

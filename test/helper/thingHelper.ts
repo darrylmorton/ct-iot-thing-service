@@ -151,7 +151,7 @@ export const createThingGroupDevices = (sortBy?: string): ThingGroupDevice[] => 
 }
 
 // prettier-ignore
-export const createThingPayload = ({ deviceId, payloadTimestamp }: { deviceId: string, payloadTimestamp: number }): ThingPayload => {
+export const createThingPayload = ({ deviceId, payloadTimestamp }: { deviceId?: any, payloadTimestamp?: number }): ThingPayload => {
   return {
     deviceId,
     payloadTimestamp,

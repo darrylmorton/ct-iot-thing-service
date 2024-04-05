@@ -37,8 +37,8 @@ const insertThingPayload = async (thingPayload: any): Promise<any> => {
   await db.client('thing_payloads').insert({ ...thingPayload })
 }
 
-const createThingPayloadsData = (thingPayloads: ThingPayload[]): any[] => {
-  return thingPayloads.reduce((acc: any, item: any) => {
+const createThingPayloadsData = async (thingPayloads: ThingPayload[]): Promise<any[]> => {
+  return thingPayloads.reduce((acc: any[], item: any) => {
     delete Object.assign(item, { device_id: item.deviceId }).deviceId
     delete Object.assign(item, { payload_timestamp: item.payloadTimestamp }).payloadTimestamp
 
@@ -65,10 +65,11 @@ export const thingPayloadSeed = async (thingPayloads: ThingPayload[]): Promise<a
 
   const thingPayloadsCopy = thingPayloads.map(({ ...item }) => item)
 
-  await Promise.all(createThingPayloadsData(thingPayloadsCopy))
+  await Promise.all(await createThingPayloadsData(thingPayloadsCopy))
 }
 
 export const cleanup = async (): Promise<void> => {
+  await db.client('thing_payloads').del()
   await db.client('thing_group_devices').del()
   await db.client('thing_groups').del()
   await db.client('thing_types').del()

@@ -13,21 +13,21 @@ import {
 } from '../../helper/thingHelper'
 import { cleanup, seed, thingPayloadSeed } from '../../../seeds/things'
 import { ThingPayload } from '../../../src/types'
-import { getUnixEndTimestamp, getUnixStartTimestamp } from '../../../src/util/AppUtil'
+import { getUnixEndTimestamp } from '../../helper/appHelper'
 
-describe.only('Thing Payloads', () => {
+describe('Thing Payloads', () => {
   let startDate: Date
   let startTimestamp: number
   let endTimestamp: number
   let thingPayloads: ThingPayload[]
 
   before(async () => {
-    const today = new Date()
-    startDate = subDays(today, 2)
-    const endDate = subDays(today, 1)
+    // const today = new Date()
+    startDate = subDays(new Date(), 2)
+    // const endDate = subDays(startDate, 1)
 
-    startTimestamp = getUnixStartTimestamp(startDate)
-    endTimestamp = getUnixEndTimestamp(endDate)
+    startTimestamp = getUnixTime(startDate)
+    endTimestamp = getUnixEndTimestamp(startDate)
 
     thingPayloads = createThingPayloads(48, startDate, SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID)
 

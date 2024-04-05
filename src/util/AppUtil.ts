@@ -1,4 +1,4 @@
-import { getUnixTime, subDays } from 'date-fns'
+import { subDays } from 'date-fns'
 import winston, { format } from 'winston'
 import printf = format.printf
 import prettyPrint = format.prettyPrint
@@ -8,16 +8,8 @@ import env from '../env'
 
 export const API_URI_PREFIX = process.env.HOST ? process.env.HOST : `${env.HOST}:${env.PORT}`
 
-export const getStartIsoTimestamp = (date: Date): string => {
-  return subDays(date, 1).toISOString()
-}
-
-export const getUnixStartTimestamp = (date: Date): number => {
-  return getUnixTime(subDays(date, 1))
-}
-
-export const getUnixEndTimestamp = (date: Date): number => {
-  return getUnixTime(date)
+export const getStartIsoTimestamp = (date: Date, amount = 1): string => {
+  return subDays(date, amount).toISOString()
 }
 
 export const getWinstonFormatOptions = (): winston.Logform.Format => {

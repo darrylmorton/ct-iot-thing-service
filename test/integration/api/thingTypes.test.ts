@@ -2,11 +2,11 @@ import { before, describe, it } from 'mocha'
 import { expect } from 'chai'
 import { Express } from 'express'
 
-import { getThingTypeByNameRoute, getThingTypesRoute, postThingTypeRoute } from '../helper/thingRouteHelper'
-import { createHttpServer } from '../../src/server'
-import { seed, THING_TYPE_NAMES } from '../../seeds/things'
-import { createThingType } from '../helper/thingHelper'
-import db from '../../src/db'
+import { getThingTypeByNameRoute, getThingTypesRoute, postThingTypeRoute } from '../../helper/thingRouteHelper'
+import { createHttpServer } from '../../../src/server'
+import { seed } from '../../../seeds/things'
+import { createThingType, THING_TYPE_NAMES } from '../../helper/thingHelper'
+import db from '../../../src/db'
 
 describe('Thing Type routes', function () {
   let app: Express

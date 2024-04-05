@@ -73,9 +73,9 @@ jobs:
 #      - name: Run tests
 #        run: npm run test:unit
 
-  test-integration:
+  test-integration-db:
     needs: [ lint ]
-    name: Run integration tests
+    name: Run db integration tests
     runs-on: ubuntu-latest
 
     steps:
@@ -102,4 +102,35 @@ jobs:
       - name: Initialise DB
         run: npm run test:migrate
       - name: Run tests
-        run: npm run test:integration
+        run: npm run test:integration-db
+
+  test-integration-api:
+    needs: [ lint ]
+    name: Run api integration tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: 20.x
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+      - name: Install Packages
+        run: npm ci
+      - name: Setup dependencies
+        run: docker-compose up -d
+      - name: Sleep
+        uses: kibertoad/wait-action@1.0.1
+        with:
+          time: '30s'
+      - name: Initialise DB
+        run: npm run test:migrate
+      - name: Run tests
+        run: npm run test:integration-api

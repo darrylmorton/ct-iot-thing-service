@@ -14,7 +14,7 @@ import {
 import { cleanup, seed } from '../../../seeds/things'
 import { Thing } from '../../../src/types'
 
-describe.only('Things', () => {
+describe('Things', () => {
   before(async () => {
     await seed()
   })

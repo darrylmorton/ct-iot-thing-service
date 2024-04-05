@@ -10,7 +10,7 @@ import {
 } from '../../helper/thingHelper'
 import { cleanup, seed } from '../../../seeds/things'
 
-describe.only('Thing Groups', () => {
+describe('Thing Groups', () => {
   before(async () => {
     await seed()
   })

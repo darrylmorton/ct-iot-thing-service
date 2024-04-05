@@ -2,10 +2,10 @@ import { describe, before, it } from 'mocha'
 import { expect } from 'chai'
 import { Express } from 'express'
 
-import env from '../../src/env'
-import { createHttpServer } from '../../src/server'
-import { healthCheckRoute } from '../helper/healthCheckHelper'
-import { HealthCheckResponse } from '../../src/serviceTypes'
+import env from '../../../src/env'
+import { createHttpServer } from '../../../src/server'
+import { healthCheckRoute } from '../../helper/healthCheckHelper'
+import { HealthCheckResponse } from '../../../src/serviceTypes'
 
 describe('Health route', () => {
   let app: Express
