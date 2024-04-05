@@ -12,7 +12,7 @@ import {
   THING_TYPE_NAMES,
 } from '../../helper/thingHelper'
 import { cleanup, seed, thingPayloadSeed } from '../../../seeds/things'
-import { ThingPayload } from '../../../src/types'
+import { ThingPayload } from '../../../src/types/types'
 import { getUnixEndTimestamp } from '../../helper/appHelper'
 
 describe('Thing Payloads', () => {
@@ -22,10 +22,7 @@ describe('Thing Payloads', () => {
   let thingPayloads: ThingPayload[]
 
   before(async () => {
-    // const today = new Date()
     startDate = subDays(new Date(), 2)
-    // const endDate = subDays(startDate, 1)
-
     startTimestamp = getUnixTime(startDate)
     endTimestamp = getUnixEndTimestamp(startDate)
 

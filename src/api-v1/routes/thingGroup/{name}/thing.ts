@@ -5,7 +5,7 @@ import {
   ServiceThingGroupResponse,
   ServiceThingGroupDevicesResponse,
   ThingServiceInterface,
-} from '../../../../serviceTypes'
+} from '../../../../types/serviceTypes'
 import logger from '../../../../logger'
 import {
   getThingGroupDevicesValidator,

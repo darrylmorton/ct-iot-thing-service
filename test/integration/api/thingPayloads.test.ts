@@ -5,7 +5,7 @@ import { fromUnixTime, getUnixTime, subDays } from 'date-fns'
 
 import { getThingPayloadsWithQueryParamsRoute, postThingPayloadRoute } from '../../helper/thingRouteHelper'
 import { createHttpServer } from '../../../src/server'
-import { ThingPayload } from '../../../src/types'
+import { ThingPayload } from '../../../src/types/types'
 import { seed, thingPayloadSeed } from '../../../seeds/things'
 import {
   assertThingPayload,

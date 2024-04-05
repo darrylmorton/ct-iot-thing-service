@@ -1,7 +1,7 @@
 import { getUnixTime, parseISO } from 'date-fns'
 
 import db from '../../db'
-import { Thing, ThingPayload, ThingType, SimpleThingPayload, ThingGroup, ThingGroupDevice } from '../../types'
+import { Thing, ThingPayload, ThingType, SimpleThingPayload, ThingGroup, ThingGroupDevice } from '../../types/types'
 import {
   ThingServiceInterface,
   ServiceThingsResponse,
@@ -14,7 +14,7 @@ import {
   ServiceThingGroupResponse,
   ServiceThingGroupDeviceResponse,
   ServiceThingGroupDevicesResponse,
-} from '../../serviceTypes'
+} from '../../types/serviceTypes'
 import logger from '../../logger'
 
 const thingService: ThingServiceInterface = {

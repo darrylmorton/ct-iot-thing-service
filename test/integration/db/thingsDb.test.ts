@@ -12,7 +12,7 @@ import {
   THING_TYPE_NAMES,
 } from '../../helper/thingHelper'
 import { cleanup, seed } from '../../../seeds/things'
-import { Thing } from '../../../src/types'
+import { Thing } from '../../../src/types/types'
 
 describe('Things', () => {
   before(async () => {

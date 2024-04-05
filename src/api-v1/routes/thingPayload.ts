@@ -2,11 +2,11 @@ import { Request, Response, NextFunction } from 'express'
 import { Operation, OperationHandlerArray } from 'express-openapi'
 import { isAfter, parseISO } from 'date-fns'
 
-import { ServiceThingPayloadResponse, ThingServiceInterface } from '../../serviceTypes'
+import { ServiceThingPayloadResponse, ThingServiceInterface } from '../../types/serviceTypes'
 import { postThingPayloadValidator } from '../validators/thingPayloadResponseValidators'
 import logger from '../../logger'
 import { getStartIsoTimestamp } from '../../util/AppUtil'
-import { ThingPayload } from '../../types'
+import { ThingPayload } from '../../types/types'
 
 export default function (thingService: ThingServiceInterface): {
   GET: OperationHandlerArray

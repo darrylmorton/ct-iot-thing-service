@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
 import { Operation, OperationHandlerArray } from 'express-openapi'
 
-import { ServiceThingTypeResponse, ServiceThingTypesResponse, ThingServiceInterface } from '../../serviceTypes'
+import { ServiceThingTypeResponse, ServiceThingTypesResponse, ThingServiceInterface } from '../../types/serviceTypes'
 import { getThingTypesValidator, postThingTypeValidator } from '../validators/thingTypeResponseValidators'
 import logger from '../../logger'
-import { ThingType } from '../../types'
+import { ThingType } from '../../types/types'
 
 export default function (thingService: ThingServiceInterface): {
   GET: OperationHandlerArray

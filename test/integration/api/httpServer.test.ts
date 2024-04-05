@@ -5,7 +5,7 @@ import { Express } from 'express'
 import env from '../../../src/env'
 import { createHttpServer } from '../../../src/server'
 import { healthCheckRoute } from '../../helper/healthCheckHelper'
-import { HealthCheckResponse } from '../../../src/serviceTypes'
+import { HealthCheckResponse } from '../../../src/types/serviceTypes'
 
 describe('Health route', () => {
   let app: Express
