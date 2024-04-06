@@ -160,7 +160,9 @@ const thingService: ThingServiceInterface = {
       return { statusCode: 404, result: {} }
     }
 
-    const result: ThingGroupDevice | null = AppUtil.getFirstArrayElement(findThingGroupDeviceByNameAndDeviceIdResult)
+    const result: ThingGroupDevice | null = AppUtil.getFirstThingGroupDeviceArrayElement(
+      findThingGroupDeviceByNameAndDeviceIdResult
+    )
     logger.debug({
       label: 'thingService',
       message: 'getThingGroupDeviceByNameAndDeviceId: result',
@@ -195,7 +197,7 @@ const thingService: ThingServiceInterface = {
       const addThingGroupDeviceResult: ThingGroupDevice[] = await db.addThingGroupDevice(thingGroupDevice)
       logger.debug('ThingService postThingGroupDevice: addThingGroupDeviceResult', addThingGroupDeviceResult)
 
-      const result: ThingGroupDevice | null = AppUtil.getFirstArrayElement(addThingGroupDeviceResult)
+      const result: ThingGroupDevice | null = AppUtil.getFirstThingGroupDeviceArrayElement(addThingGroupDeviceResult)
       logger.debug('ThingService postThingGroupDevice result', result)
 
       if (result) {
@@ -212,7 +214,7 @@ const thingService: ThingServiceInterface = {
     const getThingByNameResult: Thing[] = await db.findThingByName(name)
     logger.debug('ThingService getThingByName: getThingByNameResult', getThingByNameResult)
 
-    const result: Thing | null = getThingByNameResult.length === 1 ? getThingByNameResult[0] : null
+    const result: Thing | null = AppUtil.getFirstThingArrayElement(getThingByNameResult)
     logger.debug('ThingService getThingByNameResult: result', result)
 
     if (result) {

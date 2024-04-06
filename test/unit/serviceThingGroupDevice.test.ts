@@ -77,7 +77,7 @@ describe('Thing Group Device', () => {
     })
 
     it('thing group device by name and device id - first thing group device was not returned', async () => {
-      sinon.stub(AppUtil, 'getFirstArrayElement').returns(null)
+      sinon.stub(AppUtil, 'getFirstThingGroupDeviceArrayElement').returns(null)
 
       const actualResult = await thingService.getThingGroupDeviceByNameAndDeviceId(THING_GROUP_NAMES[0], DEVICE_IDS[0])
 
@@ -127,7 +127,7 @@ describe('Thing Group Device', () => {
     })
 
     it('failed to return created thing group device', async () => {
-      sinon.stub(AppUtil, 'getFirstArrayElement').returns(null)
+      sinon.stub(AppUtil, 'getFirstThingGroupDeviceArrayElement').returns(null)
 
       const actualResult = await thingService.postThingGroupDevice({
         thingGroup: THING_GROUP_NAMES[1],
