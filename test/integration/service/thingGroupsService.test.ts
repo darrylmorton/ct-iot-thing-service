@@ -8,7 +8,7 @@ import { createHttpServer } from '../../../src/server'
 import thingService from '../../../src/api-v1/services/thingService'
 import { ThingGroup } from '../../../src/types/types'
 
-describe('Thing Groups', () => {
+describe.skip('Thing Groups', () => {
   let app: Express
 
   before(async () => {

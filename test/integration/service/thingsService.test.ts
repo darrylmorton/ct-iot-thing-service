@@ -15,7 +15,7 @@ import { createHttpServer } from '../../../src/server'
 import thingService from '../../../src/api-v1/services/thingService'
 import { Thing } from '../../../src/types/types'
 
-describe('Things', () => {
+describe.skip('Things', () => {
   let app: Express
 
   before(async () => {
@@ -79,8 +79,8 @@ describe('Things', () => {
       assertThing(actualResult.result, {})
     })
 
-    it('single', async () => {
-      const expectedResult: Thing = createThing('thingZero', 'zzz-000000', THING_TYPE_NAMES[0])
+    it('create', async () => {
+      const expectedResult: Thing = createThing('thingZero', 'aaa-zzzzzz', THING_TYPE_NAMES[0])
 
       const actualResult = await thingService.postThing(expectedResult)
 

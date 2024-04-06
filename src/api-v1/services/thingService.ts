@@ -16,6 +16,7 @@ import {
   ServiceThingGroupDevicesResponse,
 } from '../../types/serviceTypes'
 import logger from '../../logger'
+import AppUtil from '../../util/AppUtil'
 
 const thingService: ThingServiceInterface = {
   async getThingTypes(): Promise<ServiceThingTypesResponse> {
@@ -40,6 +41,27 @@ const thingService: ThingServiceInterface = {
     }
   },
 
+  async postThingType(thingType: ThingType): Promise<ServiceThingTypeResponse> {
+    const getThingByNameResult: ThingType[] = await db.findThingTypeByName(thingType.name)
+    logger.debug('ThingService postThingType: getThingByNameResult', getThingByNameResult)
+
+    if (getThingByNameResult.length === 0) {
+      const addThingTypeResult: ThingType[] = await db.addThingType(thingType)
+      logger.debug('ThingService postThingType: addThingTypeResult', addThingTypeResult)
+
+      const result: ThingType | null = addThingTypeResult.length === 1 ? addThingTypeResult[0] : null
+      logger.debug('ThingService postThingType result', result)
+
+      if (result) {
+        return { statusCode: 201, result }
+      } else {
+        return { statusCode: 500, result }
+      }
+    }
+
+    return { statusCode: 409, result: {} }
+  },
+
   async getThingGroups(): Promise<ServiceThingGroupsResponse> {
     const result: ThingType[] = await db.findThingGroups()
     logger.debug('ThingService getThingGroups: result', result)
@@ -61,6 +83,28 @@ const thingService: ThingServiceInterface = {
     }
   },
 
+  async postThingGroup(thingGroup: ThingGroup): Promise<ServiceThingGroupResponse> {
+    const getThingGroupByNameResult: ThingGroup[] = await db.findThingGroupByName(thingGroup.name)
+    logger.debug('ThingService postThingGroup: getThingGroupByNameResult', getThingGroupByNameResult)
+
+    if (getThingGroupByNameResult.length === 0) {
+      const addThingGroupResult: ThingGroup[] = await db.addThingGroup(thingGroup)
+      logger.debug('ThingService postThingGroup: addThingGroupResult', addThingGroupResult)
+
+      const result: ThingGroup | null = addThingGroupResult.length === 1 ? addThingGroupResult[0] : null
+      logger.debug('ThingService postThingGroup result', result)
+
+      if (result) {
+        return { statusCode: 201, result }
+      } else {
+        return { statusCode: 500, result }
+      }
+    }
+
+    return { statusCode: 409, result: {} }
+  },
+
+  // TODO missing tests
   async getThingGroupDevices(): Promise<ServiceThingGroupDevicesResponse> {
     const result: ThingGroupDevice[] = await db.findThingGroupDevices()
     logger.debug('ThingService getThingGroupDevices: result', result)
@@ -69,45 +113,59 @@ const thingService: ThingServiceInterface = {
   },
 
   async getThingGroupDevicesByName(name: string): Promise<ServiceThingGroupDevicesResponse> {
-    const getThingGroupByNameResult: ThingGroup[] = await db.findThingGroupByName(name)
-    logger.debug('ThingService getThingGroupDevicesByName: getThingGroupByNameResult', getThingGroupByNameResult)
-
-    if (getThingGroupByNameResult.length === 0) {
-      return { statusCode: 404, result: [] }
-    }
-
     const result: ThingGroupDevice[] = await db.findThingGroupDevicesByName(name)
     logger.debug('ThingService getThingGroupDevicesByName: result', result)
+
+    if (result.length === 0) {
+      return { statusCode: 404, result }
+    }
 
     return { statusCode: 200, result }
   },
 
-  // TODO cleanup...
   async getThingGroupDeviceByNameAndDeviceId(name: string, deviceId: string): Promise<ServiceThingGroupDeviceResponse> {
-    const findThingGroupByNameResult: ThingGroup[] = await db.findThingGroupByName(name)
-    logger.debug(
-      'ThingService getThingGroupDeviceByNameAndDeviceId: findThingGroupByNameResult',
-      findThingGroupByNameResult
-    )
+    let lookupResult: ThingGroup[] | Thing[] = []
 
-    const findThingByDeviceIdResult: [] | Thing[] =
-      findThingGroupByNameResult.length > 0 ? [] : await db.findThingByDeviceId(deviceId)
-    logger.debug('*** findThingByDeviceIdResult', findThingByDeviceIdResult)
+    lookupResult = await db.findThingGroupByName(name)
+    logger.debug({
+      label: 'thingService',
+      message: 'getThingGroupDeviceByNameAndDeviceId: findThingGroupByNameResult',
+      messageObject: lookupResult,
+    })
 
-    if (findThingGroupByNameResult.length === 0 || findThingByDeviceIdResult.length === 0) {
+    if (lookupResult.length === 0) {
+      return { statusCode: 404, result: {} }
+    }
+
+    lookupResult = await db.findThingByDeviceId(deviceId)
+    logger.debug({
+      label: 'thingService',
+      message: 'getThingGroupDeviceByNameAndDeviceId: findThingByDeviceIdResult',
+      messageObject: lookupResult,
+    })
+
+    if (lookupResult.length === 0) {
       return { statusCode: 404, result: {} }
     }
 
     const findThingGroupDeviceByNameAndDeviceIdResult: ThingGroupDevice[] =
       await db.findThingGroupDeviceByNameAndDeviceId(name, deviceId)
-    logger.debug(
-      'ThingService getThingGroupDeviceByNameAndDeviceId: findThingGroupDeviceByNameAndDeviceIdResult',
-      findThingGroupDeviceByNameAndDeviceIdResult
-    )
+    logger.debug({
+      label: 'thingService',
+      message: 'getThingGroupDeviceByNameAndDeviceId: findThingGroupDeviceByNameAndDeviceIdResult',
+      messageObject: findThingGroupDeviceByNameAndDeviceIdResult,
+    })
 
-    const result: ThingGroupDevice | null =
-      findThingGroupDeviceByNameAndDeviceIdResult.length === 1 ? findThingGroupDeviceByNameAndDeviceIdResult[0] : null
-    logger.debug('ThingService getThingGroupDeviceByNameAndDeviceId result', result)
+    if (findThingGroupDeviceByNameAndDeviceIdResult.length === 0) {
+      return { statusCode: 404, result: {} }
+    }
+
+    const result: ThingGroupDevice | null = AppUtil.getFirstArrayElement(findThingGroupDeviceByNameAndDeviceIdResult)
+    logger.debug({
+      label: 'thingService',
+      message: 'getThingGroupDeviceByNameAndDeviceId: result',
+      messageObject: result,
+    })
 
     if (result) {
       return { statusCode: 200, result }
@@ -137,56 +195,13 @@ const thingService: ThingServiceInterface = {
       const addThingGroupDeviceResult: ThingGroupDevice[] = await db.addThingGroupDevice(thingGroupDevice)
       logger.debug('ThingService postThingGroupDevice: addThingGroupDeviceResult', addThingGroupDeviceResult)
 
-      const result: ThingGroupDevice | null =
-        addThingGroupDeviceResult.length === 1 ? addThingGroupDeviceResult[0] : null
+      const result: ThingGroupDevice | null = AppUtil.getFirstArrayElement(addThingGroupDeviceResult)
       logger.debug('ThingService postThingGroupDevice result', result)
 
       if (result) {
         return { statusCode: 201, result }
       } else {
         return { statusCode: 500, result: {} }
-      }
-    }
-
-    return { statusCode: 409, result: {} }
-  },
-
-  async postThingGroup(thingGroup: ThingGroup): Promise<ServiceThingGroupResponse> {
-    const getThingGroupByNameResult: ThingGroup[] = await db.findThingGroupByName(thingGroup.name)
-    logger.debug('ThingService postThingGroup: getThingGroupByNameResult', getThingGroupByNameResult)
-
-    if (getThingGroupByNameResult.length === 0) {
-      const addThingGroupResult: ThingGroup[] = await db.addThingGroup(thingGroup)
-      logger.debug('ThingService postThingGroup: addThingGroupResult', addThingGroupResult)
-
-      const result: ThingGroup | null = addThingGroupResult.length === 1 ? addThingGroupResult[0] : null
-      logger.debug('ThingService postThingGroup result', result)
-
-      if (result) {
-        return { statusCode: 201, result }
-      } else {
-        return { statusCode: 500, result }
-      }
-    }
-
-    return { statusCode: 409, result: {} }
-  },
-
-  async postThingType(thingType: ThingType): Promise<ServiceThingTypeResponse> {
-    const getThingByNameResult: ThingType[] = await db.findThingTypeByName(thingType.name)
-    logger.debug('ThingService postThingType: getThingByNameResult', getThingByNameResult)
-
-    if (getThingByNameResult.length === 0) {
-      const addThingTypeResult: ThingType[] = await db.addThingType(thingType)
-      logger.debug('ThingService postThingType: addThingTypeResult', addThingTypeResult)
-
-      const result: ThingType | null = addThingTypeResult.length === 1 ? addThingTypeResult[0] : null
-      logger.debug('ThingService postThingType result', result)
-
-      if (result) {
-        return { statusCode: 201, result }
-      } else {
-        return { statusCode: 500, result }
       }
     }
 
@@ -209,31 +224,56 @@ const thingService: ThingServiceInterface = {
 
   async getThings(): Promise<ServiceThingsResponse> {
     const result: Thing[] = await db.findThings()
-    logger.debug('ThingService getThings: result', result)
+    logger.debug({
+      label: 'thingService',
+      message: 'getThings',
+      messageObject: result,
+    })
 
     return { statusCode: 200, result }
   },
 
+  // TODO cleanup
   async postThing(thing: Thing): Promise<ServiceThingResponse> {
     const getThingTypeByNameResult: ThingType[] = await db.findThingTypeByName(thing.thingType)
-    logger.debug('ThingService postThing: getThingTypeByNameResult', getThingTypeByNameResult)
+    logger.debug({
+      label: 'thingService',
+      message: 'postThing: getThingTypeByNameResult',
+      messageObject: getThingTypeByNameResult,
+    })
 
     if (getThingTypeByNameResult.length === 0) {
       return { statusCode: 404, result: {} }
     }
 
     const getThingByDeviceIdResult: ThingType[] = await db.findThingByDeviceId(thing.deviceId)
-    logger.debug('ThingService postThing: getThingByDeviceIdResult', getThingByDeviceIdResult)
+    logger.debug({
+      label: 'thingService',
+      message: 'postThing: getThingByDeviceIdResult',
+      messageObject: getThingByDeviceIdResult,
+    })
 
     const getThingByNameResult: Thing[] = await db.findThingByName(thing.name)
-    logger.debug('ThingService postThing: getThingByNameResult', getThingByNameResult)
+    logger.debug({
+      label: 'thingService',
+      message: 'postThing: getThingByNameResult',
+      messageObject: getThingByNameResult,
+    })
 
     if (getThingByDeviceIdResult.length === 0 && getThingByNameResult.length === 0) {
       const addThingResult: Thing[] = await db.addThing(thing)
-      logger.debug('ThingService postThing: addThingResult', addThingResult)
+      logger.debug({
+        label: 'thingService',
+        message: 'postThing: addThingResult',
+        messageObject: addThingResult,
+      })
 
       const result: Thing | null = addThingResult.length === 1 ? addThingResult[0] : null
-      logger.debug('ThingService postThing: result', result)
+      logger.debug({
+        label: 'thingService',
+        message: 'postThing: result',
+        messageObject: result,
+      })
 
       if (result) {
         return { statusCode: 201, result }

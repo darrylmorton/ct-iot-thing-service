@@ -32,6 +32,21 @@ export const getThingTypeByNameRoute = async (app: Express, name: string): Promi
     })
 }
 
+export const postThingTypeRoute = async (app: Express, thingType?: unknown): Promise<any> => {
+  return request(app)
+    .post(`/${env.API_MAJOR_VERSION}/thingType`)
+    .set('content-type', 'application/json')
+    .send(thingType as ThingType)
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(`postThingTypeRouteErr ${err}`)
+      return err
+    })
+}
+
 export const getThingGroupsRoute = async (app: Express): Promise<any> => {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingGroup`)
@@ -56,6 +71,21 @@ export const getThingGroupByNameRoute = async (app: Express, name?: unknown): Pr
     .catch((err) => {
       // eslint-disable-next-line no-console
       console.error(`getThingGroupByNameRouteErr ${err}`)
+      return err
+    })
+}
+
+export const postThingGroupRoute = async (app: Express, thingGroup?: Record<string, unknown>): Promise<any> => {
+  return request(app)
+    .post(`/${env.API_MAJOR_VERSION}/thingGroup`)
+    .set('content-type', 'application/json')
+    .send(thingGroup)
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(`postThingGroupRouteErr ${err}`)
       return err
     })
 }
@@ -102,36 +132,6 @@ export const postThingGroupDeviceRoute = async (app: Express, thingGroupDevice?:
     .catch((err) => {
       // eslint-disable-next-line no-console
       console.error(`postThingGroupDeviceRouteErr ${err}`)
-      return err
-    })
-}
-
-export const postThingGroupRoute = async (app: Express, thingGroup?: Record<string, unknown>): Promise<any> => {
-  return request(app)
-    .post(`/${env.API_MAJOR_VERSION}/thingGroup`)
-    .set('content-type', 'application/json')
-    .send(thingGroup)
-    .then((response) => {
-      return response
-    })
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.error(`postThingGroupRouteErr ${err}`)
-      return err
-    })
-}
-
-export const postThingTypeRoute = async (app: Express, thingType?: unknown): Promise<any> => {
-  return request(app)
-    .post(`/${env.API_MAJOR_VERSION}/thingType`)
-    .set('content-type', 'application/json')
-    .send(thingType as ThingType)
-    .then((response) => {
-      return response
-    })
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.error(`postThingTypeRouteErr ${err}`)
       return err
     })
 }
