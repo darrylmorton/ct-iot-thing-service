@@ -5,7 +5,7 @@ import { Express } from 'express'
 import db from '../../src/db'
 import {
   assertThingGroupDevice,
-  assertThings,
+  assertThingGroupDevices,
   createThingGroupDevice,
   DEVICE_IDS,
   THING_GROUP_NAMES,
@@ -50,14 +50,6 @@ describe('Thing Group Device', () => {
     })
 
     it('thing group device by name and device id - device id does not exist', async () => {
-      // sinon.stub(db, 'findThingGroupByName').returns(
-      //   Promise.resolve([
-      //     {
-      //       name: THING_GROUP_NAMES[0],
-      //       description: THING_GROUP_NAMES[0],
-      //     },
-      //   ])
-      // )
       sinon.stub(db, 'findThingByDeviceId').returns(Promise.resolve([]))
 
       const actualResult = await thingService.getThingGroupDeviceByNameAndDeviceId(THING_GROUP_NAMES[0], DEVICE_IDS[0])
@@ -67,24 +59,6 @@ describe('Thing Group Device', () => {
     })
 
     it('thing group device by name and device id - thing group device does not exist', async () => {
-      // sinon.stub(db, 'findThingGroupByName').returns(
-      //   Promise.resolve([
-      //     {
-      //       name: THING_NAMES[0],
-      //       description: THING_NAMES[0],
-      //     },
-      //   ])
-      // )
-      // sinon.stub(db, 'findThingByDeviceId').returns(
-      //   Promise.resolve([
-      //     {
-      //       name: THING_NAMES[0],
-      //       thingType: THING_TYPE_NAMES[0],
-      //       description: THING_TYPE_NAMES[0],
-      //       deviceId: DEVICE_IDS[0],
-      //     },
-      //   ])
-      // )
       sinon.stub(db, 'findThingGroupDeviceByNameAndDeviceId').returns(Promise.resolve([]))
 
       const actualResult = await thingService.getThingGroupDeviceByNameAndDeviceId(THING_GROUP_NAMES[0], DEVICE_IDS[0])
@@ -96,61 +70,13 @@ describe('Thing Group Device', () => {
     it('all by name', async () => {
       const expectedResult = await getThingGroupDevicesByNameRoute(app, THING_GROUP_NAMES[0])
 
-      // sinon.stub(db, 'findThingGroupByName').returns(
-      //   Promise.resolve([
-      //     {
-      //       name: THING_GROUP_NAMES[0],
-      //       description: THING_GROUP_NAMES[0],
-      //     },
-      //   ])
-      // )
-      // sinon.stub(db, 'findThingGroupDevicesByName').returns(
-      //   Promise.resolve([
-      //     {
-      //       id: '00000000-00000000-00000000-00000000',
-      //       thingGroup: THING_GROUP_NAMES[0],
-      //       deviceId: DEVICE_IDS[0],
-      //     },
-      //   ])
-      // )
-
       const actualResult = await thingService.getThingGroupDevicesByName(THING_GROUP_NAMES[0])
 
       expect(actualResult.statusCode).to.equal(200)
-      assertThings(actualResult.result, expectedResult.body)
+      assertThingGroupDevices(actualResult.result, expectedResult.body)
     })
 
     it('thing group device by name and device id - first thing group device was not returned', async () => {
-      // sinon.stub(db, 'findThingGroupByName').returns(
-      //   Promise.resolve([
-      //     {
-      //       name: THING_NAMES[0],
-      //       description: THING_NAMES[0],
-      //     },
-      //   ])
-      // )
-      // sinon.stub(db, 'findThingByDeviceId').returns(
-      //   Promise.resolve([
-      //     {
-      //       name: THING_NAMES[0],
-      //       thingType: THING_TYPE_NAMES[0],
-      //       description: THING_TYPE_NAMES[0],
-      //       deviceId: DEVICE_IDS[0],
-      //     },
-      //   ])
-      // )
-      // sinon.stub(db, 'findThingGroupDeviceByNameAndDeviceId').returns(
-      //   Promise.resolve(
-      //     Promise.resolve([
-      //       {
-      //         id: '00000000-00000000-00000000-00000000',
-      //         thingGroup: THING_GROUP_NAMES[0],
-      //         deviceId: DEVICE_IDS[0],
-      //       },
-      //     ])
-      //   )
-      // )
-
       sinon.stub(AppUtil, 'getFirstArrayElement').returns(null)
 
       const actualResult = await thingService.getThingGroupDeviceByNameAndDeviceId(THING_GROUP_NAMES[0], DEVICE_IDS[0])
