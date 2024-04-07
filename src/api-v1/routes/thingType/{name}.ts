@@ -10,10 +10,10 @@ export default function (thingService: ThingServiceInterface): { GET: OperationH
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { statusCode, result }: ServiceThingTypeResponse = await thingService.getThingTypeByName(req.params.name)
-        logger.debug('GET thingTypeByName: statusCode, result %d %j', statusCode, result)
+        logger.debug({ message: 'GET thingTypeByName', statusCode, messageObject: result })
 
         const validationErrors = getThingTypeValidator.validateResponse(statusCode, result)
-        logger.debug('GET thingTypeByName: validationErrors %j', validationErrors)
+        logger.debug({ message: 'GET thingTypeByName', validationErrors })
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -21,7 +21,7 @@ export default function (thingService: ThingServiceInterface): { GET: OperationH
           return res.status(statusCode).json(result)
         }
       } catch (error) {
-        logger.error('getThingTypeByNameError %s', error)
+        logger.error({ message: 'getThingTypeByNameError', messageObject: error })
 
         return next(error)
       }

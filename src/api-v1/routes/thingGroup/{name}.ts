@@ -4,6 +4,7 @@ import { Operation, OperationHandlerArray } from 'express-openapi'
 import { ServiceThingGroupResponse, ThingServiceInterface } from '../../../types/serviceTypes'
 import logger from '../../../logger'
 import { getThingGroupValidator } from '../../validators/thingGroupResponseValidators'
+import { getThingValidator } from '../../validators/thingResponseValidators'
 
 export default function (thingService: ThingServiceInterface): Operation {
   const GET: Operation = [
@@ -12,10 +13,10 @@ export default function (thingService: ThingServiceInterface): Operation {
         const { statusCode, result }: ServiceThingGroupResponse = await thingService.getThingGroupByName(
           req.params.name
         )
-        logger.debug('GET thingGroupByName: statusCode, result %d %j', statusCode, result)
+        logger.debug({ message: 'GET thingGroupByName', statusCode, messageObject: result })
 
         const validationErrors = getThingGroupValidator.validateResponse(statusCode, result)
-        logger.debug('GET thingGroupByName: validationErrors %j', validationErrors)
+        logger.debug({ message: 'GET thingGroupByName', validationErrors })
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)

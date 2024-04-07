@@ -11,10 +11,10 @@ export default function (thingService: ThingServiceInterface): Operation {
       try {
         const { statusCode, result }: ServiceThingGroupDeviceResponse =
           await thingService.getThingGroupDeviceByNameAndDeviceId(req.params.name, req.params.deviceId)
-        logger.debug('GET thingGroupDevicesByNameAndDeviceId: statusCode, result', statusCode, result)
+        logger.debug({ message: 'GET thingGroupDevicesByNameAndDeviceId', statusCode, messageObject: result })
 
         const validationErrors = getThingGroupDeviceValidator.validateResponse(200, result)
-        logger.debug('GET thingGroupDevicesByNameAndDeviceId: validationErrors %j', validationErrors)
+        logger.debug({ message: 'GET thingGroupDevicesByNameAndDeviceId', validationErrors })
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -22,7 +22,7 @@ export default function (thingService: ThingServiceInterface): Operation {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
-        logger.error('getThingGroupDeviceByNameAndDeviceIdError %s', error)
+        logger.error({ message: 'getThingGroupDeviceByNameAndDeviceIdError', messageObject: error })
 
         return next(error)
       }

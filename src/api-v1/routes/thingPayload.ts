@@ -32,10 +32,10 @@ export default function (thingService: ThingServiceInterface): {
       try {
         const { statusCode, result }: ServiceThingPayloadResponse =
           await thingService.getThingPayloadsByQueryParams(queryParams)
-        logger.debug('GET thingPayload: statusCode, result %d %j', statusCode, result)
+        logger.debug({ message: 'GET thingPayload', statusCode, messageObject: result })
 
         const validationErrors = postThingPayloadValidator.validateResponse(200, result)
-        logger.debug('GET thingPayload: validationErrors %j', validationErrors)
+        logger.debug({ message: 'GET thingPayload', validationErrors })
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -43,7 +43,7 @@ export default function (thingService: ThingServiceInterface): {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
-        logger.error('getThingPayloadError %s', error)
+        logger.error({ message: 'getThingPayloadError', messageObject: error })
 
         return next(error)
       }
@@ -56,10 +56,10 @@ export default function (thingService: ThingServiceInterface): {
         const { statusCode, result }: ServiceThingPayloadResponse = await thingService.postThingPayload(
           req.body as ThingPayload
         )
-        logger.debug('POST thingPayload: statusCode, result %d %j', statusCode, result)
+        logger.debug({ message: 'POST thingPayload', statusCode, messageObject: result })
 
         const validationErrors = postThingPayloadValidator.validateResponse(201, result)
-        logger.debug('POST thingPayload: validationErrors %j', validationErrors)
+        logger.debug({ message: 'POST thingPayload', validationErrors })
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -67,7 +67,7 @@ export default function (thingService: ThingServiceInterface): {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
-        logger.error('postThingPayloadError %s', error)
+        logger.error({ message: 'postThingPayloadError', messageObject: error })
 
         return next(error)
       }

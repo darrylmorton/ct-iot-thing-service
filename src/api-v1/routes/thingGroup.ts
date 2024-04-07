@@ -14,10 +14,10 @@ export default function (thingService: ThingServiceInterface): {
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { statusCode, result }: ServiceThingTypesResponse = await thingService.getThingGroups()
-        logger.debug('GET thingGroup: statusCode, result %d %j', statusCode, result)
+        logger.debug({ message: 'GET thingGroup', statusCode, messageObject: result })
 
         const validationErrors = getThingGroupsValidator.validateResponse(200, result)
-        logger.debug('GET thingGroup: validationErrors %j', validationErrors)
+        logger.debug({ message: 'GET thingGroup', validationErrors })
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -25,7 +25,7 @@ export default function (thingService: ThingServiceInterface): {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
-        logger.error('getThingGroupError %s', error)
+        logger.error({ message: 'getThingGroupError', messageObject: error })
 
         return next(error)
       }
@@ -38,10 +38,10 @@ export default function (thingService: ThingServiceInterface): {
         const { statusCode, result }: ServiceThingGroupResponse = await thingService.postThingGroup(
           req.body as ThingGroup
         )
-        logger.debug('POST thingGroup: statusCode, result %d %j', statusCode, result)
+        logger.debug({ message: 'POST thingGroup', statusCode, messageObject: result })
 
         const validationErrors = postThingGroupValidator.validateResponse(201, result)
-        logger.debug('POST thingGroup: validationErrors %j', validationErrors)
+        logger.debug({ message: 'POST thingGroup', validationErrors })
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -49,7 +49,7 @@ export default function (thingService: ThingServiceInterface): {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
-        logger.error('postThingGroupError %s', error)
+        logger.error({ message: 'postThingGroupError', messageObject: error })
 
         return next(error)
       }
