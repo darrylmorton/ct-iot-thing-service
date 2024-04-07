@@ -16,7 +16,7 @@ import { fromUnixTime, subDays } from 'date-fns'
 import { getUnixEndTimestamp, getUnixStartTimestamp } from '../../helper/appHelper'
 import { ThingPayload } from '../../../src/types/types'
 
-describe('Thing', () => {
+describe('Service - Thing Payload', () => {
   let startDate: Date
   let thingPayloads: ThingPayload[]
   let startTimestamp: number

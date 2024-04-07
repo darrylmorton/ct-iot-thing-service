@@ -4,14 +4,17 @@ import sinon from 'sinon'
 import {
   assertThing,
   assertThings,
+  createThing,
   createThings,
   DEVICE_IDS,
+  SORT_THINGS_BY_NAME_AND_DEVICE_ID,
   THING_NAMES,
   THING_TYPE_NAMES,
 } from '../../helper/thingHelper'
 import thingService from '../../../src/api-v1/services/thingService'
 import ServiceUtil from '../../../src/util/ServiceUtil'
 import { seed } from '../../../seeds/things'
+import { Thing } from '../../../src/types/types'
 
 describe('Service - Thing', () => {
   before(async () => {
@@ -24,7 +27,7 @@ describe('Service - Thing', () => {
 
   describe('GET', () => {
     it('all', async () => {
-      const expectedResult = createThings()
+      const expectedResult = createThings(SORT_THINGS_BY_NAME_AND_DEVICE_ID)
 
       const actualResult = await thingService.getThings()
 
@@ -107,6 +110,15 @@ describe('Service - Thing', () => {
 
       expect(actualResult.statusCode).to.equal(500)
       expect(actualResult.result).to.deep.equal({})
+    })
+
+    it('create', async () => {
+      const expectedResult: Thing = createThing('thing', 'zzz-yyyxxx', THING_TYPE_NAMES[0])
+
+      const actualResult = await thingService.postThing(expectedResult)
+
+      expect(actualResult.statusCode).to.equal(201)
+      assertThing(actualResult.result, expectedResult)
     })
   })
 })
