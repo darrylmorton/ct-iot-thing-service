@@ -247,7 +247,6 @@ const thingService: ThingServiceInterface = {
     return { statusCode: 200, result }
   },
 
-  // TODO cleanup
   async postThing(thing: Thing): Promise<ServiceThingResponse> {
     const getThingTypeByNameResult: ThingType[] = await db.findThingTypeByName(thing.thingType)
     logger.debug({
@@ -260,12 +259,16 @@ const thingService: ThingServiceInterface = {
       return { statusCode: 404, result: {} }
     }
 
-    const getThingByDeviceIdResult: ThingType[] = await db.findThingByDeviceId(thing.deviceId)
+    const getThingByDeviceIdResult: Thing[] = await db.findThingByDeviceId(thing.deviceId)
     logger.debug({
       label: 'thingService',
       message: 'postThing: getThingByDeviceIdResult',
       messageObject: getThingByDeviceIdResult,
     })
+
+    if (getThingByDeviceIdResult.length > 0) {
+      return { statusCode: 409, result: {} }
+    }
 
     const getThingByNameResult: Thing[] = await db.findThingByName(thing.name)
     logger.debug({
@@ -274,29 +277,29 @@ const thingService: ThingServiceInterface = {
       messageObject: getThingByNameResult,
     })
 
-    if (getThingByDeviceIdResult.length === 0 && getThingByNameResult.length === 0) {
-      const addThingResult: Thing[] = await db.addThing(thing)
-      logger.debug({
-        label: 'thingService',
-        message: 'postThing: addThingResult',
-        messageObject: addThingResult,
-      })
-
-      const result: Thing | null = addThingResult.length === 1 ? addThingResult[0] : null
-      logger.debug({
-        label: 'thingService',
-        message: 'postThing: result',
-        messageObject: result,
-      })
-
-      if (result) {
-        return { statusCode: 201, result }
-      } else {
-        return { statusCode: 500, result: {} }
-      }
+    if (getThingByNameResult.length > 0) {
+      return { statusCode: 409, result: {} }
     }
 
-    return { statusCode: 409, result: {} }
+    const addThingResult: Thing[] = await db.addThing(thing)
+    logger.debug({
+      label: 'thingService',
+      message: 'postThing: addThingResult',
+      messageObject: addThingResult,
+    })
+
+    const result: Thing | null = AppUtil.getFirstThingArrayElement(addThingResult)
+    logger.debug({
+      label: 'thingService',
+      message: 'postThing: result',
+      messageObject: result,
+    })
+
+    if (result) {
+      return { statusCode: 201, result }
+    } else {
+      return { statusCode: 500, result: {} }
+    }
   },
 
   async getThingPayloadsByQueryParams(queryParams: Record<string, string>): Promise<ServiceThingPayloadsResponse> {

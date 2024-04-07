@@ -1,8 +1,7 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
 
-import db from '../../src/db'
-import { assertThing, createThings, THING_NAMES, THING_TYPE_NAMES } from '../helper/thingHelper'
+import { assertThing, createThings, DEVICE_IDS, THING_NAMES, THING_TYPE_NAMES } from '../helper/thingHelper'
 import thingService from '../../src/api-v1/services/thingService'
 import AppUtil from '../../src/util/AppUtil'
 
@@ -38,24 +37,38 @@ describe('Thing', () => {
     })
   })
 
-  describe.skip('POST', () => {
+  describe('POST', () => {
+    it('thing type does not exist', async () => {
+      const actualResult = await thingService.postThing({
+        name: THING_NAMES[0],
+        description: THING_NAMES[0],
+        deviceId: DEVICE_IDS[0],
+        thingType: 'zero-thing-type',
+      })
+
+      expect(actualResult.statusCode).to.equal(404)
+      expect(actualResult.result).to.deep.equal({})
+    })
+
+    it('device id exists', async () => {
+      const actualResult = await thingService.postThing({
+        name: 'zero-thing',
+        description: THING_NAMES[0],
+        deviceId: DEVICE_IDS[0],
+        thingType: THING_TYPE_NAMES[0],
+      })
+
+      expect(actualResult.statusCode).to.equal(409)
+      expect(actualResult.result).to.deep.equal({})
+    })
+
     it('failed to return created thing', async () => {
-      sinon.stub(db, 'findThingTypeByName').returns(
-        Promise.resolve([
-          {
-            name: THING_NAMES[0],
-            description: THING_NAMES[0],
-          },
-        ])
-      )
-      sinon.stub(db, 'findThingByDeviceId').returns(Promise.resolve([]))
-      sinon.stub(db, 'findThingByName').returns(Promise.resolve([]))
-      sinon.stub(db, 'addThing').returns(Promise.resolve([]))
+      sinon.stub(AppUtil, 'getFirstThingArrayElement').returns(null)
 
       const actualResult = await thingService.postThing({
         name: 'zero-thing',
         description: 'zero-thing',
-        deviceId: 'aaa-zzzzzz',
+        deviceId: 'zzz-xxxxxx',
         thingType: THING_TYPE_NAMES[0],
       })
 
