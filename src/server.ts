@@ -59,10 +59,18 @@ export const startServer = async (): Promise<void> => {
   const app: Express = await createHttpServer()
 
   try {
-    app.listen(env.PORT, () => {
+    const server = app.listen(env.PORT, () => {
       logger.info(`Listening on port ${env.PORT} `)
     })
+
+    process.on('SIGTERM', () => {
+      logger.info('SIGTERM signal received: closing HTTP server')
+
+      server.close(() => {
+        logger.info('HTTP server closed')
+      })
+    })
   } catch (err) {
-    logger.error(`Binding failed: ${err}`)
+    logger.error({ message: 'Binding failed', messageObject: err })
   }
 }
