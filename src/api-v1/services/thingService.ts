@@ -405,17 +405,29 @@ const thingService: ThingServiceInterface = {
 
   async postThingPayload(thingPayload: SimpleThingPayload): Promise<ServiceThingPayloadResponse> {
     const findThingByDeviceIdResult: Thing[] = await db.findThingByDeviceId(thingPayload.deviceId)
-    logger.debug('ThingService postThingPayload: findThingByDeviceIdResult', findThingByDeviceIdResult)
+    logger.debug({
+      label: 'thingService',
+      message: 'postThingPayload: findThingByDeviceIdResult',
+      messageObject: findThingByDeviceIdResult,
+    })
 
     if (findThingByDeviceIdResult.length === 0) {
       return { statusCode: 404, result: [] }
     }
 
     const addThingPayloadResult: ThingPayload[] = await db.addThingPayload(thingPayload)
-    logger.debug('ThingService postThingPayload: addThingPayloadResult', addThingPayloadResult)
+    logger.debug({
+      label: 'thingService',
+      message: 'postThingPayload: addThingPayloadResult',
+      messageObject: addThingPayloadResult,
+    })
 
     const result: ThingPayload | null = ServiceUtil.getFirstThingPayloadArrayElement(addThingPayloadResult)
-    logger.debug('ThingService postThingPayload: result', result)
+    logger.debug({
+      label: 'thingService',
+      message: 'postThingPayload: result',
+      messageObject: result,
+    })
 
     if (result) {
       return { statusCode: 201, result }
