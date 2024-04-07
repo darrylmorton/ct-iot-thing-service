@@ -1,6 +1,6 @@
 {
   "name": "ct-iot-thing-service",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CT IoT Thing Service",
   "main": "./src/index.ts",
   "author": "Darryl Morton",
