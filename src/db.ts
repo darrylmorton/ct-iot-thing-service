@@ -3,7 +3,6 @@ import knex from 'knex'
 import env from './env'
 import { ThingPayload, Thing, ThingType, ThingGroup, SimpleThingPayload, ThingGroupDevice } from './types/types'
 import { DatabaseInterface } from './types/dbTypes'
-import logger from './logger'
 
 const db: DatabaseInterface = {
   client: knex({
@@ -60,10 +59,6 @@ const db: DatabaseInterface = {
   },
 
   async findThingTypeByName(name: string): Promise<ThingType[]> {
-    logger.debug({
-      label: 'db',
-      message: '*** findThingTypeByName',
-    })
     return this.client('thing_types').select(['name', 'description']).where({ name })
   },
 

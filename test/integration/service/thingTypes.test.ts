@@ -14,7 +14,7 @@ import ServiceUtil from '../../../src/util/ServiceUtil'
 import { ThingType } from '../../../src/types/types'
 import { seed } from '../../../seeds/things'
 
-describe('Thing Type', () => {
+describe('Service - Thing Type', () => {
   before(async () => {
     await seed()
   })
@@ -75,7 +75,7 @@ describe('Thing Type', () => {
 
       const actualResult = await thingService.postThingType({
         name: 'thing-type',
-        description: 'zero-thing-type',
+        description: 'thing-type',
       })
 
       expect(actualResult.statusCode).to.equal(500)
