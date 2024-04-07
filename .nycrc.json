@@ -7,7 +7,7 @@
     ],
     "exclude": [
         "src/api-v1/api-doc.ts",
-        "src/api-v1/routes/**",
+        "src/api-v1/validators/**",
         "src/env.ts",
         "src/logger.ts",
         "src/index.ts",
