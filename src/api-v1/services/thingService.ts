@@ -414,13 +414,13 @@ const thingService: ThingServiceInterface = {
     const addThingPayloadResult: ThingPayload[] = await db.addThingPayload(thingPayload)
     logger.debug('ThingService postThingPayload: addThingPayloadResult', addThingPayloadResult)
 
-    const result: ThingPayload | null = addThingPayloadResult.length === 1 ? addThingPayloadResult[0] : null
+    const result: ThingPayload | null = ServiceUtil.getFirstThingPayloadArrayElement(addThingPayloadResult)
     logger.debug('ThingService postThingPayload: result', result)
 
     if (result) {
       return { statusCode: 201, result }
     } else {
-      return { statusCode: 500, result }
+      return { statusCode: 500, result: {} }
     }
   },
 }

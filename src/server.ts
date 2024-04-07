@@ -8,7 +8,7 @@ import env from './env'
 import logger from './logger'
 import v1ApiDoc from './api-v1/api-doc'
 import v1ThingService from './api-v1/services/thingService'
-import { HealthCheckResponse } from './serviceTypes'
+import { HealthCheckResponse } from './types/serviceTypes'
 import { API_URI_PREFIX } from './util/AppUtil'
 
 export const createHttpServer = async (): Promise<Express> => {
