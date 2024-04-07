@@ -157,16 +157,16 @@ const thingService: ThingServiceInterface = {
   },
 
   // TODO missing tests
-  async getThingGroupDevices(): Promise<ServiceThingGroupDevicesResponse> {
-    const result: ThingGroupDevice[] = await db.findThingGroupDevices()
-    logger.debug({
-      label: 'thingService',
-      message: 'getThingGroupDevices: result',
-      messageObject: result,
-    })
-
-    return { statusCode: 200, result }
-  },
+  // async getThingGroupDevices(): Promise<ServiceThingGroupDevicesResponse> {
+  //   const result: ThingGroupDevice[] = await db.findThingGroupDevices()
+  //   logger.debug({
+  //     label: 'thingService',
+  //     message: 'getThingGroupDevices: result',
+  //     messageObject: result,
+  //   })
+  //
+  //   return { statusCode: 200, result }
+  // },
 
   async getThingGroupDevicesByName(name: string): Promise<ServiceThingGroupDevicesResponse> {
     const result: ThingGroupDevice[] = await db.findThingGroupDevicesByName(name)

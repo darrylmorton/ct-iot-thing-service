@@ -65,7 +65,7 @@ export interface ThingServiceInterface {
   getThingGroups(): Promise<ServiceThingGroupsResponse>
   getThingGroupByName(name: string): Promise<ServiceThingGroupResponse>
   postThingGroup(thingGroup: ThingGroup): Promise<ServiceThingGroupResponse>
-  getThingGroupDevices(): Promise<ServiceThingGroupDevicesResponse>
+  // getThingGroupDevices(): Promise<ServiceThingGroupDevicesResponse>
   getThingGroupDevicesByName(name: string): Promise<ServiceThingGroupDevicesResponse>
   getThingGroupDeviceByNameAndDeviceId(name: string, deviceId: string): Promise<ServiceThingGroupDeviceResponse>
   postThingGroupDevice(thingGroupDevice: SimpleThingGroupDevice): Promise<ServiceThingGroupDeviceResponse>
