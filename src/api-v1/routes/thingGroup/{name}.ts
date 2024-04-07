@@ -4,7 +4,6 @@ import { Operation, OperationHandlerArray } from 'express-openapi'
 import { ServiceThingGroupResponse, ThingServiceInterface } from '../../../types/serviceTypes'
 import logger from '../../../logger'
 import { getThingGroupValidator } from '../../validators/thingGroupResponseValidators'
-import { getThingValidator } from '../../validators/thingResponseValidators'
 
 export default function (thingService: ThingServiceInterface): Operation {
   const GET: Operation = [

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import { Operation, OperationHandlerArray } from 'express-openapi'
 
 import { ServiceThingResponse, ServiceThingsResponse, ThingServiceInterface } from '../../types/serviceTypes'
-import { getThingsValidator, getThingValidator, postThingValidator } from '../validators/thingResponseValidators'
+import { getThingsValidator, postThingValidator } from '../validators/thingResponseValidators'
 import logger from '../../logger'
 import { Thing } from '../../types/types'
 
