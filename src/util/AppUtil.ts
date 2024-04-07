@@ -5,7 +5,6 @@ import prettyPrint = format.prettyPrint
 import { ConsoleTransportInstance } from 'winston/lib/winston/transports'
 
 import env from '../env'
-import { Thing, ThingGroupDevice } from '../types/types'
 
 export const API_URI_PREFIX = process.env.HOST ? process.env.HOST : `${env.HOST}:${env.PORT}`
 
@@ -42,14 +41,3 @@ export const getWinstonTransportConsole = (): ConsoleTransportInstance => {
     format: getWinstonFormatOptions(),
   })
 }
-
-const getFirstThingArrayElement = (list: Thing[]): Thing | null => {
-  return list.length === 1 ? list[0] : null
-}
-
-const getFirstThingGroupDeviceArrayElement = (list: ThingGroupDevice[]): ThingGroupDevice | null => {
-  return list.length === 1 ? list[0] : null
-}
-
-// TODO change file to be module with interface
-export default { getFirstThingArrayElement, getFirstThingGroupDeviceArrayElement }

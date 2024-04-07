@@ -16,50 +16,78 @@ import {
   ServiceThingGroupDevicesResponse,
 } from '../../types/serviceTypes'
 import logger from '../../logger'
-import AppUtil from '../../util/AppUtil'
+import ServiceUtil from '../../util/ServiceUtil'
 
 const thingService: ThingServiceInterface = {
   async getThingTypes(): Promise<ServiceThingTypesResponse> {
     const result: ThingType[] = await db.findThingTypes()
-    logger.debug('ThingService getThingTypes: result', result)
+    logger.debug({
+      label: 'thingService',
+      message: 'getThingTypes: result',
+      messageObject: result,
+    })
 
     return { statusCode: 200, result }
   },
 
   async getThingTypeByName(name: string): Promise<ServiceThingTypeResponse> {
     const getThingTypeByNameResult: ThingType[] = await db.findThingTypeByName(name)
-    logger.debug('ThingService getThingTypeByName: getThingTypeByNameResult', getThingTypeByNameResult)
+    logger.debug({
+      label: 'thingService',
+      message: 'getThingTypeByName: getThingTypeByNameResult',
+      messageObject: getThingTypeByNameResult,
+    })
 
-    const result: ThingType | Record<string, unknown> =
-      getThingTypeByNameResult.length === 1 ? getThingTypeByNameResult[0] : {}
-    logger.debug('ThingService getThingTypeByName: result', result)
+    if (getThingTypeByNameResult.length === 0) {
+      return { statusCode: 404, result: {} }
+    }
 
-    if (getThingTypeByNameResult.length === 1) {
+    const result: ThingType | null = ServiceUtil.getFirstThingTypeArrayElement(getThingTypeByNameResult)
+    logger.debug({
+      label: 'thingService',
+      message: 'getThingTypeByName: result',
+      messageObject: result,
+    })
+
+    if (result) {
       return { statusCode: 200, result }
     } else {
-      return { statusCode: 404, result }
+      return { statusCode: 500, result: {} }
     }
   },
 
   async postThingType(thingType: ThingType): Promise<ServiceThingTypeResponse> {
     const getThingByNameResult: ThingType[] = await db.findThingTypeByName(thingType.name)
-    logger.debug('ThingService postThingType: getThingByNameResult', getThingByNameResult)
+    logger.debug({
+      label: 'thingService',
+      message: 'postThingType: getThingByNameResult',
+      messageObject: getThingByNameResult,
+    })
 
-    if (getThingByNameResult.length === 0) {
-      const addThingTypeResult: ThingType[] = await db.addThingType(thingType)
-      logger.debug('ThingService postThingType: addThingTypeResult', addThingTypeResult)
-
-      const result: ThingType | null = addThingTypeResult.length === 1 ? addThingTypeResult[0] : null
-      logger.debug('ThingService postThingType result', result)
-
-      if (result) {
-        return { statusCode: 201, result }
-      } else {
-        return { statusCode: 500, result }
-      }
+    if (getThingByNameResult.length > 0) {
+      return { statusCode: 409, result: {} }
     }
 
-    return { statusCode: 409, result: {} }
+    const addThingTypeResult: ThingType[] = await db.addThingType(thingType)
+    logger.debug({
+      label: 'thingService',
+      message: 'postThingType: addThingTypeResult',
+      messageObject: addThingTypeResult,
+    })
+
+    const result: ThingType | null = ServiceUtil.getFirstThingTypeArrayElement(addThingTypeResult)
+    logger.debug('ThingService postThingType result', result)
+    logger.debug({
+      label: 'thingService',
+      message: 'postThingType: result',
+      messageObject: result,
+    })
+
+    if (result) {
+      return { statusCode: 201, result }
+    } else {
+      return { statusCode: 500, result: {} }
+    }
   },
 
   async getThingGroups(): Promise<ServiceThingGroupsResponse> {
@@ -73,7 +101,7 @@ const thingService: ThingServiceInterface = {
     const getThingGroupByNameResult: ThingGroup[] = await db.findThingGroupByName(name)
     logger.debug('ThingService getThingGroupByName: getThingGroupByNameResult', getThingGroupByNameResult)
 
-    const result: ThingGroup | null = getThingGroupByNameResult.length === 1 ? getThingGroupByNameResult[0] : null
+    const result: ThingGroup | null = ServiceUtil.getFirstThingGroupArrayElement(getThingGroupByNameResult)
     logger.debug('ThingService getThingGroupByName: result', result)
 
     if (result) {
@@ -91,7 +119,7 @@ const thingService: ThingServiceInterface = {
       const addThingGroupResult: ThingGroup[] = await db.addThingGroup(thingGroup)
       logger.debug('ThingService postThingGroup: addThingGroupResult', addThingGroupResult)
 
-      const result: ThingGroup | null = addThingGroupResult.length === 1 ? addThingGroupResult[0] : null
+      const result: ThingGroup | null = ServiceUtil.getFirstThingGroupArrayElement(addThingGroupResult)
       logger.debug('ThingService postThingGroup result', result)
 
       if (result) {
@@ -160,7 +188,7 @@ const thingService: ThingServiceInterface = {
       return { statusCode: 404, result: {} }
     }
 
-    const result: ThingGroupDevice | null = AppUtil.getFirstThingGroupDeviceArrayElement(
+    const result: ThingGroupDevice | null = ServiceUtil.getFirstThingGroupDeviceArrayElement(
       findThingGroupDeviceByNameAndDeviceIdResult
     )
     logger.debug({
@@ -197,7 +225,8 @@ const thingService: ThingServiceInterface = {
       const addThingGroupDeviceResult: ThingGroupDevice[] = await db.addThingGroupDevice(thingGroupDevice)
       logger.debug('ThingService postThingGroupDevice: addThingGroupDeviceResult', addThingGroupDeviceResult)
 
-      const result: ThingGroupDevice | null = AppUtil.getFirstThingGroupDeviceArrayElement(addThingGroupDeviceResult)
+      const result: ThingGroupDevice | null =
+        ServiceUtil.getFirstThingGroupDeviceArrayElement(addThingGroupDeviceResult)
       logger.debug('ThingService postThingGroupDevice result', result)
 
       if (result) {
@@ -222,7 +251,7 @@ const thingService: ThingServiceInterface = {
       return { statusCode: 404, result: {} }
     }
 
-    const result: Thing | null = AppUtil.getFirstThingArrayElement(getThingByNameResult)
+    const result: Thing | null = ServiceUtil.getFirstThingArrayElement(getThingByNameResult)
     logger.debug({
       label: 'thingService',
       message: 'getThingByName: result',
@@ -288,7 +317,7 @@ const thingService: ThingServiceInterface = {
       messageObject: addThingResult,
     })
 
-    const result: Thing | null = AppUtil.getFirstThingArrayElement(addThingResult)
+    const result: Thing | null = ServiceUtil.getFirstThingArrayElement(addThingResult)
     logger.debug({
       label: 'thingService',
       message: 'postThing: result',

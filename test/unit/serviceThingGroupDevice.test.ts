@@ -1,29 +1,23 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
-import { Express } from 'express'
 
 import db from '../../src/db'
 import {
   assertThingGroupDevice,
   assertThingGroupDevices,
   createThingGroupDevice,
+  createThingGroupDevices,
   DEVICE_IDS,
   THING_GROUP_NAMES,
 } from '../helper/thingHelper'
 import thingService from '../../src/api-v1/services/thingService'
-import { getThingGroupDevicesByNameRoute } from '../helper/thingRouteHelper'
 import { seed } from '../../seeds/things'
-import { createHttpServer } from '../../src/server'
-import AppUtil from '../../src/util/AppUtil'
+import ServiceUtil from '../../src/util/ServiceUtil'
 import { ThingGroupDevice } from '../../src/types/types'
 
 describe('Thing Group Device', () => {
-  let app: Express
-
   before(async () => {
     await seed()
-
-    app = await createHttpServer()
   })
 
   beforeEach(() => {
@@ -68,16 +62,16 @@ describe('Thing Group Device', () => {
     })
 
     it('all by name', async () => {
-      const expectedResult = await getThingGroupDevicesByNameRoute(app, THING_GROUP_NAMES[0])
+      const expectedResult = createThingGroupDevices().filter((item) => item.thingGroup === THING_GROUP_NAMES[0])
 
       const actualResult = await thingService.getThingGroupDevicesByName(THING_GROUP_NAMES[0])
 
       expect(actualResult.statusCode).to.equal(200)
-      assertThingGroupDevices(actualResult.result, expectedResult.body)
+      assertThingGroupDevices(actualResult.result, expectedResult)
     })
 
     it('thing group device by name and device id - first thing group device was not returned', async () => {
-      sinon.stub(AppUtil, 'getFirstThingGroupDeviceArrayElement').returns(null)
+      sinon.stub(ServiceUtil, 'getFirstThingGroupDeviceArrayElement').returns(null)
 
       const actualResult = await thingService.getThingGroupDeviceByNameAndDeviceId(THING_GROUP_NAMES[0], DEVICE_IDS[0])
 
@@ -127,7 +121,7 @@ describe('Thing Group Device', () => {
     })
 
     it('failed to return created thing group device', async () => {
-      sinon.stub(AppUtil, 'getFirstThingGroupDeviceArrayElement').returns(null)
+      sinon.stub(ServiceUtil, 'getFirstThingGroupDeviceArrayElement').returns(null)
 
       const actualResult = await thingService.postThingGroupDevice({
         thingGroup: THING_GROUP_NAMES[1],

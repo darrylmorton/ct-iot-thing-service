@@ -3,9 +3,14 @@ import sinon from 'sinon'
 
 import { assertThing, createThings, DEVICE_IDS, THING_NAMES, THING_TYPE_NAMES } from '../helper/thingHelper'
 import thingService from '../../src/api-v1/services/thingService'
-import AppUtil from '../../src/util/AppUtil'
+import ServiceUtil from '../../src/util/ServiceUtil'
+import { seed } from '../../seeds/things'
 
 describe('Thing', () => {
+  before(async () => {
+    await seed()
+  })
+
   beforeEach(() => {
     sinon.restore()
   })
@@ -28,7 +33,7 @@ describe('Thing', () => {
     })
 
     it('by name - failed to return thing', async () => {
-      sinon.stub(AppUtil, 'getFirstThingArrayElement').returns(null)
+      sinon.stub(ServiceUtil, 'getFirstThingArrayElement').returns(null)
 
       const actualResult = await thingService.getThingByName(THING_NAMES[0])
 
@@ -63,7 +68,7 @@ describe('Thing', () => {
     })
 
     it('failed to return created thing', async () => {
-      sinon.stub(AppUtil, 'getFirstThingArrayElement').returns(null)
+      sinon.stub(ServiceUtil, 'getFirstThingArrayElement').returns(null)
 
       const actualResult = await thingService.postThing({
         name: 'zero-thing',
