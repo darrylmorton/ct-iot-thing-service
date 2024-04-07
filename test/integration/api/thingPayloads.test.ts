@@ -5,7 +5,7 @@ import { fromUnixTime, getUnixTime, subDays } from 'date-fns'
 
 import { getThingPayloadsWithQueryParamsRoute, postThingPayloadRoute } from '../../helper/thingRouteHelper'
 import { createHttpServer } from '../../../src/server'
-import { ThingPayload } from '../../../src/types'
+import { ThingPayload } from '../../../src/types/types'
 import { seed, thingPayloadSeed } from '../../../seeds/things'
 import {
   assertThingPayload,
@@ -22,7 +22,7 @@ import { getUnixEndTimestamp, getUnixStartTimestamp } from '../../helper/appHelp
 
 // TODO validation scenarios would need openapi request validation min/max length implemented
 //  currently null or missing parameters can only be tested against
-describe('Thing Payload routes', function () {
+describe('API - Thing Payload Routes', function () {
   let app: Express
   let startDate: Date
   let thingPayloads: ThingPayload[]
@@ -202,7 +202,7 @@ describe('Thing Payload routes', function () {
 
   describe('POST', async () => {
     it('invalid payload', async () => {
-      const expectedResult = createThingPayload({})
+      const expectedResult: ThingPayload = createThingPayload({})
 
       const actualResult = await postThingPayloadRoute(app, expectedResult)
 
@@ -211,7 +211,7 @@ describe('Thing Payload routes', function () {
     })
 
     it('invalid deviceId', async () => {
-      const expectedResult = createThingPayload({
+      const expectedResult: ThingPayload = createThingPayload({
         deviceId: null,
       })
 

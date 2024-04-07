@@ -7,8 +7,9 @@ import { createHttpServer } from '../../../src/server'
 import { seed } from '../../../seeds/things'
 import { createThingType, THING_TYPE_NAMES } from '../../helper/thingHelper'
 import db from '../../../src/db'
+import { ThingType } from '../../../src/types/types'
 
-describe('Thing Type routes', function () {
+describe('API - Thing Type Routes', function () {
   let app: Express
 
   before(async function () {
@@ -37,7 +38,7 @@ describe('Thing Type routes', function () {
   })
 
   it('POST Thing Type', async function () {
-    const expectedResult = createThingType('thingTypeZero')
+    const expectedResult: ThingType = createThingType('thingTypeZero')
 
     const actualResult = await postThingTypeRoute(app, expectedResult)
 

@@ -1,8 +1,8 @@
 import request from 'supertest'
+import { Express } from 'express'
 
 import env from '../../src/env'
-import { Express } from 'express'
-import { ThingPayload, ThingType } from '../../src/types'
+import { ThingGroupDevice, ThingPayload, ThingType } from '../../src/types/types'
 
 export const getThingTypesRoute = async (app: Express): Promise<any> => {
   return request(app)
@@ -28,6 +28,21 @@ export const getThingTypeByNameRoute = async (app: Express, name: string): Promi
     .catch((err) => {
       // eslint-disable-next-line no-console
       console.error(`getThingTypeByNameRouteErr ${err}`)
+      return err
+    })
+}
+
+export const postThingTypeRoute = async (app: Express, thingType?: unknown): Promise<any> => {
+  return request(app)
+    .post(`/${env.API_MAJOR_VERSION}/thingType`)
+    .set('content-type', 'application/json')
+    .send(thingType as ThingType)
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(`postThingTypeRouteErr ${err}`)
       return err
     })
 }
@@ -60,6 +75,21 @@ export const getThingGroupByNameRoute = async (app: Express, name?: unknown): Pr
     })
 }
 
+export const postThingGroupRoute = async (app: Express, thingGroup?: Record<string, unknown>): Promise<any> => {
+  return request(app)
+    .post(`/${env.API_MAJOR_VERSION}/thingGroup`)
+    .set('content-type', 'application/json')
+    .send(thingGroup)
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(`postThingGroupRouteErr ${err}`)
+      return err
+    })
+}
+
 export const getThingGroupDeviceByNameAndDeviceIdRoute = async (
   app: Express,
   thingGroupDevice?: Record<string, unknown>
@@ -77,7 +107,7 @@ export const getThingGroupDeviceByNameAndDeviceIdRoute = async (
     })
 }
 
-export const getThingGroupDevicesByNameRoute = async (app: Express, name?: string | unknown): Promise<any> => {
+export const getThingGroupDevicesByNameRoute = async (app: Express, name: unknown): Promise<any> => {
   return request(app)
     .get(`/${env.API_MAJOR_VERSION}/thingGroup/${name}/thing`)
     .set('content-type', 'application/json')
@@ -91,10 +121,7 @@ export const getThingGroupDevicesByNameRoute = async (app: Express, name?: strin
     })
 }
 
-export const postThingGroupDeviceRoute = async (
-  app: Express,
-  thingGroupDevice?: Record<string, unknown>
-): Promise<any> => {
+export const postThingGroupDeviceRoute = async (app: Express, thingGroupDevice?: ThingGroupDevice): Promise<any> => {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingGroup/${thingGroupDevice?.thingGroup}/thing`)
     .set('content-type', 'application/json')
@@ -105,36 +132,6 @@ export const postThingGroupDeviceRoute = async (
     .catch((err) => {
       // eslint-disable-next-line no-console
       console.error(`postThingGroupDeviceRouteErr ${err}`)
-      return err
-    })
-}
-
-export const postThingGroupRoute = async (app: Express, thingGroup?: Record<string, unknown>): Promise<any> => {
-  return request(app)
-    .post(`/${env.API_MAJOR_VERSION}/thingGroup`)
-    .set('content-type', 'application/json')
-    .send(thingGroup)
-    .then((response) => {
-      return response
-    })
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.error(`postThingGroupRouteErr ${err}`)
-      return err
-    })
-}
-
-export const postThingTypeRoute = async (app: Express, thingType: ThingType): Promise<any> => {
-  return request(app)
-    .post(`/${env.API_MAJOR_VERSION}/thingType`)
-    .set('content-type', 'application/json')
-    .send(thingType)
-    .then((response) => {
-      return response
-    })
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.error(`postThingTypeRouteErr ${err}`)
       return err
     })
 }
@@ -182,7 +179,7 @@ export const postThingRoute = async (app: Express, thing?: Record<string, unknow
     })
 }
 
-export const postThingPayloadRoute = async (app: Express, thingPayload: any): Promise<any> => {
+export const postThingPayloadRoute = async (app: Express, thingPayload: unknown): Promise<any> => {
   return request(app)
     .post(`/${env.API_MAJOR_VERSION}/thingPayload`)
     .set('content-type', 'application/json')

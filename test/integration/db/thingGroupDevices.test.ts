@@ -11,8 +11,9 @@ import {
   THING_TYPE_NAMES,
 } from '../../helper/thingHelper'
 import { cleanup, seed } from '../../../seeds/things'
+import { ThingGroupDevice } from '../../../src/types/types'
 
-describe('Thing Group Devices', () => {
+describe('DB - Thing Group Devices', () => {
   before(async () => {
     await seed()
   })
@@ -65,7 +66,7 @@ describe('Thing Group Devices', () => {
         deviceId: DEVICE_IDS[0],
         thingType: THING_TYPE_NAMES[0],
       })
-      const expectedResult = [createThingGroupDevice(THING_GROUP_NAMES[0], DEVICE_IDS[0])]
+      const expectedResult: ThingGroupDevice[] = [createThingGroupDevice(THING_GROUP_NAMES[0], DEVICE_IDS[0])]
 
       const actualResult = await db.addThingGroupDevice(expectedResult[0])
 

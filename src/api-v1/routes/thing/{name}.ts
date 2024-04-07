@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { Operation, OperationHandlerArray } from 'express-openapi'
 
-import { ServiceThingResponse, ThingServiceInterface } from '../../../serviceTypes'
+import { ServiceThingResponse, ThingServiceInterface } from '../../../types/serviceTypes'
 import { getThingValidator } from '../../validators/thingResponseValidators'
 import logger from '../../../logger'
 
@@ -10,10 +10,10 @@ export default function (thingService: ThingServiceInterface): Operation {
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { statusCode, result }: ServiceThingResponse = await thingService.getThingByName(req.params.name)
-        logger.debug(`GET thingByName: statusCode, result: ${statusCode}, ${result}`)
+        logger.debug({ message: 'GET thingByName', statusCode, messageObject: result })
 
         const validationErrors = getThingValidator.validateResponse(statusCode, result)
-        logger.debug(`GET thingById: validationErrors: ${validationErrors}`)
+        logger.debug({ message: 'GET thingById', validationErrors })
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -21,7 +21,7 @@ export default function (thingService: ThingServiceInterface): Operation {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
-        logger.error(`getThingByNameError ${error}`)
+        logger.error({ message: 'getThingByNameError', messageObject: error })
 
         return next(error)
       }

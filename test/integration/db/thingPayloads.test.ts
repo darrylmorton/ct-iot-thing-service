@@ -12,20 +12,17 @@ import {
   THING_TYPE_NAMES,
 } from '../../helper/thingHelper'
 import { cleanup, seed, thingPayloadSeed } from '../../../seeds/things'
-import { ThingPayload } from '../../../src/types'
+import { ThingPayload } from '../../../src/types/types'
 import { getUnixEndTimestamp } from '../../helper/appHelper'
 
-describe('Thing Payloads', () => {
+describe('DB - Thing Payloads', () => {
   let startDate: Date
   let startTimestamp: number
   let endTimestamp: number
   let thingPayloads: ThingPayload[]
 
   before(async () => {
-    // const today = new Date()
     startDate = subDays(new Date(), 2)
-    // const endDate = subDays(startDate, 1)
-
     startTimestamp = getUnixTime(startDate)
     endTimestamp = getUnixEndTimestamp(startDate)
 
@@ -99,7 +96,7 @@ describe('Thing Payloads', () => {
         deviceId: DEVICE_IDS[0],
         thingType: THING_TYPE_NAMES[0],
       })
-      const expectedResult = createThingPayload({
+      const expectedResult: ThingPayload = createThingPayload({
         deviceId: DEVICE_IDS[0],
         payloadTimestamp: getUnixTime(startDate),
       })

@@ -5,7 +5,7 @@ import {
   ServiceThingGroupResponse,
   ServiceThingGroupDevicesResponse,
   ThingServiceInterface,
-} from '../../../../serviceTypes'
+} from '../../../../types/serviceTypes'
 import logger from '../../../../logger'
 import {
   getThingGroupDevicesValidator,
@@ -22,10 +22,10 @@ export default function (thingService: ThingServiceInterface): {
         const { statusCode, result }: ServiceThingGroupDevicesResponse = await thingService.getThingGroupDevicesByName(
           req.params.name
         )
-        logger.debug('GET thingGroupDevicesByName: statusCode, result %d %j', statusCode, result)
+        logger.debug({ message: 'GET thingGroupDevicesByName', statusCode, messageObject: result })
 
         const validationErrors = getThingGroupDevicesValidator.validateResponse(200, result)
-        logger.debug('GET thingGroupDevicesByName: validationErrors %j', validationErrors)
+        logger.debug({ message: 'GET thingGroupDevicesByName', validationErrors })
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -33,7 +33,7 @@ export default function (thingService: ThingServiceInterface): {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
-        logger.error('getThingGroupDeviceByNameError %s', error)
+        logger.error({ message: 'getThingGroupDeviceByNameError', messageObject: error })
 
         return next(error)
       }
@@ -47,10 +47,10 @@ export default function (thingService: ThingServiceInterface): {
           thingGroup: req.params.name,
           deviceId: req.body.deviceId,
         })
-        logger.debug('POST thingGroupDevice: statusCode, result %d %j', statusCode, result)
+        logger.debug({ message: 'POST thingGroupDevice', statusCode, messageObject: result })
 
         const validationErrors = postThingGroupDeviceValidator.validateResponse(201, result)
-        logger.debug('POST thingGroupDevice: validationErrors %j', validationErrors)
+        logger.debug({ message: 'POST thingGroupDevice', validationErrors })
 
         if (validationErrors) {
           return res.status(statusCode).json(validationErrors)
@@ -58,7 +58,7 @@ export default function (thingService: ThingServiceInterface): {
           return res.status(statusCode).json(result)
         }
       } catch (error) {
-        logger.error('postThingGroupDeviceError %s', error)
+        logger.error({ message: 'postThingGroupDeviceError', messageObject: error })
 
         return next(error)
       }

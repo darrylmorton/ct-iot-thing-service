@@ -31,13 +31,6 @@ docker-compose up -d
 npm run dev:start
 ```
 
-### Staging
-```
-docker-compose up -d
-
-npm run stage:start
-```
-
 ### Production
 ```
 docker-compose up -d

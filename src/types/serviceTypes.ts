@@ -61,17 +61,17 @@ export interface ServiceThingPayloadsResponse extends ServiceResponse {
 export interface ThingServiceInterface {
   getThingTypes(): Promise<ServiceThingTypesResponse>
   getThingTypeByName(name: string): Promise<ServiceThingTypeResponse>
+  postThingType(thingType: ThingType): Promise<ServiceThingTypeResponse>
   getThingGroups(): Promise<ServiceThingGroupsResponse>
   getThingGroupByName(name: string): Promise<ServiceThingGroupResponse>
-  getThingGroupDevices(): Promise<ServiceThingGroupDevicesResponse>
+  postThingGroup(thingGroup: ThingGroup): Promise<ServiceThingGroupResponse>
+  // getThingGroupDevices(): Promise<ServiceThingGroupDevicesResponse>
   getThingGroupDevicesByName(name: string): Promise<ServiceThingGroupDevicesResponse>
   getThingGroupDeviceByNameAndDeviceId(name: string, deviceId: string): Promise<ServiceThingGroupDeviceResponse>
   postThingGroupDevice(thingGroupDevice: SimpleThingGroupDevice): Promise<ServiceThingGroupDeviceResponse>
-  postThingType(thingType: ThingType): Promise<ServiceThingTypeResponse>
   getThingByName(name: string): Promise<ServiceThingResponse>
   getThings(): Promise<ServiceThingsResponse>
   postThing(thing: Thing): Promise<ServiceThingResponse>
-  postThingGroup(thingGroup: ThingGroup): Promise<ServiceThingGroupResponse>
-  postThingPayload(thingPayload: SimpleThingPayload): Promise<ServiceThingPayloadResponse>
   getThingPayloadsByQueryParams(queryParams: Record<string, string>): Promise<ServiceThingPayloadsResponse>
+  postThingPayload(thingPayload: SimpleThingPayload): Promise<ServiceThingPayloadResponse>
 }

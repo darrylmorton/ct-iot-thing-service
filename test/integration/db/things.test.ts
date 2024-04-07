@@ -12,9 +12,9 @@ import {
   THING_TYPE_NAMES,
 } from '../../helper/thingHelper'
 import { cleanup, seed } from '../../../seeds/things'
-import { Thing } from '../../../src/types'
+import { Thing } from '../../../src/types/types'
 
-describe('Things', () => {
+describe('DB - Things', () => {
   before(async () => {
     await seed()
   })
@@ -65,7 +65,7 @@ describe('Things', () => {
 
     it('single', async () => {
       await db.addThingType({ name: THING_TYPE_NAMES[0], description: THING_TYPE_NAMES[0] })
-      const expectedResult = [createThing(THING_NAMES[0], THING_NAMES[0], THING_TYPE_NAMES[0])]
+      const expectedResult: Thing[] = [createThing(THING_NAMES[0], THING_NAMES[0], THING_TYPE_NAMES[0])]
 
       const actualResult = await db.addThing(expectedResult[0])
 
