@@ -212,15 +212,27 @@ const thingService: ThingServiceInterface = {
 
   async getThingByName(name: string): Promise<ServiceThingResponse> {
     const getThingByNameResult: Thing[] = await db.findThingByName(name)
-    logger.debug('ThingService getThingByName: getThingByNameResult', getThingByNameResult)
+    logger.debug({
+      label: 'thingService',
+      message: 'getThingByName: getThingByNameResult',
+      messageObject: getThingByNameResult,
+    })
+
+    if (getThingByNameResult.length === 0) {
+      return { statusCode: 404, result: {} }
+    }
 
     const result: Thing | null = AppUtil.getFirstThingArrayElement(getThingByNameResult)
-    logger.debug('ThingService getThingByNameResult: result', result)
+    logger.debug({
+      label: 'thingService',
+      message: 'getThingByName: result',
+      messageObject: result,
+    })
 
     if (result) {
       return { statusCode: 200, result }
     } else {
-      return { statusCode: 404, result: {} }
+      return { statusCode: 500, result: {} }
     }
   },
 
