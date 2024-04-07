@@ -2,24 +2,19 @@ import { expect } from 'chai'
 import sinon from 'sinon'
 
 import {
-  assertThing,
   assertThingPayload,
   assertThingPayloads,
   createThingPayload,
   createThingPayloads,
-  createThings,
   DEVICE_IDS,
   SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID,
-  THING_GROUP_NAMES,
-  THING_NAMES,
-  THING_TYPE_NAMES,
-} from '../helper/thingHelper'
-import thingService from '../../src/api-v1/services/thingService'
-import ServiceUtil from '../../src/util/ServiceUtil'
-import { seed, thingPayloadSeed } from '../../seeds/things'
+} from '../../helper/thingHelper'
+import thingService from '../../../src/api-v1/services/thingService'
+import ServiceUtil from '../../../src/util/ServiceUtil'
+import { seed, thingPayloadSeed } from '../../../seeds/things'
 import { fromUnixTime, subDays } from 'date-fns'
-import { getUnixEndTimestamp, getUnixStartTimestamp } from '../helper/appHelper'
-import { ThingPayload } from '../../src/types/types'
+import { getUnixEndTimestamp, getUnixStartTimestamp } from '../../helper/appHelper'
+import { ThingPayload } from '../../../src/types/types'
 
 describe('Thing', () => {
   let startDate: Date

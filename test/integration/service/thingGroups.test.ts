@@ -1,19 +1,12 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
 
-import db from '../../src/db'
-import {
-  assertThingGroupDevice,
-  assertThingGroupDevices,
-  createThingGroupDevice,
-  createThingGroupDevices,
-  DEVICE_IDS,
-  THING_GROUP_NAMES,
-} from '../helper/thingHelper'
-import thingService from '../../src/api-v1/services/thingService'
-import { seed } from '../../seeds/things'
-import ServiceUtil from '../../src/util/ServiceUtil'
-import { ThingGroupDevice } from '../../src/types/types'
+import db from '../../../src/db'
+import { assertThingGroupDevice, createThingGroupDevice, DEVICE_IDS, THING_GROUP_NAMES } from '../../helper/thingHelper'
+import thingService from '../../../src/api-v1/services/thingService'
+import { seed } from '../../../seeds/things'
+import ServiceUtil from '../../../src/util/ServiceUtil'
+import { ThingGroupDevice } from '../../../src/types/types'
 
 describe('Thing Group', () => {
   before(async () => {

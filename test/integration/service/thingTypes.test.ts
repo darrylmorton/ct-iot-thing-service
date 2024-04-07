@@ -8,11 +8,11 @@ import {
   createThingTypes,
   SORT_THING_TYPES_BY_NAME,
   THING_TYPE_NAMES,
-} from '../helper/thingHelper'
-import thingService from '../../src/api-v1/services/thingService'
-import ServiceUtil from '../../src/util/ServiceUtil'
-import { ThingType } from '../../src/types/types'
-import { seed } from '../../seeds/things'
+} from '../../helper/thingHelper'
+import thingService from '../../../src/api-v1/services/thingService'
+import ServiceUtil from '../../../src/util/ServiceUtil'
+import { ThingType } from '../../../src/types/types'
+import { seed } from '../../../seeds/things'
 
 describe('Thing Type', () => {
   before(async () => {

@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
 
-import { assertThing, createThings, DEVICE_IDS, THING_NAMES, THING_TYPE_NAMES } from '../helper/thingHelper'
-import thingService from '../../src/api-v1/services/thingService'
-import ServiceUtil from '../../src/util/ServiceUtil'
-import { seed } from '../../seeds/things'
+import { assertThing, createThings, DEVICE_IDS, THING_NAMES, THING_TYPE_NAMES } from '../../helper/thingHelper'
+import thingService from '../../../src/api-v1/services/thingService'
+import ServiceUtil from '../../../src/util/ServiceUtil'
+import { seed } from '../../../seeds/things'
 
 describe('Thing', () => {
   before(async () => {
