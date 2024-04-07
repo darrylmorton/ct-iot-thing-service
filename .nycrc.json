@@ -11,6 +11,7 @@
         "src/env.ts",
         "src/logger.ts",
         "src/index.ts",
+        "src/server.ts",
         "src/types/**",
         "test/**"
     ],

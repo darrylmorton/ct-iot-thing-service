@@ -15,7 +15,7 @@ import { seed } from '../../../seeds/things'
 import ServiceUtil from '../../../src/util/ServiceUtil'
 import { ThingGroupDevice } from '../../../src/types/types'
 
-describe('Thing Group Device', () => {
+describe('Service - Thing Group Device', () => {
   before(async () => {
     await seed()
   })
@@ -25,40 +25,13 @@ describe('Thing Group Device', () => {
   })
 
   describe('GET', () => {
-    it('all by name - thing group device does not exist', async () => {
+    it('all by name - thing group does not exist', async () => {
       sinon.stub(db, 'findThingGroupByName').returns(Promise.resolve([]))
 
-      const actualResult = await thingService.getThingGroupDevicesByName('zzz-000000')
+      const actualResult = await thingService.getThingGroupDevicesByName('zero-thing-group')
 
       expect(actualResult.statusCode).to.equal(404)
       expect(actualResult.result).to.deep.equal([])
-    })
-
-    it('thing group device by name and device id - thing group does not exist', async () => {
-      sinon.stub(db, 'findThingGroupByName').returns(Promise.resolve([]))
-
-      const actualResult = await thingService.getThingGroupDeviceByNameAndDeviceId(THING_GROUP_NAMES[0], DEVICE_IDS[0])
-
-      expect(actualResult.statusCode).to.equal(404)
-      expect(actualResult.result).to.deep.equal({})
-    })
-
-    it('thing group device by name and device id - device id does not exist', async () => {
-      sinon.stub(db, 'findThingByDeviceId').returns(Promise.resolve([]))
-
-      const actualResult = await thingService.getThingGroupDeviceByNameAndDeviceId(THING_GROUP_NAMES[0], DEVICE_IDS[0])
-
-      expect(actualResult.statusCode).to.equal(404)
-      expect(actualResult.result).to.deep.equal({})
-    })
-
-    it('thing group device by name and device id - thing group device does not exist', async () => {
-      sinon.stub(db, 'findThingGroupDeviceByNameAndDeviceId').returns(Promise.resolve([]))
-
-      const actualResult = await thingService.getThingGroupDeviceByNameAndDeviceId(THING_GROUP_NAMES[0], DEVICE_IDS[0])
-
-      expect(actualResult.statusCode).to.equal(404)
-      expect(actualResult.result).to.deep.equal({})
     })
 
     it('all by name', async () => {
@@ -68,6 +41,33 @@ describe('Thing Group Device', () => {
 
       expect(actualResult.statusCode).to.equal(200)
       assertThingGroupDevices(actualResult.result, expectedResult)
+    })
+
+    it('thing group device by name and device id - thing group does not exist', async () => {
+      // sinon.stub(db, 'findThingGroupByName').returns(Promise.resolve([]))
+
+      const actualResult = await thingService.getThingGroupDeviceByNameAndDeviceId('zero-thing-group', DEVICE_IDS[0])
+
+      expect(actualResult.statusCode).to.equal(404)
+      expect(actualResult.result).to.deep.equal({})
+    })
+
+    it('thing group device by name and device id - device id does not exist', async () => {
+      // sinon.stub(db, 'findThingByDeviceId').returns(Promise.resolve([]))
+
+      const actualResult = await thingService.getThingGroupDeviceByNameAndDeviceId(THING_GROUP_NAMES[0], 'xxx-yyyzzz')
+
+      expect(actualResult.statusCode).to.equal(404)
+      expect(actualResult.result).to.deep.equal({})
+    })
+
+    it('thing group device by name and device id - thing group device does not exist', async () => {
+      // sinon.stub(db, 'findThingGroupDeviceByNameAndDeviceId').returns(Promise.resolve([]))
+
+      const actualResult = await thingService.getThingGroupDeviceByNameAndDeviceId('zero-thing-group', 'xxx-yyyzzz')
+
+      expect(actualResult.statusCode).to.equal(404)
+      expect(actualResult.result).to.deep.equal({})
     })
 
     it('thing group device by name and device id - first thing group device was not returned', async () => {
@@ -112,7 +112,7 @@ describe('Thing Group Device', () => {
     })
 
     it('create', async () => {
-      const expectedResult: ThingGroupDevice = createThingGroupDevice(THING_GROUP_NAMES[1], DEVICE_IDS[3])
+      const expectedResult: ThingGroupDevice = createThingGroupDevice(THING_GROUP_NAMES[1], DEVICE_IDS[4])
 
       const actualResult = await thingService.postThingGroupDevice(expectedResult)
 
