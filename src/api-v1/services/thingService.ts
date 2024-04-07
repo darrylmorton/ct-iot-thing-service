@@ -184,27 +184,25 @@ const thingService: ThingServiceInterface = {
   },
 
   async getThingGroupDeviceByNameAndDeviceId(name: string, deviceId: string): Promise<ServiceThingGroupDeviceResponse> {
-    let lookupResult: ThingGroup[] | Thing[] = []
-
-    lookupResult = await db.findThingGroupByName(name)
+    const findThingGroupByNameResult = await db.findThingGroupByName(name)
     logger.debug({
       label: 'thingService',
       message: 'getThingGroupDeviceByNameAndDeviceId: findThingGroupByNameResult',
-      messageObject: lookupResult,
+      messageObject: findThingGroupByNameResult,
     })
 
-    if (lookupResult.length === 0) {
+    if (findThingGroupByNameResult.length === 0) {
       return { statusCode: 404, result: {} }
     }
 
-    lookupResult = await db.findThingByDeviceId(deviceId)
+    const findThingByDeviceIdResult = await db.findThingByDeviceId(deviceId)
     logger.debug({
       label: 'thingService',
       message: 'getThingGroupDeviceByNameAndDeviceId: findThingByDeviceIdResult',
-      messageObject: lookupResult,
+      messageObject: findThingByDeviceIdResult,
     })
 
-    if (lookupResult.length === 0) {
+    if (findThingByDeviceIdResult.length === 0) {
       return { statusCode: 404, result: {} }
     }
 
