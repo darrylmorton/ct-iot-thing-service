@@ -9,7 +9,7 @@ import { assertThingGroup, createThingGroup, THING_GROUP_NAMES } from '../../hel
 import db from '../../../src/db'
 import { ThingGroup } from '../../../src/types/types'
 
-describe('Thing Group Routes', () => {
+describe('API - Thing Group Routes', () => {
   let app: Express
 
   before(async () => {

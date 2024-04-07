@@ -7,7 +7,7 @@ import { createHttpServer } from '../../../src/server'
 import { healthCheckRoute } from '../../helper/healthCheckHelper'
 import { HealthCheckResponse } from '../../../src/types/serviceTypes'
 
-describe('Health route', () => {
+describe('API - Healthz Route', () => {
   let app: Express
 
   before(async function () {

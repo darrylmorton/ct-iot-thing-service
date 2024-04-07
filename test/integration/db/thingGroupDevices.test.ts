@@ -13,7 +13,7 @@ import {
 import { cleanup, seed } from '../../../seeds/things'
 import { ThingGroupDevice } from '../../../src/types/types'
 
-describe('Thing Group Devices', () => {
+describe('DB - Thing Group Devices', () => {
   before(async () => {
     await seed()
   })

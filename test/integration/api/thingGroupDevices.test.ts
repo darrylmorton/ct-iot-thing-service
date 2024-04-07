@@ -19,7 +19,7 @@ import {
 import db from '../../../src/db'
 import { ThingGroupDevice } from '../../../src/types/types'
 
-describe('Thing Group Device Routes', () => {
+describe('API - Thing Group Device Routes', () => {
   let app: Express
 
   before(async () => {

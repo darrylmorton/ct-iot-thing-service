@@ -15,7 +15,7 @@ import { cleanup, seed, thingPayloadSeed } from '../../../seeds/things'
 import { ThingPayload } from '../../../src/types/types'
 import { getUnixEndTimestamp } from '../../helper/appHelper'
 
-describe('Thing Payloads', () => {
+describe('DB - Thing Payloads', () => {
   let startDate: Date
   let startTimestamp: number
   let endTimestamp: number

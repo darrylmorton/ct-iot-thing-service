@@ -9,7 +9,7 @@ import { createThingType, THING_TYPE_NAMES } from '../../helper/thingHelper'
 import db from '../../../src/db'
 import { ThingType } from '../../../src/types/types'
 
-describe('Thing Type routes', function () {
+describe('API - Thing Type Routes', function () {
   let app: Express
 
   before(async function () {

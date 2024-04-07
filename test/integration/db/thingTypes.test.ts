@@ -11,7 +11,7 @@ import {
 import { cleanup, seed } from '../../../seeds/things'
 import { ThingType } from '../../../src/types/types'
 
-describe('Thing Types', () => {
+describe('DB - Thing Types', () => {
   before(async () => {
     await seed()
   })

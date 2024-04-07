@@ -16,7 +16,7 @@ import {
 import db from '../../../src/db'
 import { Thing } from '../../../src/types/types'
 
-describe('Thing routes', () => {
+describe('API - Thing Routes', () => {
   let app: Express
 
   before(async () => {
