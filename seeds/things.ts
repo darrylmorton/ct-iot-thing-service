@@ -1,7 +1,7 @@
 // eslint-disable no-unused-var
 import db from '../src/db'
 import { createThingGroupDevices, createThingGroups, createThings, createThingTypes } from '../test/helper/thingHelper'
-import { ThingPayload } from '../src/types'
+import { ThingPayload } from '../src/types/types'
 
 const createThingTypesData = (): any[] => {
   return createThingTypes()
