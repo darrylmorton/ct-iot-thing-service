@@ -96,30 +96,3 @@ The following tables exist in the `things` database.
 | columns      | references | description                    |
 |:-------------|:----------:|:-------------------------------|
 | `thing_type` |   `name`   | Guarantees the `type` is valid |
-
-### `thing_payloads`
-
-#### Columns
-
-| column              | postresql type            | nullable |       default        | description                                                       |
-|:--------------------|:--------------------------|:--------:|:--------------------:|:------------------------------------------------------------------|
-| `id`                | `UUID`                    |  FALSE   | `uuid_generate_v4()` | Unique identifier for the `thing`                                 |
-| `device_id`         | `CHARACTER VARYING(25)`   |  FALSE   |          -           | Device id of the `thing`                                          |
-| `payload_timestamp` | `INTEGER`                 |  FALSE   |          -           | Stores the timestamp of when the payload was sent via the `thing` |
-| `payload`           | `JSONB`                   |  FALSE   |       `jsonb`        | Stores the payload sent via the `thing`                           |
-| `created_at`        | `Timestamp with timezone` |  FALSE   |       `now()`        | When the row was first created                                    |
-| `updated_at`        | `Timestamp with timezone` |  FALSE   |       `now()`        | When the row was last updated                                     |
-
-#### Indexes
-
-| columns             | index type  | description                                                 |
-|:--------------------|:------------|:------------------------------------------------------------|
-| `id`                | PRIMARY KEY | Primary key                                                 |
-| `device_id`         | INDEX       | Allows filtering of `thing_payloads` by `thing`             |
-| `payload_timestamp` | INDEX       | Allows filtering of `thing_payloads` by `payload_timestamp` |
-
-#### Foreign Keys
-
-| columns     | references    | description                     |
-|:------------|:--------------|:--------------------------------|
-| `device_id` | `device_id`   | Guarantees the `thing` is valid |

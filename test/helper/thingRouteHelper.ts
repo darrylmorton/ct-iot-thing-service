@@ -2,7 +2,7 @@ import request from 'supertest'
 import { Express } from 'express'
 
 import env from '../../src/env'
-import { ThingGroupDevice, ThingPayload, ThingType } from '../../src/types/types'
+import { ThingGroupDevice, ThingType } from '../../src/types/types'
 
 export const getThingTypesRoute = async (app: Express): Promise<any> => {
   return request(app)
@@ -175,39 +175,6 @@ export const postThingRoute = async (app: Express, thing?: Record<string, unknow
     .catch((err) => {
       // eslint-disable-next-line no-console
       console.error(`postThingRouteErr ${err}`)
-      return err
-    })
-}
-
-export const postThingPayloadRoute = async (app: Express, thingPayload: unknown): Promise<any> => {
-  return request(app)
-    .post(`/${env.API_MAJOR_VERSION}/thingPayload`)
-    .set('content-type', 'application/json')
-    .send(thingPayload as ThingPayload)
-    .then((response) => {
-      return response
-    })
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.error(`postThingPayloadRouteErr ${err}`)
-      return err
-    })
-}
-
-export const getThingPayloadsWithQueryParamsRoute = async (
-  app: Express,
-  queryParams: Record<string, string>
-): Promise<any> => {
-  return request(app)
-    .get(`/${env.API_MAJOR_VERSION}/thingPayload`)
-    .set('content-type', 'application/json')
-    .query({ ...queryParams })
-    .then((response) => {
-      return response
-    })
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.error(`postThingPayloadsWithQueryParamsRouteErr ${err}`)
       return err
     })
 }

@@ -23,33 +23,3 @@ export type Thing = {
   description: string
   thingType: string
 }
-
-export type SimpleThingPayload = {
-  deviceId: string
-  payloadTimestamp: number
-  payload: {
-    cadence: {
-      value: number
-      unit: string
-    }
-    battery: {
-      value: number
-      unit: string
-    }
-    temperature: {
-      value: number
-      unit: string
-      connection: string
-    }
-    humidity: {
-      value: number
-      unit: string
-      connection: string
-      precipitation: boolean
-    }
-  }
-}
-
-export interface ThingPayload extends SimpleThingPayload {
-  id: string
-}
