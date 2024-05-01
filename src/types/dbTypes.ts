@@ -1,6 +1,6 @@
 import { Knex } from 'knex'
 
-import { SimpleThingPayload, Thing, ThingGroup, ThingGroupDevice, ThingPayload, ThingType } from './types'
+import { Thing, ThingGroup, ThingGroupDevice, ThingType } from './types'
 
 export interface DatabaseInterface {
   client: Knex
@@ -20,21 +20,4 @@ export interface DatabaseInterface {
   findThingByType(name: string): Promise<Thing[]>
   findThings(): Promise<Thing[]>
   findThingsByThingType(name: string): Promise<Thing[]>
-  addThingPayload(thingPayload: SimpleThingPayload): Promise<ThingPayload[]>
-  findThingPayloadsByTimestamps(startTimestamp: number, endTimestamp: number): Promise<ThingPayload[]>
-  findThingPayloadsByDeviceIdAndTimestamps(
-    deviceId: string,
-    startTimestamp: number,
-    endTimestamp: number
-  ): Promise<ThingPayload[]>
-  findThingPayloadsByThingGroupAndTimestamps(
-    thingGroup: string,
-    startTimestamp: number,
-    endTimestamp: number
-  ): Promise<ThingPayload[]>
-  findThingPayloadsByThingTypeAndTimestamps(
-    thingType: string,
-    startTimestamp: number,
-    endTimestamp: number
-  ): Promise<ThingPayload[]>
 }

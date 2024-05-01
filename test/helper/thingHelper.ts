@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import { validate as isValidUuid } from 'uuid'
 import { addMinutes, getUnixTime, startOfYesterday, subDays } from 'date-fns'
 
-import { Thing, ThingGroup, ThingGroupDevice, ThingPayload, ThingType } from '../../src/types'
+import { Thing, ThingGroup, ThingGroupDevice, ThingType } from '../../src/types'
 
 export const DEVICE_IDS: string[] = ['aaa-111111', 'bbb-222222', 'ccc-333333', 'ddd-444444', 'eee-555555', 'fff-666666']
 export const THING_NAMES: string[] = ['thingOne', 'thingTwo', 'thingThree', 'thingFour', 'thingFive', 'thingSix']
@@ -25,7 +25,6 @@ export const SORT_THING_GROUPS_BY_NAME = 'SORT_THING_GROUPS_BY_NAME'
 export const SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID =
   'SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID'
 export const SORT_THING_GROUP_DEVICES_BY_THING_GROUP = 'SORT_THING_GROUP_DEVICES_BY_THING_GROUP'
-export const SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID = 'SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID'
 
 export const createTimestamp = (incrementValue?: number): number => {
   const yesterday: Date = startOfYesterday()
@@ -46,10 +45,6 @@ export const getStartTimestamp = (today: Date): string => {
 
 export const getEndTimestamp = (today: Date): string => {
   return today.toISOString()
-}
-
-const generateReadingValue = (max: number, min: number): number => {
-  return Math.random() * (max - min) + min
 }
 
 export const createThingType = (name: string): ThingType => {
@@ -150,57 +145,6 @@ export const createThingGroupDevices = (sortBy?: string): ThingGroupDevice[] => 
   }
 }
 
-// prettier-ignore
-export const createThingPayload = ({ deviceId, payloadTimestamp }: { deviceId?: any, payloadTimestamp?: number }): ThingPayload => {
-  return {
-    deviceId,
-    payloadTimestamp,
-    payload: {
-      cadence: {
-        value: 1800,
-        unit: 'seconds',
-      },
-      battery: {
-        value: 50,
-        unit: '%',
-      },
-      temperature: {
-        value: generateReadingValue(16, 38),
-        unit: 'C',
-        connection: 'pin:4',
-      },
-      humidity: {
-        value: generateReadingValue(32, 81),
-        unit: '%',
-        connection: 'pin:6',
-        precipitation: false,
-      },
-    },
-  }
-}
-
-export const createThingPayloads = (payloadsTotal: number, startDate: Date, sortBy?: string): ThingPayload[] => {
-  const result: ThingPayload[] = []
-
-  for (let payloadsCounter = 0; payloadsCounter < payloadsTotal; payloadsCounter++) {
-    const payloadTimestamp = createTimestampByDateAndIncrement(startDate, payloadsCounter)
-
-    result.push(createThingPayload({ deviceId: DEVICE_IDS[0], payloadTimestamp }))
-    result.push(createThingPayload({ deviceId: DEVICE_IDS[1], payloadTimestamp }))
-    result.push(createThingPayload({ deviceId: DEVICE_IDS[2], payloadTimestamp }))
-    result.push(createThingPayload({ deviceId: DEVICE_IDS[3], payloadTimestamp }))
-    result.push(createThingPayload({ deviceId: DEVICE_IDS[4], payloadTimestamp }))
-    result.push(createThingPayload({ deviceId: DEVICE_IDS[5], payloadTimestamp }))
-  }
-
-  switch (sortBy) {
-    case SORT_THING_PAYLOADS_BY_TIMESTAMP_AND_DEVICE_ID:
-      return result.sort((a, b) => a.payloadTimestamp - b.payloadTimestamp || a.deviceId - b.deviceId)
-    default:
-      return result.sort((a, b) => a.payloadTimestamp - b.payloadTimestamp)
-  }
-}
-
 export const assertThing = (actualResult: any, expectedResult: any): void => {
   expect(actualResult.name).to.equal(expectedResult.name)
   expect(actualResult.deviceId).to.equal(expectedResult.deviceId)
@@ -213,21 +157,6 @@ export const assertThings = (actualResult: any, expectedResult: any): void => {
 
   for (let counter = 0; counter < actualResult.length; counter++) {
     assertThing(actualResult[counter], expectedResult[counter])
-  }
-}
-
-export const assertThingPayload = (actualResult: any, expectedResult: any): void => {
-  expect(isValidUuid(actualResult.id as string)).to.equal(true)
-  expect(actualResult.deviceId).to.equal(expectedResult.deviceId)
-  expect(actualResult.payloadTimestamp).to.equal(expectedResult.payloadTimestamp)
-  expect(actualResult.payload).to.deep.equal(expectedResult.payload)
-}
-
-export const assertThingPayloads = (actualResult: any, expectedResult: any): void => {
-  expect(actualResult).to.have.length(expectedResult.length as number)
-
-  for (let counter = 0; counter < actualResult.length; counter++) {
-    assertThingPayload(actualResult[counter], expectedResult[counter])
   }
 }
 

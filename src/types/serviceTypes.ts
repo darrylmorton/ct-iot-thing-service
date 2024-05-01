@@ -1,13 +1,5 @@
 /* eslint-disable no-unused-vars */
-import {
-  SimpleThingGroupDevice,
-  SimpleThingPayload,
-  Thing,
-  ThingGroup,
-  ThingGroupDevice,
-  ThingPayload,
-  ThingType,
-} from './types'
+import { SimpleThingGroupDevice, Thing, ThingGroup, ThingGroupDevice, ThingType } from './types'
 
 export interface HealthCheckResponse {
   status: string
@@ -50,14 +42,6 @@ export interface ServiceThingGroupDevicesResponse extends ServiceResponse {
   result: ThingGroupDevice[] | []
 }
 
-export interface ServiceThingPayloadResponse extends ServiceResponse {
-  result: ThingPayload | unknown
-}
-
-export interface ServiceThingPayloadsResponse extends ServiceResponse {
-  result: ThingPayload[]
-}
-
 export interface ThingServiceInterface {
   getThingTypes(): Promise<ServiceThingTypesResponse>
   getThingTypeByName(name: string): Promise<ServiceThingTypeResponse>
@@ -72,6 +56,4 @@ export interface ThingServiceInterface {
   getThingByName(name: string): Promise<ServiceThingResponse>
   getThings(): Promise<ServiceThingsResponse>
   postThing(thing: Thing): Promise<ServiceThingResponse>
-  getThingPayloadsByQueryParams(queryParams: Record<string, string>): Promise<ServiceThingPayloadsResponse>
-  postThingPayload(thingPayload: SimpleThingPayload): Promise<ServiceThingPayloadResponse>
 }

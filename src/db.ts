@@ -1,7 +1,7 @@
 import knex from 'knex'
 
 import env from './env'
-import { ThingPayload, Thing, ThingType, ThingGroup, SimpleThingPayload, ThingGroupDevice } from './types/types'
+import { Thing, ThingType, ThingGroup, ThingGroupDevice } from './types/types'
 import { DatabaseInterface } from './types/dbTypes'
 
 const db: DatabaseInterface = {
@@ -112,72 +112,6 @@ const db: DatabaseInterface = {
       .where({ thing_type: thingType })
       .orderBy('name', 'ASC')
       .orderBy('thing_type', 'ASC')
-  },
-
-  async addThingPayload(thingPayload: SimpleThingPayload): Promise<ThingPayload[]> {
-    return this.client('thing_payloads')
-      .insert({
-        device_id: thingPayload.deviceId,
-        payload_timestamp: thingPayload.payloadTimestamp,
-        payload: thingPayload.payload,
-      })
-      .returning(['id', 'device_id AS deviceId', 'payload_timestamp AS payloadTimestamp', 'payload'])
-  },
-
-  // TODO pagination to compliment limits...
-  async findThingPayloadsByTimestamps(startTimestamp: number, endTimestamp: number): Promise<ThingPayload[]> {
-    return this.client('thing_payloads AS tp')
-      .select(['tp.id', 'tp.device_id AS deviceId', 'tp.payload_timestamp AS payloadTimestamp', 'tp.payload'])
-      .whereBetween('tp.payload_timestamp', [startTimestamp, endTimestamp])
-      .orderBy('tp.payload_timestamp', 'ASC')
-      .orderBy('tp.device_id', 'ASC')
-      .limit(300)
-  },
-
-  async findThingPayloadsByDeviceIdAndTimestamps(
-    deviceId: string,
-    startTimestamp: number,
-    endTimestamp: number
-  ): Promise<ThingPayload[]> {
-    return this.client('thing_payloads AS tp')
-      .select(['tp.id', 'tp.device_id AS deviceId', 'tp.payload_timestamp AS payloadTimestamp', 'tp.payload'])
-      .whereBetween('tp.payload_timestamp', [startTimestamp, endTimestamp])
-      .andWhere('tp.device_id', deviceId)
-      .orderBy('tp.payload_timestamp', 'ASC')
-      .orderBy('tp.device_id', 'ASC')
-      .limit(300)
-  },
-
-  async findThingPayloadsByThingGroupAndTimestamps(
-    thingGroup: string,
-    startTimestamp: number,
-    endTimestamp: number
-  ): Promise<ThingPayload[]> {
-    return this.client('thing_payloads AS tp')
-      .select(['tp.id', 'tp.device_id AS deviceId', 'tp.payload_timestamp AS payloadTimestamp', 'tp.payload'])
-      .join('thing_group_devices AS tgd', 'tgd.device_id', '=', 'tp.device_id')
-      .join('thing_groups AS tg', 'tg.name', '=', 'tgd.thing_group')
-      .whereBetween('tp.payload_timestamp', [startTimestamp, endTimestamp])
-      .andWhere('tg.name', thingGroup)
-      .orderBy('tp.payload_timestamp', 'ASC')
-      .orderBy('tp.device_id', 'ASC')
-      .limit(300)
-  },
-
-  async findThingPayloadsByThingTypeAndTimestamps(
-    thingType: string,
-    startTimestamp: number,
-    endTimestamp: number
-  ): Promise<ThingPayload[]> {
-    return this.client('thing_payloads AS tp')
-      .select(['tp.id', 'tp.device_id AS deviceId', 'tp.payload_timestamp AS payloadTimestamp', 'tp.payload'])
-      .join('things AS t', 't.device_id', '=', 'tp.device_id')
-      .join('thing_types AS tt', 'tt.name', '=', 't.thing_type')
-      .whereBetween('tp.payload_timestamp', [startTimestamp, endTimestamp])
-      .andWhere('tt.name', thingType)
-      .orderBy('tp.payload_timestamp', 'ASC')
-      .orderBy('tp.device_id', 'ASC')
-      .limit(300)
   },
 }
 

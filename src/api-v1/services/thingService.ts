@@ -1,13 +1,9 @@
-import { getUnixTime, parseISO } from 'date-fns'
-
 import db from '../../db'
-import { Thing, ThingPayload, ThingType, SimpleThingPayload, ThingGroup, ThingGroupDevice } from '../../types/types'
+import { Thing, ThingType, ThingGroup, ThingGroupDevice } from '../../types/types'
 import {
   ThingServiceInterface,
   ServiceThingsResponse,
   ServiceThingResponse,
-  ServiceThingPayloadsResponse,
-  ServiceThingPayloadResponse,
   ServiceThingTypesResponse,
   ServiceThingTypeResponse,
   ServiceThingGroupsResponse,
@@ -364,81 +360,6 @@ const thingService: ThingServiceInterface = {
     logger.debug({
       label: 'thingService',
       message: 'postThing: result',
-      messageObject: result,
-    })
-
-    if (result) {
-      return { statusCode: 201, result }
-    } else {
-      return { statusCode: 500, result: {} }
-    }
-  },
-
-  async getThingPayloadsByQueryParams(queryParams: Record<string, string>): Promise<ServiceThingPayloadsResponse> {
-    const startTimestamp = getUnixTime(parseISO(queryParams.startTimestamp))
-    const endTimestamp = getUnixTime(parseISO(queryParams.endTimestamp))
-
-    const deviceId = queryParams.deviceId
-    if (deviceId) {
-      const result: ThingPayload[] = await db.findThingPayloadsByDeviceIdAndTimestamps(
-        deviceId,
-        startTimestamp,
-        endTimestamp
-      )
-
-      return { statusCode: 200, result }
-    }
-
-    const thingType = queryParams.thingType
-    if (thingType) {
-      const result: ThingPayload[] = await db.findThingPayloadsByThingTypeAndTimestamps(
-        thingType,
-        startTimestamp,
-        endTimestamp
-      )
-
-      return { statusCode: 200, result }
-    }
-
-    const thingGroup = queryParams.thingGroup
-    if (thingGroup) {
-      const result: ThingPayload[] = await db.findThingPayloadsByThingGroupAndTimestamps(
-        thingGroup,
-        startTimestamp,
-        endTimestamp
-      )
-
-      return { statusCode: 200, result }
-    }
-
-    const result: ThingPayload[] = await db.findThingPayloadsByTimestamps(startTimestamp, endTimestamp)
-
-    return { statusCode: 200, result }
-  },
-
-  async postThingPayload(thingPayload: SimpleThingPayload): Promise<ServiceThingPayloadResponse> {
-    const findThingByDeviceIdResult: Thing[] = await db.findThingByDeviceId(thingPayload.deviceId)
-    logger.debug({
-      label: 'thingService',
-      message: 'postThingPayload: findThingByDeviceIdResult',
-      messageObject: findThingByDeviceIdResult,
-    })
-
-    if (findThingByDeviceIdResult.length === 0) {
-      return { statusCode: 404, result: [] }
-    }
-
-    const addThingPayloadResult: ThingPayload[] = await db.addThingPayload(thingPayload)
-    logger.debug({
-      label: 'thingService',
-      message: 'postThingPayload: addThingPayloadResult',
-      messageObject: addThingPayloadResult,
-    })
-
-    const result: ThingPayload | null = ServiceUtil.getFirstThingPayloadArrayElement(addThingPayloadResult)
-    logger.debug({
-      label: 'thingService',
-      message: 'postThingPayload: result',
       messageObject: result,
     })
 
