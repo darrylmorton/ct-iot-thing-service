@@ -1,7 +1,7 @@
 import { parseISO, subDays } from 'date-fns'
 import { expect } from 'chai'
 
-import { getStartIsoTimestamp } from '../../src/util/AppUtil'
+import { getStartIsoTimestamp } from '../../../src/util/AppUtil'
 import {
   assertThing,
   createThing,
@@ -12,9 +12,9 @@ import {
   THING_GROUP_NAMES,
   THING_NAMES,
   THING_TYPE_NAMES,
-} from '../helper/thingHelper'
-import ServiceUtil from '../../src/util/ServiceUtil'
-import { Thing, ThingGroup, ThingGroupDevice, ThingType } from '../../src/types/types'
+} from '../../helper/thingHelper'
+import ServiceUtil from '../../../src/util/ServiceUtil'
+import { Thing, ThingGroup, ThingGroupDevice, ThingType } from '../../../src/types/types'
 
 describe('Utils', () => {
   describe('App', () => {

@@ -16,14 +16,24 @@ import ServiceUtil from '../../util/ServiceUtil'
 
 const thingService: ThingServiceInterface = {
   async getThingTypes(): Promise<ServiceThingTypesResponse> {
-    const result: ThingType[] = await db.findThingTypes()
-    logger.debug({
-      label: 'thingService',
-      message: 'getThingTypes: result',
-      messageObject: result,
-    })
+    try {
+      const result: ThingType[] = await db.findThingTypes()
+      logger.debug({
+        label: 'thingService',
+        message: 'getThingTypes: result',
+        messageObject: result,
+      })
 
-    return { statusCode: 200, result }
+      return { statusCode: 200, result }
+    } catch (error) {
+      logger.error({
+        label: 'thingService',
+        message: 'getThingTypes: result',
+        error,
+      })
+
+      return { statusCode: 500, result: [] }
+    }
   },
 
   async getThingTypeByName(name: string): Promise<ServiceThingTypeResponse> {
