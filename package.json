@@ -1,6 +1,6 @@
 {
   "name": "ct-iot-thing-service",
-  "version": "2.0.0",
+  "version": "0.0.1",
   "description": "CT IoT Thing Service",
   "main": "./src/index.ts",
   "author": "Darryl Morton",
@@ -18,8 +18,9 @@
     "test:integration-service": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/service/",
     "test:integration-api": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/api/",
     "test:integration": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/",
-    "test": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/",
-    "test:coverage": "NODE_ENV=test NODE_OPTIONS='--import tsx' nyc mocha --config ./test/mocharc.json ./test/"
+    "test": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --file ./test/mocharc.json ./test/",
+    "test:unit-coverage": "NODE_ENV=test NODE_OPTIONS='--import tsx' nyc --nycrc-path .nycrc-unit.json mocha --config ./test/mocharc.json ./test/unit",
+    "test:integration-coverage": "NODE_ENV=test NODE_OPTIONS='--import tsx' nyc --nycrc-path .nycrc-integration.json mocha --config ./test/mocharc.json ./test/integration"
   },
   "engines": {
     "node": ">=20.11"
@@ -45,6 +46,7 @@
     "winston": "^3.12.0"
   },
   "peerDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@types/node": "^20.11.30",
     "@types/pg": "^8.11.4",
     "pg": "^8.11.3",
@@ -52,7 +54,6 @@
     "tsx": "^4.7.1"
   },
   "devDependencies": {
-    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@types/chai": "^4.3.14",
     "@types/mocha": "^10.0.6",
     "@types/sinon": "^17.0.3",
