@@ -3,6 +3,8 @@ import { expect } from 'chai'
 
 import db from '../../../src/db'
 import { Thing, ThingGroup, ThingGroupDevice, ThingType } from '../../../src/types/types'
+import { ThingError, ThingGroupDeviceError, ThingGroupError, ThingTypeError } from '../../../src/types/errorTypes'
+import { DB_ERROR_MESSAGE } from '../../helper/thingHelper'
 
 describe('Database', () => {
   beforeEach(() => {
@@ -16,7 +18,8 @@ describe('Database', () => {
       try {
         await spy('thingGroup')
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThingGroupByName: result'))
+        expect(error).to.be.an.instanceof(ThingGroupError)
+        expect(error).to.deep.equal(new ThingGroupError('findThingGroupByName', DB_ERROR_MESSAGE))
       }
     })
 
@@ -26,7 +29,8 @@ describe('Database', () => {
       try {
         await spy()
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThingGroups: result'))
+        expect(error).to.be.an.instanceof(ThingGroupError)
+        expect(error).to.deep.equal(new ThingGroupError('findThingGroups', DB_ERROR_MESSAGE))
       }
     })
 
@@ -36,7 +40,8 @@ describe('Database', () => {
       try {
         await spy({ name: 'thingGroup', description: 'thingGroup' })
       } catch (error) {
-        expect(error).to.deep.equal(Error('addThingGroup: result'))
+        expect(error).to.be.an.instanceof(ThingGroupError)
+        expect(error).to.deep.equal(new ThingGroupError('addThingGroup', DB_ERROR_MESSAGE))
       }
     })
   })
@@ -48,7 +53,8 @@ describe('Database', () => {
       try {
         await spy()
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThingGroupDevices: result'))
+        expect(error).to.be.an.instanceof(ThingGroupDeviceError)
+        expect(error).to.deep.equal(new ThingGroupDeviceError('findThingGroupDevices', DB_ERROR_MESSAGE))
       }
     })
 
@@ -61,7 +67,8 @@ describe('Database', () => {
       try {
         await spy('thingGroupDevice')
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThingGroupDevicesByName: result'))
+        expect(error).to.be.an.instanceof(ThingGroupDeviceError)
+        expect(error).to.deep.equal(new ThingGroupDeviceError('findThingGroupDevicesByName', DB_ERROR_MESSAGE))
       }
     })
 
@@ -74,7 +81,10 @@ describe('Database', () => {
       try {
         await spy('thingGroupDevice', 'abc-123456')
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThingGroupDeviceByNameAndDeviceId: result'))
+        expect(error).to.be.an.instanceof(ThingGroupDeviceError)
+        expect(error).to.deep.equal(
+          new ThingGroupDeviceError('findThingGroupDeviceByNameAndDeviceId', DB_ERROR_MESSAGE)
+        )
       }
     })
 
@@ -87,7 +97,8 @@ describe('Database', () => {
       try {
         await spy({ id: '123', deviceId: 'abc-123456', thingGroup: 'thingGroup' })
       } catch (error) {
-        expect(error).to.deep.equal(Error('addThingGroupDevice: result'))
+        expect(error).to.be.an.instanceof(ThingGroupDeviceError)
+        expect(error).to.deep.equal(new ThingGroupDeviceError('addThingGroupDevice', DB_ERROR_MESSAGE))
       }
     })
   })
@@ -99,7 +110,8 @@ describe('Database', () => {
       try {
         await spy('thingType')
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThingTypeByName: result'))
+        expect(error).to.be.an.instanceof(ThingTypeError)
+        expect(error).to.deep.equal(new ThingTypeError('findThingTypeByName', DB_ERROR_MESSAGE))
       }
     })
 
@@ -109,7 +121,8 @@ describe('Database', () => {
       try {
         await spy()
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThingTypes: result'))
+        expect(error).to.be.an.instanceof(ThingTypeError)
+        expect(error).to.deep.equal(new ThingTypeError('findThingTypes', DB_ERROR_MESSAGE))
       }
     })
 
@@ -119,7 +132,8 @@ describe('Database', () => {
       try {
         await spy({ name: 'thingType', description: 'thingType' })
       } catch (error) {
-        expect(error).to.deep.equal(Error('addThingType: result'))
+        expect(error).to.be.an.instanceof(ThingTypeError)
+        expect(error).to.deep.equal(new ThingTypeError('addThingType', DB_ERROR_MESSAGE))
       }
     })
   })
@@ -131,7 +145,8 @@ describe('Database', () => {
       try {
         await spy({ name: 'thingType', deviceId: 'abc-123456', description: 'thingType', thingType: 'thingType' })
       } catch (error) {
-        expect(error).to.deep.equal(Error('addThing: result'))
+        expect(error).to.be.an.instanceof(ThingError)
+        expect(error).to.deep.equal(new ThingError('addThing', DB_ERROR_MESSAGE))
       }
     })
 
@@ -141,7 +156,8 @@ describe('Database', () => {
       try {
         await spy('thing')
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThingByName: result'))
+        expect(error).to.be.an.instanceof(ThingError)
+        expect(error).to.deep.equal(new ThingError('findThingByName', DB_ERROR_MESSAGE))
       }
     })
 
@@ -151,7 +167,8 @@ describe('Database', () => {
       try {
         await spy('abc-123456')
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThingByDeviceId: result'))
+        expect(error).to.be.an.instanceof(ThingError)
+        expect(error).to.deep.equal(new ThingError('findThingByDeviceId', DB_ERROR_MESSAGE))
       }
     })
 
@@ -161,7 +178,8 @@ describe('Database', () => {
       try {
         await spy('thingType')
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThingByType: result'))
+        expect(error).to.be.an.instanceof(ThingError)
+        expect(error).to.deep.equal(new ThingError('findThingByType', DB_ERROR_MESSAGE))
       }
     })
 
@@ -171,7 +189,8 @@ describe('Database', () => {
       try {
         await spy()
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThings: result'))
+        expect(error).to.be.an.instanceof(ThingError)
+        expect(error).to.deep.equal(new ThingError('findThings', DB_ERROR_MESSAGE))
       }
     })
 
@@ -181,7 +200,8 @@ describe('Database', () => {
       try {
         await spy('thingType')
       } catch (error) {
-        expect(error).to.deep.equal(Error('findThingsByThingType: result'))
+        expect(error).to.be.an.instanceof(ThingError)
+        expect(error).to.deep.equal(new ThingError('findThingsByThingType', DB_ERROR_MESSAGE))
       }
     })
   })

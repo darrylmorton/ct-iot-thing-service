@@ -1,7 +1,7 @@
 import { parseISO, subDays } from 'date-fns'
 import { expect } from 'chai'
 
-import { getStartIsoTimestamp } from '../../../src/util/AppUtil'
+import AppUtil from '../../../src/util/AppUtil'
 import {
   assertThing,
   createThing,
@@ -22,7 +22,7 @@ describe('Utils', () => {
       const date = parseISO('2024-04-04T19:30:30Z')
       const expectedResult = subDays(date, 2).toISOString()
 
-      const actualResult = getStartIsoTimestamp(date, 2)
+      const actualResult = AppUtil.getStartIsoTimestamp(date, 2)
 
       expect(actualResult).to.equal(expectedResult)
     })

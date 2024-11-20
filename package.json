@@ -1,6 +1,6 @@
 {
   "name": "ct-iot-thing-service",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "CT IoT Thing Service",
   "main": "./src/index.ts",
   "author": "Darryl Morton",
@@ -18,7 +18,6 @@
     "test:integration-service": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/service/",
     "test:integration-api": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/api/",
     "test:integration": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/",
-    "test": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --file ./test/mocharc.json ./test/",
     "test:unit-coverage": "NODE_ENV=test NODE_OPTIONS='--import tsx' nyc --nycrc-path .nycrc-unit.json mocha --config ./test/mocharc.json ./test/unit",
     "test:integration-coverage": "NODE_ENV=test NODE_OPTIONS='--import tsx' nyc --nycrc-path .nycrc-integration.json mocha --config ./test/mocharc.json ./test/integration"
   },

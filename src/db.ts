@@ -4,6 +4,7 @@ import env from './env'
 import { Thing, ThingType, ThingGroup, ThingGroupDevice } from './types/types'
 import { DatabaseInterface } from './types/dbTypes'
 import logger from './logger'
+import { ThingError, ThingGroupDeviceError, ThingGroupError, ThingTypeError } from './types/errorTypes'
 
 const db: DatabaseInterface = {
   client: knex({
@@ -27,7 +28,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThingGroupByName: result')
+      throw new ThingGroupError('findThingGroupByName', (error as Error).message)
     }
   },
 
@@ -41,7 +42,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThingGroups: result')
+      throw new ThingGroupError('findThingGroups', (error as Error).message)
     }
   },
 
@@ -55,7 +56,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('addThingGroup: result')
+      throw new ThingGroupError('addThingGroup', (error as Error).message)
     }
   },
 
@@ -72,7 +73,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThingGroupDevices: result')
+      throw new ThingGroupDeviceError('findThingGroupDevices', (error as Error).message)
     }
   },
 
@@ -90,7 +91,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThingGroupDevicesByName: result')
+      throw new ThingGroupDeviceError('findThingGroupDevicesByName', (error as Error).message)
     }
   },
 
@@ -109,7 +110,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThingGroupDeviceByNameAndDeviceId: result')
+      throw new ThingGroupDeviceError('findThingGroupDeviceByNameAndDeviceId', (error as Error).message)
     }
   },
 
@@ -125,7 +126,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('addThingGroupDevice: result')
+      throw new ThingGroupDeviceError('addThingGroupDevice', (error as Error).message)
     }
   },
 
@@ -139,7 +140,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThingTypeByName: result')
+      throw new ThingTypeError('findThingTypeByName', (error as Error).message)
     }
   },
 
@@ -153,7 +154,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThingTypes: result')
+      throw new ThingTypeError('findThingTypes', (error as Error).message)
     }
   },
 
@@ -167,7 +168,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('addThingType: result')
+      throw new ThingTypeError('addThingType', (error as Error).message)
     }
   },
 
@@ -188,7 +189,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('addThing: result')
+      throw new ThingError('addThing', (error as Error).message)
     }
   },
 
@@ -204,7 +205,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThingByName: result')
+      throw new ThingError('findThingByName', (error as Error).message)
     }
   },
 
@@ -220,7 +221,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThingByDeviceId: result')
+      throw new ThingError('findThingByDeviceId', (error as Error).message)
     }
   },
 
@@ -236,7 +237,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThingByType: result')
+      throw new ThingError('findThingByType', (error as Error).message)
     }
   },
 
@@ -253,7 +254,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThings: result')
+      throw new ThingError('findThings', (error as Error).message)
     }
   },
 
@@ -271,7 +272,7 @@ const db: DatabaseInterface = {
         error,
       })
 
-      throw new Error('findThingsByThingType: result')
+      throw new ThingError('findThingsByThingType', (error as Error).message)
     }
   },
 }
