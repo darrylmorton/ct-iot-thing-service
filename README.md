@@ -4,9 +4,9 @@
 A Nodejs Typescript Express microservice that serves an OpenAPI/Swagger UI API 
 
 ## Requirements
-docker v24+
-node v20+
-npm v10.2+
+docker v27+
+node v22+
+npm v10+
 
 ## Setup
 ```
@@ -18,22 +18,17 @@ npm run lint
 
 ### Test
 ```
-docker-compose up -d
+npm run test:unit
+
+docker compose up -d
 
 npm run test:migrate
-npm run test
+npm run test:integration
 ```
 
 ### Development
 ```
-docker-compose up -d
+docker compose up -d
 
 npm run dev:start
-```
-
-### Production
-```
-docker-compose up -d
-
-npm run prod:start
 ```
