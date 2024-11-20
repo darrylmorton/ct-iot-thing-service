@@ -3,6 +3,7 @@
     "node": true,
     "es2021": true
   },
+  "parser": "@typescript-eslint/parser",
   "extends": "standard-with-typescript",
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -20,7 +21,5 @@
     "@typescript-eslint/no-base-to-string": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/consistent-type-assertions": "off",
-    "@typescript-eslint/consistent-type-definitions": "off",
-    "@typescript-eslint/no-extraneous-class": "off"
-  }
+    "@typescript-eslint/no-extraneous-class": "off"}
 }
