@@ -1,4 +1,4 @@
-FROM node:20.11.1-alpine
+FROM node:22.11.0-alpine
 
 WORKDIR /ct-iot-thing-service
 
@@ -9,4 +9,4 @@ RUN npm ci
 
 EXPOSE 3000
 
-CMD npm run dev:start
+CMD npm run prod:start
