@@ -26,6 +26,8 @@ export const SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID =
   'SORT_THING_GROUP_DEVICES_BY_THING_GROUP_AND_DEVICE_ID'
 export const SORT_THING_GROUP_DEVICES_BY_THING_GROUP = 'SORT_THING_GROUP_DEVICES_BY_THING_GROUP'
 
+export const DB_ERROR_MESSAGE = "Cannot read properties of undefined (reading 'client')"
+
 export const createTimestamp = (incrementValue?: number): number => {
   const yesterday: Date = startOfYesterday()
   const incrementDate: Date = incrementValue ? addMinutes(yesterday, incrementValue * 30) : yesterday

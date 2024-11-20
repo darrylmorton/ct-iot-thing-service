@@ -3,12 +3,12 @@ export interface ThingType {
   description: string
 }
 
-export type ThingGroup = {
+export interface ThingGroup {
   name: string
   description: string
 }
 
-export type SimpleThingGroupDevice = {
+export interface SimpleThingGroupDevice {
   thingGroup: string
   deviceId: string
 }
@@ -17,7 +17,7 @@ export interface ThingGroupDevice extends SimpleThingGroupDevice {
   id: string
 }
 
-export type Thing = {
+export interface Thing {
   name: string
   deviceId: string
   description: string

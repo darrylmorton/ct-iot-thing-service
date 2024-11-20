@@ -1,6 +1,6 @@
 {
   "name": "ct-iot-thing-service",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "CT IoT Thing Service",
   "main": "./src/index.ts",
   "author": "Darryl Morton",
@@ -13,17 +13,16 @@
     "prod:start": "NODE_ENV=production NODE_OPTIONS='--import tsx' npx knex migrate:latest && node ./src/index.ts",
     "test:migrate": "NODE_ENV=test NODE_OPTIONS='--import tsx' npx knex migrate:latest",
     "test:seed": "NODE_ENV=test NODE_OPTIONS='--import tsx' npx knex seed:run",
-    "test:unit": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/unit/",
-    "test:integration-db": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/db/",
-    "test:integration-service": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/service/",
-    "test:integration-api": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/api/",
-    "test:integration": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --config ./test/mocharc.json ./test/integration/",
-    "test": "NODE_ENV=test NODE_OPTIONS='--import tsx' mocha --file ./test/mocharc.json ./test/",
-    "test:unit-coverage": "NODE_ENV=test NODE_OPTIONS='--import tsx' nyc --nycrc-path .nycrc-unit.json mocha --config ./test/mocharc.json ./test/unit",
-    "test:integration-coverage": "NODE_ENV=test NODE_OPTIONS='--import tsx' nyc --nycrc-path .nycrc-integration.json mocha --config ./test/mocharc.json ./test/integration"
+    "test:unit": "NODE_ENV=test mocha --config mocharc.json ./test/unit/",
+    "test:integration-db": "NODE_ENV=test mocha --config mocharc.json ./test/integration/db/",
+    "test:integration-service": "NODE_ENV=test mocha --config mocharc.json ./test/integration/service/",
+    "test:integration-api": "NODE_ENV=test mocha --config mocharc.json ./test/integration/api/",
+    "test:integration": "NODE_ENV=test mocha --config mocharc.json ./test/integration/",
+    "test:unit-coverage": "NODE_ENV=test nyc --nycrc-path .nycrc-unit.json mocha --config mocharc.json ./test/unit",
+    "test:integration-coverage": "NODE_ENV=test nyc --nycrc-path .nycrc-integration.json mocha --config mocharc.json ./test/integration"
   },
   "engines": {
-    "node": ">=20.11"
+    "node": ">=22.11"
   },
   "dependencies": {
     "@types/cors": "^2.8.17",
@@ -41,7 +40,7 @@
     "openapi-response-validator": "^12.1.3",
     "openapi-types": "^12.1.3",
     "swagger-ui-express": "^5.0.0",
-    "typescript": "^5.4.3",
+    "typescript": "^5.6.3",
     "uuid": "^9.0.1",
     "winston": "^3.12.0"
   },
@@ -51,7 +50,7 @@
     "@types/pg": "^8.11.4",
     "pg": "^8.11.3",
     "prettier": "^3.2.5",
-    "tsx": "^4.7.1"
+    "tsx": "^4.19.2"
   },
   "devDependencies": {
     "@types/chai": "^4.3.14",
@@ -59,16 +58,17 @@
     "@types/sinon": "^17.0.3",
     "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "chai": "^5.1.0",
     "depcheck": "^1.4.7",
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
     "eslint-config-standard-with-typescript": "^43.0.1",
-    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-promise": "^6.6.0",
     "mocha": "^10.3.0",
     "nodemon": "^3.1.0",
-    "nyc": "^15.1.0",
+    "nyc": "^17.1.0",
     "sinon": "^17.0.1",
     "supertest": "^6.3.4"
   }

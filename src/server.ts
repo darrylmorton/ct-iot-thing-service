@@ -17,7 +17,7 @@ export const createHttpServer = async (): Promise<Express> => {
   app.use(cors())
   app.use(bodyParser.json())
 
-  app.get('/healthz', async (req: Request, res: Response): Promise<Response> => {
+  app.get('/healthz', async (_: Request, res: Response): Promise<Response> => {
     const result: HealthCheckResponse = { status: 'ok', version: env.API_VERSION }
 
     return res.status(200).json(result)
