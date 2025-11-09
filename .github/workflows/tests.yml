@@ -2,103 +2,122 @@ name: Lint and Test
 
 on:
   push:
-    branches-ignore: ["main"]
+    branches-ignore: [ "main" ]
 
 jobs:
-  dependency-check:
-    name: Run dependency check
-    runs-on: ubuntu-latest
+  unit-tests:
+    uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs/unit-test.yml@main
+    with:
+      nodejs-version: '22.x'
 
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@master
-        with:
-          node-version: 22.x
-      - name: Cache Node.js modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-      - name: Install Packages
-        run: npm ci
-      - name: Dependency Check
-        run: npm run depcheck
+  integration-tests:
+    uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs/unit-test.yml@main
+    with:
+      nodejs-version: '22.x'
 
-  lint:
-    name: Run lint
-    runs-on: ubuntu-latest
+#  unit-tests:
+#    name: Unit Tests
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: github.com/darrylmorton/ct-continuous-workflows/.github/workflows/nodejs/unit-test.yml@main
+#        with:
+#          nodejs-version: '22.x'
 
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@master
-        with:
-          node-version: 22.x
-      - name: Cache Node.js modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-      - name: Install Packages
-        run: npm ci
-      - name: Lint
-        run: npm run lint
-
-  test-unit-coverage:
-    needs: [ lint ]
-    name: Run unit tests with coverage
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@master
-        with:
-          node-version: 22.x
-      - name: Cache Node.js modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-      - name: Install Packages
-        run: npm ci
-      - name: Run unit tests
-        run: npm run test:unit-coverage
-
-  test-integration-coverage:
-    needs: [ lint ]
-    name: Run integration tests with coverage
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@master
-        with:
-          node-version: 22.x
-      - name: Cache Node.js modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-      - name: Install Packages
-        run: npm ci
-      - name: Setup dependencies
-        run: docker compose up -d
-      - name: Sleep
-        uses: kibertoad/wait-action@1.0.1
-        with:
-          time: '30s'
-      - name: Initialise DB
-        run: npm run test:migrate
-      - name: Run integration tests
-        run: npm run test:integration-coverage
+#  dependency-check:
+#    name: Run dependency check
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@master
+#      - uses: actions/setup-node@master
+#        with:
+#          node-version: 22.x
+#      - name: Cache Node.js modules
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-node-
+#            ${{ runner.OS }}-
+#      - name: Install Packages
+#        run: npm ci
+#      - name: Dependency Check
+#        run: npm run depcheck
+#
+#  lint:
+#    name: Run lint
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@master
+#      - uses: actions/setup-node@master
+#        with:
+#          node-version: 22.x
+#      - name: Cache Node.js modules
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-node-
+#            ${{ runner.OS }}-
+#      - name: Install Packages
+#        run: npm ci
+#      - name: Lint
+#        run: npm run lint
+#
+#  test-unit-coverage:
+#    needs: [ lint ]
+#    name: Run unit tests with coverage
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@master
+#      - uses: actions/setup-node@master
+#        with:
+#          node-version: 22.x
+#      - name: Cache Node.js modules
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-node-
+#            ${{ runner.OS }}-
+#      - name: Install Packages
+#        run: npm ci
+#      - name: Run unit tests
+#        run: npm run test:unit-coverage
+#
+#  test-integration-coverage:
+#    needs: [ lint ]
+#    name: Run integration tests with coverage
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@master
+#      - uses: actions/setup-node@master
+#        with:
+#          node-version: 22.x
+#      - name: Cache Node.js modules
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.OS }}-node-
+#            ${{ runner.OS }}-
+#      - name: Install Packages
+#        run: npm ci
+#      - name: Setup dependencies
+#        run: docker compose up -d
+#      - name: Sleep
+#        uses: kibertoad/wait-action@1.0.1
+#        with:
+#          time: '30s'
+#      - name: Initialise DB
+#        run: npm run test:migrate
+#      - name: Run integration tests
+#        run: npm run test:integration-coverage
