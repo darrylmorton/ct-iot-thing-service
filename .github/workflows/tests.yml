@@ -6,12 +6,12 @@ on:
 
 jobs:
   unit-tests:
-    uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs/unit-test.yml@main
+    uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-unit-test.yml@main
     with:
       nodejs-version: '22.x'
 
   integration-tests:
-    uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs/unit-test.yml@main
+    uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-unit-test.yml@main
     with:
       nodejs-version: '22.x'
 
