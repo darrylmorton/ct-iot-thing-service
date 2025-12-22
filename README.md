@@ -4,9 +4,9 @@
 A Nodejs Typescript Express microservice that serves an OpenAPI/Swagger UI API 
 
 ## Requirements
-docker v27+
-node v22+
-npm v10+
+docker v27+  
+node v22+  
+npm v10+  
 
 ## Setup
 ```
