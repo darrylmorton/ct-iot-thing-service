@@ -1,0 +1,25 @@
+name: Build and publish a Docker image
+
+# Configures this workflow to run every time a main branch pull request has been merged.
+on:
+  # This workflow will run when a pull request is closed and merged into the main branch.
+  pull_request:
+    types: ["closed"]
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: |
+          echo The PR was merged!
+
+  release:
+    needs: [ if_merged ]
+    uses: darrylmorton/ct-continuous-workflows/.github/workflows/ghcr-release.yml@v1
+    with:
+      repository: ${{ github.repository }}
+      package-manager: 'npm'
+    secrets:
+      gh-token: ${{ secrets.GITHUB_TOKEN }}
