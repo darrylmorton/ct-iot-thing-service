@@ -17,6 +17,12 @@ jobs:
 
   release:
     needs: [ if_merged ]
+    permissions:
+      contents: read
+      packages: write
+      pages: write
+      id-token: write
+      attestations: write
     uses: darrylmorton/ct-continuous-workflows/.github/workflows/ghcr-release.yml@v1
     with:
       repository: ${{ github.repository }}
