@@ -15,20 +15,21 @@ jobs:
         uses: actions/checkout@v4
 
       - name: check-version
-        id: check-version
         uses: darrylmorton/ct-continuous-workflows/.github/actions/check-version@v1
         with:
           poetry-version: '1.7.1'
           python-version: '3.11.9'
           repository: ${{ github.repository }}
-          package-manager: 'poetry'
+          package-manager: 'npm'
 
   unit-tests:
+    needs: [ check-version ]
     uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-test-unit.yml@v1
     with:
       nodejs-version: '22.x'
 
   integration-tests:
+    needs: [ check-version ]
     uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-test-integration.yml@v1
     with:
       nodejs-version: '22.x'
