@@ -19,7 +19,6 @@ jobs:
         with:
           poetry-version: '1.7.1'
           python-version: '3.11.9'
-          repository: ${{ github.repository }}
           package-manager: 'npm'
 
   unit-tests:

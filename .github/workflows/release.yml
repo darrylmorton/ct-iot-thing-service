@@ -27,7 +27,6 @@ jobs:
     with:
       python-version: '3.11.9'
       poetry-version: '1.7.1'
-      repository: ${{ github.repository }}
       package-manager: 'npm'
     secrets:
       gh-token: ${{ secrets.GITHUB_TOKEN }}
