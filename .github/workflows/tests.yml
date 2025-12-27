@@ -1,14 +1,15 @@
-name: Lint and Test
+name: Build, Lint and Test
 
 on:
   push:
     branches-ignore: [ "main" ]
 
+env:
+  NODEJS_VERSION: '22.x'
+
 jobs:
   check-version:
     runs-on: ubuntu-latest
-    outputs:
-      app_version: ${{ steps.check-version.outputs.app_version }}
 
     steps:
       - name: actions checkout
@@ -17,19 +18,17 @@ jobs:
       - name: check-version
         uses: darrylmorton/ct-continuous-workflows/.github/actions/check-version@v1
         with:
-          poetry-version: '1.7.1'
-          python-version: '3.11.9'
           package-manager: 'npm'
 
   unit-tests:
     needs: [ check-version ]
     uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-test-unit.yml@v1
     with:
-      nodejs-version: '22.x'
+      nodejs-version: ${{ env.NODEJS_VERSION }}
 
   integration-tests:
     needs: [ check-version ]
     uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-test-integration.yml@v1
     with:
-      nodejs-version: '22.x'
-      db-migrate-flag: true
+      nodejs-version: ${{ env.NODEJS_VERSION }}
+      db-migrate-flag: 'true'
