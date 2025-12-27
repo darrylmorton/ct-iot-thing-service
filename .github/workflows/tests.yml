@@ -1,17 +1,31 @@
-name: Lint and Test
+name: Build, Lint and Test
 
 on:
   push:
     branches-ignore: [ "main" ]
 
 jobs:
+  check-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions checkout
+        uses: actions/checkout@v4
+
+      - name: check-version
+        uses: darrylmorton/ct-continuous-workflows/.github/actions/check-version@v1
+        with:
+          package-manager: 'npm'
+
   unit-tests:
+    needs: [ check-version ]
     uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-test-unit.yml@v1
     with:
       nodejs-version: '22.x'
 
   integration-tests:
+    needs: [ check-version ]
     uses: darrylmorton/ct-continuous-workflows/.github/workflows/nodejs-test-integration.yml@v1
     with:
       nodejs-version: '22.x'
-      db-migrate-flag: true
+      db-migrate-flag: 'true'
